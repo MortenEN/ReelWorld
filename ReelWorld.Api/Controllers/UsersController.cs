@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Profiles = ReelWorld.DataAccessLibrary.Model;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
-
 
 namespace ReelWorld.Api.Controllers
 {
@@ -17,7 +14,7 @@ namespace ReelWorld.Api.Controllers
             _userDao = userDao;
         }
 
-        [HttpPost]
+    [HttpPost]
         public ActionResult<int> Create(User user)
         {
             try
@@ -30,5 +27,4 @@ namespace ReelWorld.Api.Controllers
             }
         }
     }
-
 }
