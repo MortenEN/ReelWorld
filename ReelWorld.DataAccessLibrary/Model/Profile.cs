@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace ReelWorld.DataAccessLibrary.Model
 {
-    abstract class Profile
+    public abstract class Profile
     {
         public string name { get; set; }
         public string email { get; set; }
         public string hashPassword { get; set; }
+
+        protected Profile(string name, string email, string hashPassword)
+        {
+            this.name = name;
+            this.email = email;
+            this.hashPassword = hashPassword;
+        }
     }
 }
