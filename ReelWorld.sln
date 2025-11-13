@@ -5,7 +5,11 @@ VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReelWorld.DataAccessLibrary", "ReelWorld.DataAccessLibrary\ReelWorld.DataAccessLibrary.csproj", "{20598F0A-F130-40FC-8BA5-E199760234B1}"
 EndProject
+<<<<<<< Updated upstream
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReelWorld.ApiClient", "ReelWorld.ApiClient\ReelWorld.ApiClient.csproj", "{304769FC-15AB-4509-B51C-3458A5DAB715}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReelWorld.Test", "ReelWorld.Test\ReelWorld.Test.csproj", "{625BF6C9-0CA3-44BD-8947-B8E459129F06}"
+>>>>>>> Stashed changes
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,17 @@ Global
 		{20598F0A-F130-40FC-8BA5-E199760234B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20598F0A-F130-40FC-8BA5-E199760234B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20598F0A-F130-40FC-8BA5-E199760234B1}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< Updated upstream
 		{304769FC-15AB-4509-B51C-3458A5DAB715}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{304769FC-15AB-4509-B51C-3458A5DAB715}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{304769FC-15AB-4509-B51C-3458A5DAB715}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{304769FC-15AB-4509-B51C-3458A5DAB715}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{625BF6C9-0CA3-44BD-8947-B8E459129F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{625BF6C9-0CA3-44BD-8947-B8E459129F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{625BF6C9-0CA3-44BD-8947-B8E459129F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{625BF6C9-0CA3-44BD-8947-B8E459129F06}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
