@@ -1,8 +1,7 @@
-using ReelWorld.DataAccessLibrary.Interfaces;
 
 namespace ReelWorld.Test
 {
-    public class Tests
+    public class IUserDaoTest
     {
         private const string ConnectionString = "";
 

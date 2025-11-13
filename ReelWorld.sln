@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReelWorld.ApiClient", "Reel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReelWorld.Api", "ReelWorld.Api\ReelWorld.Api.csproj", "{DBED13E1-E755-4389-A853-420BFE195E95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReelWorld.Test", "ReelWorld.Test\ReelWorld.Test.csproj", "{2EA1F7A2-8F4A-45EC-917F-9B26ABFAB04C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DBED13E1-E755-4389-A853-420BFE195E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBED13E1-E755-4389-A853-420BFE195E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBED13E1-E755-4389-A853-420BFE195E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EA1F7A2-8F4A-45EC-917F-9B26ABFAB04C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA1F7A2-8F4A-45EC-917F-9B26ABFAB04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA1F7A2-8F4A-45EC-917F-9B26ABFAB04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA1F7A2-8F4A-45EC-917F-9B26ABFAB04C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
