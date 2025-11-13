@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Stub\" />
+    <Folder Include="SqlServer\" />
+    <Folder Include="Tools\" />
+    <Folder Include="SQL Scripts\" />
+  </ItemGroup>
+
 </Project>
