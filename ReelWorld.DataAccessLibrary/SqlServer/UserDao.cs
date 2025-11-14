@@ -1,13 +1,7 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.Tools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
@@ -15,6 +9,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
     {
         public UserDao(string connectionString) : base(connectionString)
         {
+
         }
 
         public async Task<int> CreateUserAsync(User user)
