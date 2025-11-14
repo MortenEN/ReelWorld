@@ -33,6 +33,10 @@ namespace ReelWorld.DataAccessLibrary.Model
             this.email = email;
             this.hashPassword = hashPassword;
         }
+        protected Profile()
+        {
+                
+        }
         #endregion
     }
 }

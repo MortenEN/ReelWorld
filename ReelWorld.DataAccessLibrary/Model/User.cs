@@ -19,7 +19,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets the unique user identifier.
         /// </summary>
-        public int userId { get; }
+        public int userId { get; set;}
         /// <summary>
         /// Gets or sets the phone number of the user.
         /// </summary>
@@ -40,15 +40,17 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets or sets a list of interests associated with the user.
         /// </summary>
-        public List<String> Interests { get; set; }
+        public List<String> interests { get; set; }
         /// <summary>
         /// Gets or sets a short personal description written by the user.
         /// </summary>
         public string description { get; set; }
+        public string cityName { get; set; }
+        public string countryName { get; set; }
         #endregion
 
         #region Constructor
-        public User(string name, string email, string hashPassword, int userId, string phoneNo, int age, List<string> interests, string description):base(name,email,hashPassword)
+        public User(string name, string email, string hashPassword, int userId, string phoneNo, int age, List<string> interests, string description, string cityName, string countryName) : base(name, email, hashPassword)
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="User"/> class with profile and user details.
@@ -67,8 +69,15 @@ namespace ReelWorld.DataAccessLibrary.Model
             this.userId = userId;
             this.phoneNo = phoneNo;
             this.age = age;
-            Interests = interests;
+            this.interests = interests;
             this.description = description;
+            this.cityName = cityName;
+            this.countryName = countryName;
+        }
+
+        public User(): base() 
+        {
+              
         }
         #endregion
     }

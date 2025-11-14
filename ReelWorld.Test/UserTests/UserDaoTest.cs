@@ -1,6 +1,6 @@
 namespace ReelWorld.Test.UserTests
 {
-    public class IUserDaoTest
+    public class UserDaoTest
     {
         private const string ConnectionString = "";
 
@@ -10,7 +10,7 @@ namespace ReelWorld.Test.UserTests
         }
 
         [Test]
-        public void IUserDao_Create()
+        public void UserDao_Create()
         {
             //arrange
             //act
