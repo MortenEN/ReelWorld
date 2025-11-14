@@ -1,5 +1,4 @@
-
-namespace ReelWorld.Test
+namespace ReelWorld.Test.UserTests
 {
     public class IUserDaoTest
     {
