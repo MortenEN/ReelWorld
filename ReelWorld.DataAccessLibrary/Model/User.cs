@@ -19,34 +19,35 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets the unique user identifier.
         /// </summary>
-        public int userId { get; set;}
+        public int UserId { get; set;}
         /// <summary>
         /// Gets or sets the phone number of the user.
         /// </summary>
-        public string phoneNo { get; set; }
+        public string PhoneNo { get; set; }
         /// <summary>
         /// Gets or sets the age of the user.
         /// </summary>
-        public int age { get; set; }
+        public int Age { get; set; }
         /// <summary>
         /// Represents the relationship status of a user with 3 given types.
         /// </summary>
-        public enum realtionship
+        public enum Relationship
         {
             Single,
             Taken,
             complicated,
         }
+        public Relationship Relation { get; set; }
         /// <summary>
         /// Gets or sets a list of interests associated with the user.
         /// </summary>
-        public List<String> interests { get; set; }
+        public List<String> Interests { get; set; }
         /// <summary>
         /// Gets or sets a short personal description written by the user.
         /// </summary>
-        public string description { get; set; }
-        public string cityName { get; set; }
-        public string countryName { get; set; }
+        public string Description { get; set; }
+        public string CityName { get; set; }
+        public string CountryName { get; set; }
         #endregion
 
         #region Constructor
@@ -63,16 +64,16 @@ namespace ReelWorld.DataAccessLibrary.Model
             /// <param name="age">The user's age.</param>
             /// <param name="interests">A list of user interests.</param>
             /// <param name="description">A brief personal description.</param>
-            this.name = name;
-            this.email = email;
-            this.hashPassword = hashPassword;
-            this.userId = userId;
-            this.phoneNo = phoneNo;
-            this.age = age;
-            this.interests = interests;
-            this.description = description;
-            this.cityName = cityName;
-            this.countryName = countryName;
+            this.Name = name;
+            this.Email = email;
+            this.HashPassword = hashPassword;
+            this.UserId = userId;
+            this.PhoneNo = phoneNo;
+            this.Age = age;
+            this.Interests = interests;
+            this.Description = description;
+            this.CityName = cityName;
+            this.CountryName = countryName;
         }
 
         public User(): base() 

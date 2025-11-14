@@ -17,10 +17,10 @@ namespace ReelWorld.DataAccessLibrary.Stub
             var newId = 1;
             if (_users.Any())
             {
-                newId = _users.Max(user => user.userId) + 1;
+                newId = _users.Max(user => user.UserId) + 1;
 
             }
-            user.userId = newId;
+            user.UserId = newId;
             _users.Add(user);
             return newId;
         }

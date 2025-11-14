@@ -12,15 +12,15 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets or sets the name of the Profile.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// Gets or sets the Email of the Profile.
         /// </summary>
-        public string email { get; set; }
+        public string Email { get; set; }
         /// <summary>
         /// Gets or sets the HashPassword of the Profile.
         /// </summary>
-        public string hashPassword { get; set; }
+        public string HashPassword { get; set; }
         #endregion
 
         #region Constructor
@@ -29,9 +29,9 @@ namespace ReelWorld.DataAccessLibrary.Model
             /// <param name="name">The Profile's full name.</param>
             /// <param name="email">The Profile's email address.</param>
             /// <param name="hashPassword">The hashed password of the Profile.</param>
-            this.name = name;
-            this.email = email;
-            this.hashPassword = hashPassword;
+            this.Name = name;
+            this.Email = email;
+            this.HashPassword = hashPassword;
         }
         protected Profile()
         {
