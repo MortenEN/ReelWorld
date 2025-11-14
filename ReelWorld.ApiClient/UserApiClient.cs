@@ -1,5 +1,5 @@
-﻿using ReelWorld.DataAccessLibrary.Model;
-using ReelWorld.DataAccessLibrary.Interfaces;
+﻿using ReelWorld.DataAccessLibrary.Interfaces;
+using ReelWorld.DataAccessLibrary.Model;
 using RestSharp;
 
 namespace ReelWorld.ApiClient
@@ -31,9 +31,14 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
+        public Task<int> CreateUserAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Delete(int id)
         {
-            
+
             throw new NotImplementedException();
         }
 

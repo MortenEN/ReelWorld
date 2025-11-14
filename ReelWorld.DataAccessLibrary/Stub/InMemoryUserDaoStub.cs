@@ -1,10 +1,5 @@
 ﻿using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReelWorld.DataAccessLibrary.Stub
 {
@@ -23,6 +18,11 @@ namespace ReelWorld.DataAccessLibrary.Stub
             user.UserId = newId;
             _users.Add(user);
             return newId;
+        }
+
+        public Task<int> CreateUserAsync(User user)
+        {
+            throw new NotImplementedException();
         }
 
         public bool Delete(int id)
