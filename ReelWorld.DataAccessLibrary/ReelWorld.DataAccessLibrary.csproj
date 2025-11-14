@@ -9,8 +9,10 @@
   <ItemGroup>
     <Folder Include="Stub\" />
     <Folder Include="SqlServer\" />
-    <Folder Include="Tools\" />
-    <Folder Include="SQL Scripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
   </ItemGroup>
 
 </Project>
