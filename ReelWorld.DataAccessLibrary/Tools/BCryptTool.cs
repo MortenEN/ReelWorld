@@ -9,9 +9,9 @@ namespace ReelWorld.DataAccessLibrary.Tools
 {
     public class BCryptTool
     {
-        public static string HashPassword(string password) =>
-        bcryptPackage.BCrypt.HashPassword(password, GetRandomSalt());
+        public static string HashPassword(string password, string salt) =>
+        bcryptPackage.BCrypt.HashPassword(password, salt);
         public static bool ValidatePassword(string password, string correctHash) => bcryptPackage.BCrypt.Verify(password, correctHash);
-        private static string GetRandomSalt() => bcryptPackage.BCrypt.GenerateSalt(12);
+        public static string GetRandomSalt() => bcryptPackage.BCrypt.GenerateSalt(12);
     }
 }

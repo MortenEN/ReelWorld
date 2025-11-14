@@ -36,5 +36,7 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
         /// <param name="id"></param>
         /// <returns>Returns true if the deletion was successful; otherwise, returns false.</returns>
         bool Delete(int id);
+
+        Task<int> CreateUserAsync(User user);
     }
 }
