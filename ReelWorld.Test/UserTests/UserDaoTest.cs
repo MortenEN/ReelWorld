@@ -1,8 +1,13 @@
+using NUnit.Framework;
+using ReelWorld.DataAccessLibrary.Stub;
+
 namespace ReelWorld.Test.UserTests
 {
     public class UserDaoTest
     {
         private const string ConnectionString = "";
+        private InMemoryUserDaoStub _dao;
+
 
         [SetUp]
         public void Setup()
