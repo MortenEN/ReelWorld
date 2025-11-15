@@ -48,10 +48,13 @@ namespace ReelWorld.DataAccessLibrary.Model
         public string Description { get; set; }
         public string CityName { get; set; }
         public string CountryName { get; set; }
+        public string StreetName { get; set; }
+        public string StreetNumber { get; set; }
+        public string ZipCode { get; set; }
         #endregion
 
         #region Constructor
-        public User(string name, string email, string hashPassword, int userId, string phoneNo, int age, List<string> interests, string description, string cityName, string countryName) : base(name, email, hashPassword)
+        public User(string name, string email, string hashPassword, int userId, string phoneNo, int age, List<string> interests, string description, string cityName, string countryName, string streetName, string streetNumber, string zipCode) : base(name, email, hashPassword)
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="User"/> class with profile and user details.
@@ -74,6 +77,9 @@ namespace ReelWorld.DataAccessLibrary.Model
             this.Description = description;
             this.CityName = cityName;
             this.CountryName = countryName;
+            this.StreetName = streetName;
+            this.StreetNumber = streetNumber;
+            this.ZipCode = zipCode;
         }
 
         public User(): base() 

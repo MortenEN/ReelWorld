@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ReelWorld.ApiClient;
+using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 
 namespace ReelWorld.Website.Controllers
 {
     public class UserController : Controller
     {
+        //TODO: Find den rigtige Uri
+        IUserDao _userApiClient = new UserApiClient("https://LocalHost:7221");
         // GET: UserController
         public ActionResult Index()
         {
@@ -36,16 +40,15 @@ namespace ReelWorld.Website.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(User user)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            //TODO: En slags besked om at oprettelsen er lykkedes
+            if (!ModelState.IsValid)
+                return View(user);
+
+            await _userApiClient.CreateUserAsync(user);
+
+            return RedirectToAction("Index");
         }
 
         // GET: UserController/Edit/5

@@ -31,9 +31,15 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public Task<int> CreateUserAsync(User user)
+        public async Task<int> CreateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest("users", Method.Post);
+            request.AddJsonBody(user);
+
+            var response = await _restClient.ExecuteAsync<int>(request);
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
+            return response.Data;
         }
 
         public bool Delete(int id)

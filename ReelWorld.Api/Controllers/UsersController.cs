@@ -14,12 +14,13 @@ namespace ReelWorld.Api.Controllers
             _userDao = userDao;
         }
 
-    [HttpPost]
-        public ActionResult<int> Create(User user)
+        [HttpPost]
+        public async Task<ActionResult<int>> Create(User user)
         {
             try
             {
-                return Ok(_userDao.Create(user));
+                var id = await _userDao.CreateUserAsync(user);
+                return Ok(id);
             }
             catch (Exception ex)
             {
