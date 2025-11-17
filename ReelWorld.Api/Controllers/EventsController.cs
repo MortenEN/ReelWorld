@@ -16,11 +16,11 @@ namespace ReelWorld.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create(Event event)
+        public async Task<ActionResult<int>> Create(Event @event)
         {
             try
             {
-                var id = await _eventDao.CreateEventAsync(event);
+                var id = await _eventDao.CreateEventAsync(@event);
                 return Ok(id);
             }
             catch (Exception ex)

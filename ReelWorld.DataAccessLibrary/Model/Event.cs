@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReelWorld.DataAccessLibrary.Model
 {
-    internal class Event
+    public class Event
     {
         #region Properties
         public int EventId { get; set; }

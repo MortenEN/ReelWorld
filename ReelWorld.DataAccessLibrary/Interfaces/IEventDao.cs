@@ -9,18 +9,17 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
 {
     public interface IEventDao
     {
-        Event? GetOne(int id);
+        Event? GetOne(int eventId);
 
         IEnumerable<Event> GetAll();
 
-        int Create(Event event);
+        int Create(Event @event);
 
-        bool Update(Event event);
+        bool Update(Event @event);
 
-        bool Delete(int id);
+        bool Delete(int eventid);
 
-        Task<int> CreateEventAsync(Event event);
+        Task<int> CreateEventAsync(Event @event);
 
-        }
     }
 }
