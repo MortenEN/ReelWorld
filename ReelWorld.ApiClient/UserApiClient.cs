@@ -15,8 +15,8 @@ namespace ReelWorld.ApiClient
 
         public UserApiClient(string apiUri)
         {
-            _restClient = new RestClient(apiUri);
             _apiUri = apiUri;
+            _restClient = new RestClient(apiUri);
         }
         #endregion
 
@@ -33,7 +33,7 @@ namespace ReelWorld.ApiClient
 
         public async Task<int> CreateUserAsync(User user)
         {
-            var request = new RestRequest("users", Method.Post);
+            var request = new RestRequest("api/users", Method.Post);
             request.AddJsonBody(user);
 
             var response = await _restClient.ExecuteAsync<int>(request);

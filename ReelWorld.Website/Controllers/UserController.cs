@@ -10,7 +10,7 @@ namespace ReelWorld.Website.Controllers
     public class UserController : Controller
     {
         //TODO: Find den rigtige Uri
-        IUserDao _userApiClient = new UserApiClient("https://LocalHost:7221");
+        IUserDao _userApiClient = new UserApiClient("https://LocalHost:7204");
         // GET: UserController
         public ActionResult Index()
         {
@@ -39,16 +39,15 @@ namespace ReelWorld.Website.Controllers
 
         // POST: UserController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User user)
         {
-            //TODO: En slags besked om at oprettelsen er lykkedes
             if (!ModelState.IsValid)
                 return View(user);
 
             await _userApiClient.CreateUserAsync(user);
 
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Bruger blev oprettet!";
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: UserController/Edit/5
@@ -59,7 +58,6 @@ namespace ReelWorld.Website.Controllers
 
         // POST: UserController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -80,7 +78,6 @@ namespace ReelWorld.Website.Controllers
 
         // POST: UserController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Navn</label>
@@ -36,9 +36,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Beskrivelse af dig selv:</label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" cols="80" rows="25" ></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label>Interests</label><br />
+                <input type="checkbox" name="Interests" value="Music" /> Music<br />
+                <input type="checkbox" name="Interests" value="Sports" /> Sports<br />
+                <input type="checkbox" name="Interests" value="Movies" /> Movies<br />
+            </div>
+
             <div class="form-group">
                 <label asp-for="CityName" class="control-label">By</label>
                 <input asp-for="CityName" class="form-control" />
@@ -72,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="HashPassword" class="control-label">Password</label>
-                <input asp-for="HashPassword" class="form-control" />
+                <input asp-for="HashPassword" class="form-control" type="password" />
                 <span asp-validation-for="HashPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
