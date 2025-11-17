@@ -41,7 +41,8 @@ public class EventDaoTest
             Description = "This is a test event.",
             Location = "Test Location",
             Date = DateTime.Now,
-            IsPublic = true
+            IsPublic = true,
+            FK_User_Id = 1
         };
         //act
         var createdId = await eventDao.CreateEventAsync(TestEvent);

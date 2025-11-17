@@ -9,7 +9,7 @@ namespace ReelWorld.Website.Controllers
 {
     public class EventController : Controller
     {
-        IEventDao _eventApiClient = new EventApiClient("https://LocalHost:7221");
+        IEventDao _eventApiClient = new EventApiClient("https://LocalHost:7204");
 
      
         public ActionResult Index()
@@ -36,7 +36,6 @@ namespace ReelWorld.Website.Controllers
 
         // POST: EventController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Event @event)
         {
             //TODO: En slags besked om at oprettelsen er lykkedes
@@ -45,7 +44,8 @@ namespace ReelWorld.Website.Controllers
 
             await _eventApiClient.CreateEventAsync(@event);
 
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Eventet blev oprettet!";
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: EventController/Edit/5
@@ -56,7 +56,6 @@ namespace ReelWorld.Website.Controllers
 
         // POST: EventController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(int eventid, IFormCollection collection)
         {
             try
@@ -77,7 +76,6 @@ namespace ReelWorld.Website.Controllers
 
         // POST: EventController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int eventid, IFormCollection collection)
         {
             try

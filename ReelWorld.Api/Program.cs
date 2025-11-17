@@ -22,6 +22,8 @@ namespace ReelWorld.Api
             // Dependency Injection for UserDao
             builder.Services.AddScoped<IUserDao>(sp =>
             new UserDao(_connectionString));
+            builder.Services.AddScoped<IEventDao>(sp =>
+            new EventDao(_connectionString));
 
             var app = builder.Build();
 

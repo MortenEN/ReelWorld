@@ -1,10 +1,12 @@
-﻿using ReelWorld.DataAccessLibrary.Interfaces;
+﻿using Microsoft.Data.SqlClient;
+using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
@@ -20,9 +22,39 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             throw new NotImplementedException();
         }
 
-        public Task<int> CreateEventAsync(Event @event)
+        public async Task<int> CreateEventAsync(Event @event)
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // 1. Indsæt event
+                var eventQuery = @"
+                INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_User_ID)
+                OUTPUT INSERTED.EventID
+                VALUES (@Title, @Description, @Date, @Location, @Visibility, @UserID);
+                ";
+
+                var eventId = await connection.QuerySingleAsync<int>(eventQuery, new
+                {
+                    Title = @event.Title,
+                    Description = @event.Description,
+                    Date = @event.Date,
+                    Location = @event.Location,
+                    Visibility = @event.IsPublic,
+                    UserID = @event.FK_User_Id
+                }, transaction);
+
+                transaction.Commit();
+                return eventId;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public bool Delete(int eventid)

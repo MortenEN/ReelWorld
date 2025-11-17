@@ -27,7 +27,7 @@ namespace ReelWorld.ApiClient
 
         public int Create(Event @event)
         {
-            var request = new RestRequest("event", Method.Post);
+            var request = new RestRequest("api/events", Method.Post);
             request.AddJsonBody(@event);
 
             var response = _restClient.Execute<int>(request);
@@ -38,7 +38,7 @@ namespace ReelWorld.ApiClient
 
         public async Task<int> CreateEventAsync(Event @event)
         {
-            var request = new RestRequest("event", Method.Post);
+            var request = new RestRequest("api/events", Method.Post);
             request.AddJsonBody(@event);
 
             var response = await _restClient.ExecuteAsync<int>(request);
