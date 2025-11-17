@@ -1,6 +1,6 @@
 ﻿USE [DMA-CSD-S241_10632087]
 GO
-/****** Object:  Table [dbo].[City]    Script Date: 17-11-2025 08:25:11 ******/
+/****** Object:  Table [dbo].[City]    Script Date: 17-11-2025 09:01:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[City](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Country]    Script Date: 17-11-2025 08:25:12 ******/
+/****** Object:  Table [dbo].[Country]    Script Date: 17-11-2025 09:01:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +29,7 @@ CREATE TABLE [dbo].[Country](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Interests]    Script Date: 17-11-2025 08:25:12 ******/
+/****** Object:  Table [dbo].[Interests]    Script Date: 17-11-2025 09:01:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[Interests](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Profile]    Script Date: 17-11-2025 08:25:12 ******/
+/****** Object:  Table [dbo].[Profile]    Script Date: 17-11-2025 09:01:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -67,7 +67,7 @@ CREATE TABLE [dbo].[Profile](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[User]    Script Date: 17-11-2025 08:25:12 ******/
+/****** Object:  Table [dbo].[User]    Script Date: 17-11-2025 09:01:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -89,7 +89,7 @@ CREATE TABLE [dbo].[User](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserInterests]    Script Date: 17-11-2025 08:25:12 ******/
+/****** Object:  Table [dbo].[UserInterests]    Script Date: 17-11-2025 09:01:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -130,141 +130,7 @@ ALTER TABLE [dbo].[UserInterests] CHECK CONSTRAINT [FK_UserInterests_Interests]
 GO
 ALTER TABLE [dbo].[UserInterests]  WITH CHECK ADD  CONSTRAINT [FK_UserInterests_User] FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([UserID])
-GO
-ALTER TABLE [dbo].[UserInterests] CHECK CONSTRAINT [FK_UserInterests_User]
-GO
-USE [DMA-CSD-S241_10632087]
-GO
-/****** Object:  Table [dbo].[City]    Script Date: 17-11-2025 08:25:11 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[City](
-	[CityID] [int] IDENTITY(1,1) NOT NULL,
-	[City] [nvarchar](50) NOT NULL,
-	[FK_Country_ID] [int] NOT NULL,
- CONSTRAINT [PK_City] PRIMARY KEY CLUSTERED 
-(
-	[CityID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Country]    Script Date: 17-11-2025 08:25:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Country](
-	[CountryID] [int] IDENTITY(1,1) NOT NULL,
-	[Country] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_Country] PRIMARY KEY CLUSTERED 
-(
-	[CountryID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Interests]    Script Date: 17-11-2025 08:25:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Interests](
-	[InterestsID] [int] IDENTITY(1,1) NOT NULL,
-	[InterestName] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_Interests] PRIMARY KEY CLUSTERED 
-(
-	[InterestsID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Profile]    Script Date: 17-11-2025 08:25:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Profile](
-	[ProfileID] [int] IDENTITY(1,1) NOT NULL,
-	[Email] [nvarchar](50) NOT NULL,
-	[HashPassword] [nvarchar](255) NOT NULL,
-	[Salt] [nvarchar](255) NOT NULL,
-	[ProfileType] [nvarchar](50) NOT NULL,
-	[FirstName] [nvarchar](50) NOT NULL,
-	[MiddleName] [nvarchar](50) NULL,
-	[Surname] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_Profile] PRIMARY KEY CLUSTERED 
-(
-	[ProfileID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
- CONSTRAINT [UQ_Profile_Email] UNIQUE NONCLUSTERED 
-(
-	[Email] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[User]    Script Date: 17-11-2025 08:25:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[User](
-	[UserID] [int] IDENTITY(1,1) NOT NULL,
-	[Phoneno] [nvarchar](20) NULL,
-	[Age] [int] NOT NULL,
-	[RelationShip] [nvarchar](50) NULL,
-	[Description] [nvarchar](max) NULL,
-	[FK_Profile_ID] [int] NOT NULL,
-	[FK_City_ID] [int] NOT NULL,
-	[StreetName] [nvarchar](100) NULL,
-	[StreetNumber] [nvarchar](20) NULL,
-	[ZipCode] [nvarchar](20) NULL,
- CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
-(
-	[UserID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[UserInterests]    Script Date: 17-11-2025 08:25:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[UserInterests](
-	[UserID] [int] NOT NULL,
-	[InterestsID] [int] NOT NULL,
- CONSTRAINT [PK_UserInterests] PRIMARY KEY CLUSTERED 
-(
-	[UserID] ASC,
-	[InterestsID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-ALTER TABLE [dbo].[City]  WITH CHECK ADD  CONSTRAINT [FK_City_Country] FOREIGN KEY([FK_Country_ID])
-REFERENCES [dbo].[Country] ([CountryID])
-ON UPDATE CASCADE
 ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[City] CHECK CONSTRAINT [FK_City_Country]
-GO
-ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_City] FOREIGN KEY([FK_City_ID])
-REFERENCES [dbo].[City] ([CityID])
-ON UPDATE CASCADE
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_City]
-GO
-ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Profile] FOREIGN KEY([FK_Profile_ID])
-REFERENCES [dbo].[Profile] ([ProfileID])
-GO
-ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Profile]
-GO
-ALTER TABLE [dbo].[UserInterests]  WITH CHECK ADD  CONSTRAINT [FK_UserInterests_Interests] FOREIGN KEY([InterestsID])
-REFERENCES [dbo].[Interests] ([InterestsID])
-GO
-ALTER TABLE [dbo].[UserInterests] CHECK CONSTRAINT [FK_UserInterests_Interests]
-GO
-ALTER TABLE [dbo].[UserInterests]  WITH CHECK ADD  CONSTRAINT [FK_UserInterests_User] FOREIGN KEY([UserID])
-REFERENCES [dbo].[User] ([UserID])
 GO
 ALTER TABLE [dbo].[UserInterests] CHECK CONSTRAINT [FK_UserInterests_User]
 GO
