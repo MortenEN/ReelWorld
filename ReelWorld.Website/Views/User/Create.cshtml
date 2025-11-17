@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Oprettelse af bruger</h1>
 
-<h4>User</h4>
+<h4>Bruger</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -41,9 +41,16 @@
             </div>
             <div class="form-group">
                 <label>Interests</label><br />
-                <input type="checkbox" name="Interests" value="Music" /> Music<br />
-                <input type="checkbox" name="Interests" value="Sports" /> Sports<br />
-                <input type="checkbox" name="Interests" value="Movies" /> Movies<br />
+                <input type="checkbox" name="Interests" value="Football" /> Fodbold<br />
+                <input type="checkbox" name="Interests" value="Cooking" /> Madlavning<br />
+                <input type="checkbox" name="Interests" value="Reading" /> Læse bøger<br />
+                <input type="checkbox" name="Interests" value="Gaming" /> Gaming<br />
+                <input type="checkbox" name="Interests" value="Hiking" /> Hiking<br />
+                <input type="checkbox" name="Interests" value="Movies" /> Film<br />
+                <input type="checkbox" name="Interests" value="Music" /> Musik<br />
+                <input type="checkbox" name="Interests" value="Travel" /> Rejse<br />
+                <input type="checkbox" name="Interests" value="Fitness" /> Træning<br />
+                <input type="checkbox" name="Interests" value="Photography" /> Fotografering<br />
             </div>
 
             <div class="form-group">
@@ -83,14 +90,14 @@
                 <span asp-validation-for="HashPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Opret bruger" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Home">Tilbage til forsiden</a>
 </div>
 
 @section Scripts {
