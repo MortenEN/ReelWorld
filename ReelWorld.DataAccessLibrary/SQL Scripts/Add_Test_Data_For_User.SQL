@@ -64,18 +64,18 @@ GO
 -------------------------
 -- USER
 -------------------------
-INSERT INTO dbo.[User] (Phoneno, Age, RelationShip, [Description], FK_Profile_ID, FK_City_ID)
+INSERT INTO dbo.[User] (Phoneno, Age, RelationShip, [Description], FK_Profile_ID, FK_City_ID, StreetName, StreetNumber, ZipCode)
 VALUES
-('12345678', 25, 'Single', 'Love hiking and movies.', 1, 1),
-('22334455', 31, 'Single', 'Gamer and reader.', 2, 2),
-('33445566', 28, 'Taken', 'Enjoys cooking and fitness.', 3, 3),
-('44556677', 35, 'Single', 'Music lover.', 4, 4),
-('55667788', 22, 'Single', 'Fitness enthusiast.', 5, 5),
-('66778899', 29, 'Taken', 'Avid traveler.', 6, 6),
-('77889900', 33, 'Single', 'Photography hobbyist.', 7, 7),
-('88990011', 27, 'Single', 'Football fan.', 8, 8),
-('99001122', 24, 'Single', 'Loves reading.', 9, 9),
-('10011002', 30, 'Taken', 'Cooking and movies.', 10, 10);
+('12345678', 25, 'Single', 'Love hiking and movies.', 1, 1, 'Gaden', '1', '9000'),
+('22334455', 31, 'Single', 'Gamer and reader.', 2, 2, 'Gaden', '1', '9000'),
+('33445566', 28, 'Taken', 'Enjoys cooking and fitness.', 3, 3, 'Gaden', '1', '9000'),
+('44556677', 35, 'Single', 'Music lover.', 4, 4, 'Gaden', '1', '9000'),
+('55667788', 22, 'Single', 'Fitness enthusiast.', 5, 5, 'Gaden', '1', '9000'),
+('66778899', 29, 'Taken', 'Avid traveler.', 6, 6, 'Gaden', '1', '9000'),
+('77889900', 33, 'Single', 'Photography hobbyist.', 7, 7, 'Gaden', '1', '9000'),
+('88990011', 27, 'Single', 'Football fan.', 8, 8, 'Gaden', '1', '9000'),
+('99001122', 24, 'Single', 'Loves reading.', 9, 9, 'Gaden', '1', '9000'),
+('10011002', 30, 'Taken', 'Cooking and movies.', 10, 10, 'Gaden', '1', '9000');
 GO
 
 -------------------------
