@@ -1,8 +1,13 @@
 
+using ReelWorld.DataAccessLibrary.Interfaces;
+using ReelWorld.DataAccessLibrary.SqlServer;
+
 namespace ReelWorld.Api
 {
     public class Program
     {
+        private const string _connectionString = "Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S241_10632087;Persist Security Info=True;User ID=DMA-CSD-S241_10632087;Password=Password1!;Encrypt=True;Trust Server Certificate=True";
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +18,10 @@ namespace ReelWorld.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Dependency Injection for UserDao
+            builder.Services.AddScoped<IUserDao>(sp =>
+            new UserDao(_connectionString));
 
             var app = builder.Build();
 
