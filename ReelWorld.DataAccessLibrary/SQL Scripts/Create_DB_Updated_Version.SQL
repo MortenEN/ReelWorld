@@ -1,6 +1,6 @@
 ﻿USE [DMA-CSD-S241_10632087]
 GO
-/****** Object:  Table [dbo].[City]    Script Date: 17-11-2025 09:01:57 ******/
+/****** Object:  Table [dbo].[City]    Script Date: 17-11-2025 12:06:41 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[City](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Country]    Script Date: 17-11-2025 09:01:57 ******/
+/****** Object:  Table [dbo].[Country]    Script Date: 17-11-2025 12:06:41 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +29,26 @@ CREATE TABLE [dbo].[Country](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Interests]    Script Date: 17-11-2025 09:01:57 ******/
+/****** Object:  Table [dbo].[Event]    Script Date: 17-11-2025 12:06:41 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Event](
+	[EventID] [int] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](100) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Date] [datetime2](7) NOT NULL,
+	[Location] [nvarchar](200) NULL,
+	[Visibility] [bit] NOT NULL,
+	[FK_User_ID] [int] NOT NULL,
+ CONSTRAINT [PK_Event] PRIMARY KEY CLUSTERED 
+(
+	[EventID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Interests]    Script Date: 17-11-2025 12:06:41 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -43,7 +62,7 @@ CREATE TABLE [dbo].[Interests](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Profile]    Script Date: 17-11-2025 09:01:57 ******/
+/****** Object:  Table [dbo].[Profile]    Script Date: 17-11-2025 12:06:41 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -67,7 +86,7 @@ CREATE TABLE [dbo].[Profile](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[User]    Script Date: 17-11-2025 09:01:57 ******/
+/****** Object:  Table [dbo].[User]    Script Date: 17-11-2025 12:06:41 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -89,7 +108,7 @@ CREATE TABLE [dbo].[User](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserInterests]    Script Date: 17-11-2025 09:01:57 ******/
+/****** Object:  Table [dbo].[UserInterests]    Script Date: 17-11-2025 12:06:41 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -110,6 +129,12 @@ ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[City] CHECK CONSTRAINT [FK_City_Country]
+GO
+ALTER TABLE [dbo].[Event]  WITH CHECK ADD  CONSTRAINT [FK_Events_Users] FOREIGN KEY([FK_User_ID])
+REFERENCES [dbo].[User] ([UserID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Event] CHECK CONSTRAINT [FK_Events_Users]
 GO
 ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_City] FOREIGN KEY([FK_City_ID])
 REFERENCES [dbo].[City] ([CityID])
