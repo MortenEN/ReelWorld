@@ -29,7 +29,7 @@ namespace ReelWorld.Test.UserTests
         }
 
         [Test]
-        public void UserDao_Create_User_With_Database()
+        public async Task UserDao_Create_User_With_Database()
         {
             //arrange
             UserDao userDao = new(connectionsString);
@@ -38,9 +38,9 @@ namespace ReelWorld.Test.UserTests
             interests.Add("paddle");
             User user = new User("Test_UserDao_Create_User_With_Database", "test@testing.com", "1234", 12345678, "21", 1, interests, "a test", "Aalborg", "Danmark", "Gaden", "12", "9000");
             //act
-            userDao.CreateUserAsync(user);
+            int newUserId = await userDao.CreateUserAsync(user);
             //assert
-            Assert.That(user.UserId, Is.GreaterThan(0), "The Create method should return a UserId that is above 0");
+            Assert.That(newUserId, Is.GreaterThan(0), "The Create method should return a UserId that is above 0");
         }
     }
 }
