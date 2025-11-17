@@ -14,18 +14,18 @@ namespace ReelWorld.DataAccessLibrary.Model
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public string Location { get; set; }
-        public string Type { get; set; }
+        public bool IsPublic { get; set; }
         #endregion
 
         #region Constructor
-        public Event(int eventId, string title, string description, DateTime date, string location, string type)
+        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic)
         {
             EventId = eventId;
             Title = title;
             Description = description;
             Date = date;
             Location = location;
-            Type = type;
+            IsPublic = isPublic;
         }
         public Event()
         {
