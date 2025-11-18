@@ -93,10 +93,24 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-        public Task<Event?> GetOneAsync(int eventId)
+        public async Task<Event?> GetOneAsync(int eventId)
         {
-            throw new NotImplementedException();
-        }
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                var query = "SELECT * FROM [Event] WHERE EventId = @EventId";
+                transaction.Commit();
+                var result = await connection.QuerySingleOrDefaultAsync<Event>(query, new { EventId = eventId });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw new Exception($"Database error in GetOneAsync({eventId})", ex);
+            }
+        }        
 
         public Task<bool> UpdateAsync(Event @event)
         {
