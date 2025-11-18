@@ -52,4 +52,16 @@ public class EventDaoTest
         Assert.That(createdId, Is.GreaterThan(0), "The Create method should return a EventId that is above 0");
 
     }
+
+    [Test]
+    public async Task EventDao_GetAll_Events_With_Database()
+    {
+        //arrange
+        EventDao eventDao = new(connectionsString);
+        //act
+        var events = await eventDao.GetAllAsync();
+        //assert
+        Assert.That(events, Is.Not.Null, "The GetAll method should return a list of events");
+        Assert.That(events.Count(), Is.GreaterThan(0), "The GetAll method should return at least one event");
+    }
 }
