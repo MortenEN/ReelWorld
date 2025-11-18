@@ -17,10 +17,16 @@ namespace ReelWorld.Website.Controllers
             return View();
         }
 
-        public ActionResult Details(int eventid)
+        public async Task<ActionResult> Details([FromRoute] int id)
         {
-            return View();
+            var @event = await _eventApiClient.GetOneAsync(id);
+            if (@event == null) 
+            { 
+                return NotFound(); 
+            }
+            return View(@event);
         }
+
 
         public ActionResult Create()
         {
