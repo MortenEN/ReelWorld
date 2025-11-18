@@ -9,8 +9,8 @@ namespace ReelWorld.Api.Controllers
     [Route("api/[controller]")]
     public class EventsController : ControllerBase
     {
-        IEventDao _eventDao;
-        public EventsController(IEventDao eventDao)
+        IEventDaoAsync _eventDao;
+        public EventsController(IEventDaoAsync eventDao)
         {
             _eventDao = eventDao;
         }
@@ -20,7 +20,7 @@ namespace ReelWorld.Api.Controllers
         {
             try
             {
-                var id = await _eventDao.CreateEventAsync(@event);
+                var id = await _eventDao.CreateAsync(@event);
                 return Ok(id);
             }
             catch (Exception ex)

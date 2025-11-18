@@ -6,14 +6,14 @@ using ReelWorld.DataAccessLibrary.Tools;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
-    public class UserDao : BaseDao, IUserDao
+    public class UserDao : BaseDao, IUserDaoAsync
     {
         public UserDao(string connectionString) : base(connectionString)
         {
 
         }
 
-        public async Task<int> CreateUserAsync(User user)
+        public async Task<int> CreateAsync(User user)
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
@@ -119,30 +119,26 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-
-        public bool Delete(int id)
+        public Task<User?> GetOneAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public Task<IEnumerable<User>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public User? GetOne(int id)
+        public Task<bool> UpdateAsync(User user)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(User user)
+        public Task<bool> DeleteAsync(int userId)
         {
             throw new NotImplementedException();
         }
-        public int Create(User user)
-        {
-            throw new NotImplementedException();
-        }
+
         public static (string FirstName, string MiddleName, string Surname) SplitFullName(string fullName)
         {
             if (string.IsNullOrWhiteSpace(fullName))
@@ -156,6 +152,5 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
 
             return (firstName, middleName, surname);
         }
-
     }
 }

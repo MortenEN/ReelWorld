@@ -9,7 +9,7 @@ namespace ReelWorld.Website.Controllers
 {
     public class EventController : Controller
     {
-        IEventDao _eventApiClient = new EventApiClient("https://LocalHost:7204");
+        IEventDaoAsync _eventApiClient = new EventApiClient("https://LocalHost:7204");
 
      
         public ActionResult Index()
@@ -38,11 +38,10 @@ namespace ReelWorld.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Event @event)
         {
-            //TODO: En slags besked om at oprettelsen er lykkedes
             if (!ModelState.IsValid)
                 return View(@event);
 
-            await _eventApiClient.CreateEventAsync(@event);
+            await _eventApiClient.CreateAsync(@event);
 
             TempData["SuccessMessage"] = "Eventet blev oprettet!";
             return RedirectToAction("Index", "Home");

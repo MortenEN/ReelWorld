@@ -10,7 +10,7 @@ namespace ReelWorld.Website.Controllers
     public class UserController : Controller
     {
         //TODO: Find den rigtige Uri
-        IUserDao _userApiClient = new UserApiClient("https://LocalHost:7204");
+        IUserDaoAsync _userApiClient = new UserApiClient("https://LocalHost:7204");
         // GET: UserController
         public ActionResult Index()
         {
@@ -44,7 +44,7 @@ namespace ReelWorld.Website.Controllers
             if (!ModelState.IsValid)
                 return View(user);
 
-            await _userApiClient.CreateUserAsync(user);
+            await _userApiClient.CreateAsync(user);
 
             TempData["SuccessMessage"] = "Bruger blev oprettet!";
             return RedirectToAction("Index", "Home");

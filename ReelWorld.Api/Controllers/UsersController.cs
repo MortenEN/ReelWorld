@@ -8,8 +8,8 @@ namespace ReelWorld.Api.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        IUserDao _userDao;
-        public UsersController(IUserDao userDao)
+        IUserDaoAsync _userDao;
+        public UsersController(IUserDaoAsync userDao)
         {
             _userDao = userDao;
         }
@@ -19,7 +19,7 @@ namespace ReelWorld.Api.Controllers
         {
             try
             {
-                var id = await _userDao.CreateUserAsync(user);
+                var id = await _userDao.CreateAsync(user);
                 return Ok(id);
             }
             catch (Exception ex)

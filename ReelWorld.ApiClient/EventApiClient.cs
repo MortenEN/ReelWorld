@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ReelWorld.ApiClient
 {
-    public class EventApiClient : IEventDao
+    public class EventApiClient : IEventDaoAsync
     {
         #region attributes and constructor
         //The address of the API server
@@ -25,18 +25,7 @@ namespace ReelWorld.ApiClient
         }
         #endregion
 
-        public int Create(Event @event)
-        {
-            var request = new RestRequest("api/events", Method.Post);
-            request.AddJsonBody(@event);
-
-            var response = _restClient.Execute<int>(request);
-            if (response == null) throw new Exception("NO response from server");
-            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request");
-            return response.Data;
-        }
-
-        public async Task<int> CreateEventAsync(Event @event)
+        public async Task<int> CreateAsync(Event @event)
         {
             var request = new RestRequest("api/events", Method.Post);
             request.AddJsonBody(@event);
@@ -47,22 +36,22 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public bool Delete(int eventid)
+        public Task<bool> DeleteAsync(int eventId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Event> GetAll()
+        public Task<IEnumerable<Event>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Event? GetOne(int eventId)
+        public Task<Event?> GetOneAsync(int eventId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Event @event)
+        public Task<bool> UpdateAsync(Event @event)
         {
             throw new NotImplementedException();
         }

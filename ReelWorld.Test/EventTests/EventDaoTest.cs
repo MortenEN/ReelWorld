@@ -8,7 +8,7 @@ namespace ReelWorld.Test;
 
 public class EventDaoTest
 {
-    private IEventDao _dao;
+    private IEventDaoAsync _dao;
     private const string connectionsString = "Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S241_10632087;Persist Security Info=True;User ID=DMA-CSD-S241_10632087;Password=Password1!;Encrypt=True;Trust Server Certificate=True";
 
 
@@ -24,9 +24,10 @@ public class EventDaoTest
         //arrange
         var Event = new Event { EventId = 0, Title = "test" };
         //act
-        var createdId = _dao.Create(Event);
+        var createdId = _dao.CreateAsync(Event);
+        int createdIdInt = createdId.Result;
         //assert
-        Assert.That(createdId, Is.EqualTo(1));
+        Assert.That(createdIdInt, Is.EqualTo(1));
         Assert.That(Event.EventId, Is.EqualTo(1));
     }
 
@@ -42,10 +43,11 @@ public class EventDaoTest
             Location = "Test Location",
             Date = DateTime.Now,
             IsPublic = true,
-            FK_User_Id = 1
+            FK_User_Id = 1,
+            Limit = 100
         };
         //act
-        var createdId = await eventDao.CreateEventAsync(TestEvent);
+        var createdId = await eventDao.CreateAsync(TestEvent);
         //assert
         Assert.That(createdId, Is.GreaterThan(0), "The Create method should return a EventId that is above 0");
 

@@ -3,11 +3,11 @@ using ReelWorld.DataAccessLibrary.Model;
 
 namespace ReelWorld.DataAccessLibrary.Stub
 {
-    public class InMemoryUserDaoStub : IUserDao
+    public class InMemoryUserDaoStub : IUserDaoAsync
     {
         private static List<User> _users = new List<User>();
 
-        public int Create(User user)
+        public Task<int> CreateAsync(User user)
         {
             var newId = 1;
             if (_users.Any())
@@ -17,27 +17,25 @@ namespace ReelWorld.DataAccessLibrary.Stub
             }
             user.UserId = newId;
             _users.Add(user);
-            return newId;
+            return Task.FromResult(newId);
         }
 
-        public Task<int> CreateUserAsync(User user)
+        public Task<bool> DeleteAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(int id)
+        public Task<IEnumerable<User>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll() => _users;
-
-        public User? GetOne(int id)
+        public Task<User?> GetOneAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(User user)
+        public Task<bool> UpdateAsync(User user)
         {
             throw new NotImplementedException();
         }

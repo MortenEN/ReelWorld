@@ -10,19 +10,14 @@ using Dapper;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
-    public class EventDao : BaseDao, IEventDao
+    public class EventDao : BaseDao, IEventDaoAsync
     {
         public EventDao(string connectionString) : base(connectionString)
         {
 
         }
 
-        public int Create(Event @event)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<int> CreateEventAsync(Event @event)
+        public async Task<int> CreateAsync(Event @event)
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
@@ -32,9 +27,9 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             {
                 // 1. Indsæt event
                 var eventQuery = @"
-                INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_User_ID)
+                INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_User_ID, Limit)
                 OUTPUT INSERTED.EventID
-                VALUES (@Title, @Description, @Date, @Location, @Visibility, @UserID);
+                VALUES (@Title, @Description, @Date, @Location, @Visibility, @UserID, @Limit);
                 ";
 
                 var eventId = await connection.QuerySingleAsync<int>(eventQuery, new
@@ -44,7 +39,8 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     Date = @event.Date,
                     Location = @event.Location,
                     Visibility = @event.IsPublic,
-                    UserID = @event.FK_User_Id
+                    UserID = @event.FK_User_Id,
+                    Limit = @event.Limit
                 }, transaction);
 
                 transaction.Commit();
@@ -57,22 +53,22 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-        public bool Delete(int eventid)
+        public Task<bool> DeleteAsync(int eventId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Event> GetAll()
+        public Task<IEnumerable<Event>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Event? GetOne(int eventId)
+        public Task<Event?> GetOneAsync(int eventId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Event @event)
+        public Task<bool> UpdateAsync(Event @event)
         {
             throw new NotImplementedException();
         }

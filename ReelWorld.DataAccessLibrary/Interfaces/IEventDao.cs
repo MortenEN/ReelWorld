@@ -18,8 +18,5 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
         bool Update(Event @event);
 
         bool Delete(int eventid);
-
-        Task<int> CreateEventAsync(Event @event);
-
     }
 }

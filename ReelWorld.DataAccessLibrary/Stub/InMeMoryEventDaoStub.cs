@@ -8,11 +8,31 @@ using System.Threading.Tasks;
 
 namespace ReelWorld.DataAccessLibrary.Stub
 {
-    public class InMeMoryEventDaoStub : IEventDao
+    public class InMeMoryEventDaoStub : IEventDaoAsync
     {
         private static List<Event> _events = new List<Event>();
 
-        int IEventDao.Create(Event @event)
+        public Task<bool> DeleteAsync(int eventId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Event>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Event?> GetOneAsync(int eventId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateAsync(Event @event)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CreateAsync(Event @event)
         {
             var newId = 1;
             if (_events.Any())
@@ -22,31 +42,7 @@ namespace ReelWorld.DataAccessLibrary.Stub
             }
             @event.EventId = newId;
             _events.Add(@event);
-            return newId;
-        }
-        public bool Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<int> IEventDao.CreateEventAsync(Event @event)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Event> IEventDao.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        Event? IEventDao.GetOne(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IEventDao.Update(Event @event)
-        {
-            throw new NotImplementedException();
+            return Task.FromResult(newId);
         }
     }
 }

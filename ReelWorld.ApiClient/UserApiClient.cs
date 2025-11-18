@@ -4,7 +4,7 @@ using RestSharp;
 
 namespace ReelWorld.ApiClient
 {
-    public class UserApiClient : IUserDao
+    public class UserApiClient : IUserDaoAsync
     {
         #region attributes and constructor
         //The address of the API server
@@ -20,18 +20,7 @@ namespace ReelWorld.ApiClient
         }
         #endregion
 
-        public int Create(User user)
-        {
-            var request = new RestRequest("users", Method.Post);
-            request.AddJsonBody(user);
-
-            var response = _restClient.Execute<int>(request);
-            if (response == null) throw new Exception("NO response from server");
-            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request");
-            return response.Data;
-        }
-
-        public async Task<int> CreateUserAsync(User user)
+        public async Task<int> CreateAsync(User user)
         {
             var request = new RestRequest("api/users", Method.Post);
             request.AddJsonBody(user);
@@ -42,27 +31,26 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public bool Delete(int id)
+        public Task<bool> DeleteAsync(int userId)
         {
-
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var request = new RestRequest("users", Method.Get);
-            var response = _restClient.Execute<IEnumerable<User>>(request);
+            var request = new RestRequest("api/users", Method.Get);
+            var response = await _restClient.ExecuteAsync<IEnumerable<User>>(request);
             if (response == null) throw new Exception("NO response from server");
-            if (response.IsSuccessStatusCode) return response.Data;
-            throw new Exception("Server reply: Unsuccessful request");
+            if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
+            return response.Data;
         }
 
-        public User? GetOne(int id)
+        public Task<User?> GetOneAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(User user)
+        public Task<bool> UpdateAsync(User user)
         {
             throw new NotImplementedException();
         }
