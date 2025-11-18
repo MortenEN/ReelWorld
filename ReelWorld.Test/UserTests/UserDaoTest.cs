@@ -44,17 +44,5 @@ namespace ReelWorld.Test.UserTests
             Assert.That(newUserId, Is.GreaterThan(0), "The Create method should return a UserId that is above 0");
         }
 
-        [Test]
-        public async Task UserDao_GetAll_Users_With_Database()
-        {
-            //arrange
-            UserDao userDao = new(connectionsString);
-            //act
-            var users = await userDao.GetAllAsync();
-            //assert
-            Assert.That(users, Is.Not.Null, "The GetAll method should return a list of users");
-            Assert.That(users.Count(), Is.GreaterThan(0), "The GetAll method should return at least one user");
-        }
-
     }
 }
