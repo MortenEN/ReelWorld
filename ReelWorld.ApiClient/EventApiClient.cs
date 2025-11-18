@@ -50,9 +50,17 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public Task<Event?> GetOneAsync(int eventId)
+        public async Task<Event?> GetOneAsync(int eventId)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest($"api/events/EventId{eventId}", Method.Get);
+            var response = await _restClient.ExecuteAsync<Event>(request); 
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) return response.Data;
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+            throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
+            {
+          
+            }
         }
 
         public Task<bool> UpdateAsync(Event @event)
