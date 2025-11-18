@@ -1,21 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using ReelWorld.Website.Models;
-using System.Diagnostics;
+using ReelWorld.ApiClient;
+using ReelWorld.DataAccessLibrary.Interfaces;
 
 namespace ReelWorld.Website.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;//???
+        IEventDaoAsync _eventApiClient = new EventApiClient("https://LocalHost:7204");
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            var events = await _eventApiClient.Get10LatestAsync();
+            return View(events);
         }
 
         public IActionResult Privacy()
