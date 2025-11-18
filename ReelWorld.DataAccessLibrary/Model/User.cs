@@ -34,8 +34,8 @@ namespace ReelWorld.DataAccessLibrary.Model
         public enum Relationship
         {
             Single,
-            Taken,
-            complicated,
+            Optaget,
+            Kompliceret,
         }
         public Relationship Relation { get; set; }
         /// <summary>
