@@ -41,7 +41,7 @@ namespace ReelWorld.Api.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-        [HttpGet]
+        [HttpGet("Latest")]
         public async Task<ActionResult<List<Event>>> Get10LatestAsync()
         {
             try
