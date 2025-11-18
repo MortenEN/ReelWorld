@@ -1,7 +1,7 @@
 ﻿@model ReelWorld.DataAccessLibrary.Model.Event
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Information om Event";
 }
 
 <h1>Details</h1>
@@ -37,8 +37,8 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IsPublic)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsPublic)
+        <dd class="col-sm-10">
+            @(Model.IsPublic ? "Offentlig" : "Privat")
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Limit)
@@ -49,6 +49,9 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+@*     Skal ændres senere i forhold til når man er logget ind, så man kan se edit knappe som den rigtige bruger
+ *@    @* <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-sm btn-primary" title="Rediger">
+                        <i class="bi bi-pencil"></i>
+                    </a> *@
+    <a asp-action="Index" asp-controller="Home">Tilbage til forsiden</a>
 </div>

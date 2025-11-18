@@ -19,6 +19,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         public DateTime Date { get; set; }
         [Display(Name = "Sted")]
         public string Location { get; set; }
+        [Display(Name = "Offentlig eller privat")]
         public bool IsPublic { get; set; }
         public int FK_User_Id { get; set; }
         [Display(Name = "Max antal deltagere")]
