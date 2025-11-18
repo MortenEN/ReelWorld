@@ -59,5 +59,14 @@ namespace ReelWorld.ApiClient
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Event>> Get10LatestAsync()
+        {
+            var request = new RestRequest("api/events", Method.Get);
+            var response = await _restClient.ExecuteAsync<IEnumerable<Event>>(request);
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
+            return response.Data;
+        }
     }
 }
