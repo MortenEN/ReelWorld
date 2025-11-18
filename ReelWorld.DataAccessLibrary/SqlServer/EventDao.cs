@@ -58,9 +58,39 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Event>> GetAllAsync()
+        public async Task<IEnumerable<Event>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                var query = "SELECT * FROM [Event]";
+                transaction.Commit();
+                return connection.Query<Event>(query).ToList();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+        public async Task<IEnumerable<Event>> Get10LatestAsync()
+        {
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                var query = "SELECT TOP 10 * FROM [Event] Order by eventId DESC";
+                transaction.Commit();
+                return connection.Query<Event>(query).ToList();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public Task<Event?> GetOneAsync(int eventId)
