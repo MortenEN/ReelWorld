@@ -44,5 +44,10 @@ namespace ReelWorld.DataAccessLibrary.Stub
             _events.Add(@event);
             return Task.FromResult(newId);
         }
+
+        public Task<IEnumerable<Event>> Get10LatestAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

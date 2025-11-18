@@ -28,5 +28,31 @@ namespace ReelWorld.Api.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+        [HttpGet]
+        public async Task<ActionResult<List<Event>>> GetAll()
+        {
+            try
+            {
+                var events = await _eventDao.GetAllAsync();
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<Event>>> Get10LatestAsync()
+        {
+            try
+            {
+                var events = await _eventDao.Get10LatestAsync();
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }
