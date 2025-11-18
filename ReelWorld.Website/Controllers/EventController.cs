@@ -16,8 +16,8 @@ namespace ReelWorld.Website.Controllers
         {
             return View();
         }
-
-        public async Task<ActionResult> Details([FromRoute] int id)
+        [HttpGet]
+        public async Task<ActionResult> Details([FromRoute]int id)
         {
             var @event = await _eventApiClient.GetOneAsync(id);
             if (@event == null) 
