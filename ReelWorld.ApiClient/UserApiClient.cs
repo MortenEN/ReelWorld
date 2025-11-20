@@ -31,10 +31,15 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public Task<bool> DeleteAsync(int userId)
+        public async Task<bool> DeleteAsync(int userId)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest("api/users/{id}", Method.Delete);
+            var response = await _restClient.ExecuteAsync(request);
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
+            return true;
         }
+
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
