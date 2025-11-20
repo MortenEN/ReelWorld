@@ -134,9 +134,20 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(int userId)
+        public async Task<bool> DeleteAsync(int userId)
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            try
+            {
+                var query = "DELETE FROM [User] WHERE UserID = @UserID";
+                var affectedRows = await connection.ExecuteAsync(query, new { UserID = userId });
+                return affectedRows > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public static (string FirstName, string MiddleName, string Surname) SplitFullName(string fullName)

@@ -62,16 +62,13 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction();
             try
             {
                 var query = "SELECT * FROM [Event]";
-                transaction.Commit();
                 return connection.Query<Event>(query).ToList();
             }
             catch (Exception)
             {
-                transaction.Rollback();
                 throw;
             }
         }
@@ -79,16 +76,13 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction();
             try
             {
                 var query = "SELECT TOP 10 * FROM [Event] Order by eventId DESC";
-                transaction.Commit();
                 return connection.Query<Event>(query).ToList();
             }
             catch (Exception)
             {
-                transaction.Rollback();
                 throw;
             }
         }
@@ -97,17 +91,14 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction();
             try
             {
                 var query = "SELECT * FROM [Event] WHERE EventId = @EventId";
-                transaction.Commit();
                 var result = await connection.QuerySingleOrDefaultAsync<Event>(query, new { EventId = eventId });
                 return result;
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
                 throw new Exception($"Database error in GetOneAsync({eventId})", ex);
             }
         }        
