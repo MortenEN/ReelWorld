@@ -21,14 +21,14 @@ namespace ReelWorld.DataAccessLibrary.Model
         public string Location { get; set; }
         [Display(Name = "Offentlig eller privat")]
         public bool IsPublic { get; set; }
-        public int FK_User_Id { get; set; }
+        public int FK_Profile_Id { get; set; }
         [Display(Name = "Max antal deltagere")]
         public int Limit { get; set; }
         List<User> Attendees { get; set; }    
         #endregion
 
         #region Constructor
-        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic, int fk_User_Id, int limit,List<User>attendees)
+        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic, int fk_Profile_Id, int limit,List<User>attendees)
         {
             EventId = eventId;
             Title = title;
@@ -36,7 +36,7 @@ namespace ReelWorld.DataAccessLibrary.Model
             Date = date;
             Location = location;
             IsPublic = isPublic;
-            FK_User_Id = fk_User_Id;
+            FK_Profile_Id = fk_Profile_Id;
             Limit = limit;
             Attendees = attendees;
         }

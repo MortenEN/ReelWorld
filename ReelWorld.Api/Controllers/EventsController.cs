@@ -69,12 +69,12 @@ namespace ReelWorld.Api.Controllers
             }
         }
 
-        [HttpPost("{eventId}/join/{userId}")]
-        public async Task<bool> JoinEventAsync(int eventId, int UserId)
+        [HttpPost("{eventId}/join/{ProfileId}")]
+        public async Task<bool> JoinEventAsync(int eventId, int ProfileId)
         {
             try
             {
-                var result = await _eventDao.JoinEventAsync(eventId, UserId);
+                var result = await _eventDao.JoinEventAsync(eventId, ProfileId);
                 return result;
             }
             catch (Exception ex)

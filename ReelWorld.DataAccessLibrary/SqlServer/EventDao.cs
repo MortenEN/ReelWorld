@@ -27,7 +27,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             {
                 // 1. Indsæt event
                 var eventQuery = @"
-                INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_User_ID, Limit)
+                INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_Profile_ID, Limit)
                 OUTPUT INSERTED.EventID
                 VALUES (@Title, @Description, @Date, @Location, @Visibility, @UserID, @Limit);
                 ";
@@ -39,7 +39,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     Date = @event.Date,
                     Location = @event.Location,
                     Visibility = @event.IsPublic,
-                    UserID = @event.FK_User_Id,
+                    ProfileID = @event.FK_Profile_Id,
                     Limit = @event.Limit
                 }, transaction);
 
@@ -103,7 +103,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-        public async Task<bool> JoinEventAsync(int eventId, int userId)
+        public async Task<bool> JoinEventAsync(int eventId, int profileId)
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
@@ -114,12 +114,12 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 // Check if User already joined
                 var existsQuery = @"
                 SELECT COUNT(*) 
-                FROM EventUser
-                WHERE EventId = @EventId AND UserId = @UserId;";
+                FROM EventProfile
+                WHERE EventId = @EventId AND ProfileId = @ProfileId;";
 
                 int count = await connection.ExecuteScalarAsync<int>(
                     existsQuery,
-                    new { EventId = eventId, UserId = userId },
+                    new { EventId = eventId, ProfileId = profileId },
                     transaction
                 );
 
@@ -131,12 +131,12 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
 
                 // Insert new attendee
                 var insertQuery = @"
-                INSERT INTO EventUser (EventId, UserId)
-                VALUES (@EventId, @UserId);";
+                INSERT INTO EventProfile (EventId, ProfileId)
+                VALUES (@EventId, @ProfileId);";
 
                 int rows = await connection.ExecuteAsync(
                     insertQuery,
-                    new { EventId = eventId, UserId = userId },
+                    new { EventId = eventId, ProfileId = profileId },
                     transaction
                 );
 

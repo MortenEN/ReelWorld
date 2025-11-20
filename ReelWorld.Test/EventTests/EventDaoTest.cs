@@ -43,7 +43,7 @@ public class EventDaoTest
             Location = "Test Location",
             Date = DateTime.Now,
             IsPublic = true,
-            FK_User_Id = 1,
+            FK_Profile_Id = 1,
             Limit = 100
         };
         //act
