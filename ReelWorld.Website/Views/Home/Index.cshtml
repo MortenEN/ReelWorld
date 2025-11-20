@@ -55,6 +55,9 @@
                     <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
                         <i class="bi bi-info-circle"></i>
                     </a>
+                    <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Deltag">
+                        <i class="bi bi-check-lg"></i>
+                    </a>
                     @* <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-sm btn-danger" title="Slet">
                         <i class="bi bi-trash"></i>
                     </a> *@
