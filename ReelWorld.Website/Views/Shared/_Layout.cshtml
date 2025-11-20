@@ -24,7 +24,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Create">Bruger</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Create">Bruger</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Create">Event</a>
@@ -37,6 +37,7 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <partial name="_FlashMessages" />
             @RenderBody()
         </main>
     </div>

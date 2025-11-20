@@ -1,7 +1,7 @@
-﻿@model ReelWorld.DataAccessLibrary.Model.User
+﻿@model ReelWorld.DataAccessLibrary.Model.Profile
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Oprettelse af profil";
 }
 
 <h1>Oprettelse af bruger</h1>
@@ -9,36 +9,42 @@
 <h4>Bruger</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Navn</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PhoneNo" class="control-label">Telefonnummer</label>
                 <input asp-for="PhoneNo" class="form-control" />
                 <span asp-validation-for="PhoneNo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Age" class="control-label">Alder</label>
                 <input asp-for="Age" class="form-control" />
                 <span asp-validation-for="Age" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Relation" class="control-label">Forhold</label>
-                <select asp-for="Relation" class="form-control" asp-items="ViewBag.RelationshipList">
+                <label asp-for="Relationship" class="control-label">Forhold</label>
+                <select asp-for="Relationship" class="form-control" asp-items="Html.GetEnumSelectList<ReelWorld.DataAccessLibrary.Model.Profile.RelationshipStatus>()">
                     <option value="">-- Vælg Forhold --</option>
                 </select>
-                <span asp-validation-for="Relation" class="text-danger"></span>
+                <span asp-validation-for="Relationship" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Description" class="control-label">Beskrivelse af dig selv:</label>
-                <textarea asp-for="Description" class="form-control" cols="80" rows="25" ></textarea>
+                <label asp-for="Description" class="control-label">Beskrivelse af dig selv</label>
+                <textarea asp-for="Description" class="form-control" cols="80" rows="5"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label>Interests</label><br />
                 <input type="checkbox" name="Interests" value="Football" /> Fodbold<br />
@@ -58,21 +64,25 @@
                 <input asp-for="CityName" class="form-control" />
                 <span asp-validation-for="CityName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="CountryName" class="control-label">Land</label>
                 <input asp-for="CountryName" class="form-control" />
                 <span asp-validation-for="CountryName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="StreetName" class="control-label">Gadenavn</label>
                 <input asp-for="StreetName" class="form-control" />
                 <span asp-validation-for="StreetName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="StreetNumber" class="control-label">Vejnummer</label>
                 <input asp-for="StreetNumber" class="form-control" />
                 <span asp-validation-for="StreetNumber" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="ZipCode" class="control-label">Postnummer</label>
                 <input asp-for="ZipCode" class="form-control" />
@@ -80,26 +90,30 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="control-label">Email</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="HashPassword" class="control-label">Password</label>
                 <input asp-for="HashPassword" class="form-control" type="password" />
                 <span asp-validation-for="HashPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mt-2">
                 <input type="submit" value="Opret bruger" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-3">
     <a asp-action="Index" asp-controller="Home">Tilbage til forsiden</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

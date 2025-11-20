@@ -7,28 +7,28 @@ using ReelWorld.DataAccessLibrary.Model;
 
 namespace ReelWorld.Website.Controllers
 {
-    public class UserController : Controller
+    public class ProfileController : Controller
     {
         //TODO: Find den rigtige Uri
-        IUserDaoAsync _userApiClient = new UserApiClient("https://LocalHost:7204");
-        // GET: UserController
+        IProfileDaoAsync _userApiClient = new ProfileApiClient("https://LocalHost:7204");
+        // GET: ProfileController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: UserController/Details/5
+        // GET: ProfileController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: UserController/Create
+        // GET: ProfileController/Create
         public ActionResult Create()
         {
             // Generer SelectList fra enum
-            ViewBag.RelationshipList = Enum.GetValues(typeof(User.Relationship))
-                                           .Cast<User.Relationship>()
+            ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
+                                           .Cast<Profile.RelationshipStatus>()
                                            .Select(r => new SelectListItem
                                            {
                                                Value = r.ToString(),
@@ -37,26 +37,26 @@ namespace ReelWorld.Website.Controllers
             return View();
         }
 
-        // POST: UserController/Create
+        // POST: ProfileController/Create
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create(Profile profile)
         {
             if (!ModelState.IsValid)
-                return View(user);
+                return View(profile);
 
-            await _userApiClient.CreateAsync(user);
+            await _userApiClient.CreateAsync(profile);
 
             TempData["SuccessMessage"] = "Bruger blev oprettet!";
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: UserController/Edit/5
+        // GET: ProfileController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: UserController/Edit/5
+        // POST: ProfileController/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, IFormCollection collection)
         {
@@ -70,13 +70,13 @@ namespace ReelWorld.Website.Controllers
             }
         }
 
-        // GET: UserController/Delete/5
+        // GET: ProfileController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: UserController/Delete/5
+        // POST: ProfileController/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, IFormCollection collection)
         {
