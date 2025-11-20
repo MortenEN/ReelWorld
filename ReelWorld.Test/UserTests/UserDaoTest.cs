@@ -37,7 +37,7 @@ namespace ReelWorld.Test.UserTests
             List<string> interests;
             interests = new List<string>();
             interests.Add("paddle");
-            User user = new User("Test_UserDao_Create_User_With_Database", "test@testing.eu", "1234", 12345678, "21", 1, interests, "a test", "Aalborg", "Danmark", "Gaden", "12", "9000");
+            User user = new User("Test_UserDao_Create_User_With_Database", "test@testing.ekwek", "1234", 12345678, "21", 1, interests, "a test", "Aalborg", "Danmark", "Gaden", "12", "9000");
             //act
             int newUserId = await userDao.CreateAsync(user);
             //assert

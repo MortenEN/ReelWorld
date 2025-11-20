@@ -134,14 +134,14 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             throw new NotImplementedException();
         }
 
-        public async Task<bool> DeleteAsync(int userId)
+        public async Task<bool> DeleteAsync(int profileId)
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
             try
             {
-                var query = "DELETE FROM [User] WHERE UserID = @UserID";
-                var affectedRows = await connection.ExecuteAsync(query, new { UserID = userId });
+                var query = "DELETE FROM [Profile] WHERE ProfileID = @ProfileID";
+                var affectedRows = await connection.ExecuteAsync(query, new { ProfileID = profileId });
                 return affectedRows > 0;
             }
             catch (Exception)
