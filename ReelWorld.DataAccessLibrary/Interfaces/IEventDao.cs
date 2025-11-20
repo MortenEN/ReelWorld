@@ -18,5 +18,7 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
         bool Update(Event @event);
 
         bool Delete(int eventid);
+
+        bool JoinEventAsync(int EventId,int UserId);
     }
 }

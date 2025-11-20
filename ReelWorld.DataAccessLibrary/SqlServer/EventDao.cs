@@ -101,8 +101,54 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             {
                 throw new Exception($"Database error in GetOneAsync({eventId})", ex);
             }
-        }        
+        }
 
+        public async Task<bool> JoinEventAsync(int eventId, int userId)
+        {
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+
+                var existsQuery = @"
+                SELECT COUNT(*) 
+                FROM EventUser
+                WHERE EventId = @EventId AND UserId = @UserId;";
+
+                int count = await connection.ExecuteScalarAsync<int>(
+                    existsQuery,
+                    new { EventId = eventId, UserId = userId },
+                    transaction
+                );
+
+                if (count > 0)
+                {
+                    transaction.Rollback();
+                    return false; // User already joined
+                }
+
+                // Insert new attendee
+                var insertQuery = @"
+                INSERT INTO EventUser (EventId, UserId)
+                VALUES (@EventId, @UserId);";
+
+                int rows = await connection.ExecuteAsync(
+                    insertQuery,
+                    new { EventId = eventId, UserId = userId },
+                    transaction
+                );
+
+                transaction.Commit();
+                return rows > 0;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
         public Task<bool> UpdateAsync(Event @event)
         {
             throw new NotImplementedException();

@@ -49,5 +49,10 @@ namespace ReelWorld.DataAccessLibrary.Stub
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> JoinEventAsync(int eventId, int UserId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
