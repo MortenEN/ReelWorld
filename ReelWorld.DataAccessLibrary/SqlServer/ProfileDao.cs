@@ -33,8 +33,8 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 if (countryId == null)
                 {
                     countryId = await connection.QuerySingleAsync<int>(@"
-                INSERT INTO Country (Country) OUTPUT INSERTED.CountryID VALUES (@CountryName);
-                ", new { CountryName = profile.CountryName }, transaction);
+                    INSERT INTO Country (Country) OUTPUT INSERTED.CountryID VALUES (@CountryName);
+                    ", new { CountryName = profile.CountryName }, transaction);
                 }
 
                 // 3. Find or create City
@@ -45,18 +45,22 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 if (cityId == null)
                 {
                     cityId = await connection.QuerySingleAsync<int>(@"
-                INSERT INTO City (City, FK_Country_ID) OUTPUT INSERTED.CityID VALUES (@CityName, @CountryID);
-                ", new { CityName = profile.CityName, CountryID = countryId.Value }, transaction);
+                    INSERT INTO City (City, FK_Country_ID) OUTPUT INSERTED.CityID VALUES (@CityName, @CountryID);
+                    ", new { CityName = profile.CityName, CountryID = countryId.Value }, transaction);
                 }
 
                 // 4. Insert Profile
-                var profileQuery = @"
-                INSERT INTO Profile (Email, HashPassword, Salt, ProfileType, FirstName, MiddleName, Surname)
-                OUTPUT INSERTED.ProfileID
-                VALUES (@Email, @HashPassword, @Salt, @ProfileType, @FirstName, @MiddleName, @Surname);
-                ";
                 var salt = BCryptTool.GetRandomSalt();
                 var passwordHash = BCryptTool.HashPassword(profile.HashPassword, salt);
+
+                var profileQuery = @"
+                INSERT INTO Profile 
+                (Email, HashPassword, Salt, ProfileType, FirstName, MiddleName, Surname, PhoneNo, Age, Relationship, Description, FK_City_ID, StreetName, StreetNumber, ZipCode)
+                OUTPUT INSERTED.ProfileID
+                VALUES
+                (@Email, @HashPassword, @Salt, @ProfileType, @FirstName, @MiddleName, @Surname, @PhoneNo, @Age, @Relationship, @Description, @CityID, @StreetName, @StreetNumber, @ZipCode);
+                ";
+
                 var profileId = await connection.QuerySingleAsync<int>(profileQuery, new
                 {
                     Email = profile.Email,
@@ -65,49 +69,38 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     ProfileType = "User",
                     FirstName = firstName,
                     MiddleName = middleName,
-                    Surname = surname
-                }, transaction);
-
-                // 5. Insert User
-                var userQuery = @"
-                INSERT INTO [User] (Phoneno, Age, RelationShip, Description, FK_Profile_ID, FK_City_ID, StreetName, StreetNumber, ZipCode)
-                OUTPUT INSERTED.UserID
-                VALUES (@PhoneNo, @Age, @Relationship, @Description, @ProfileID, @CityID, @StreetName, @StreetNumber, @ZipCode);
-                ";
-                var userId = await connection.QuerySingleAsync<int>(userQuery, new
-                {
+                    Surname = surname,
                     PhoneNo = profile.PhoneNo,
                     Age = profile.Age,
                     Relationship = profile.Relation.ToString(),
                     Description = profile.Description,
-                    ProfileID = profileId,
                     CityID = cityId.Value,
                     StreetName = profile.StreetName,
                     StreetNumber = profile.StreetNumber,
-                    ZipCode = profile.ZipCode,
+                    ZipCode = profile.ZipCode
                 }, transaction);
 
-                // 6. Insert UserInterests
+                // 5. Insert ProfileInterests
                 if (profile.Interests != null)
                 {
                     foreach (var interestName in profile.Interests)
                     {
                         var interestId = await connection.QuerySingleOrDefaultAsync<int?>(@"
-                    SELECT InterestsID FROM Interests WHERE InterestName = @Name;
-                    ", new { Name = interestName }, transaction);
+                        SELECT InterestsID FROM Interests WHERE InterestName = @Name;
+                        ", new { Name = interestName }, transaction);
 
                         if (interestId == null)
                         {
                             interestId = await connection.QuerySingleAsync<int>(@"
-                        INSERT INTO Interests (InterestName) OUTPUT INSERTED.InterestsID VALUES (@Name);
-                    ", new { Name = interestName }, transaction);
+                            INSERT INTO Interests (InterestName) OUTPUT INSERTED.InterestsID VALUES (@Name);
+                            ", new { Name = interestName }, transaction);
                         }
 
                         await connection.ExecuteAsync(@"
-                    INSERT INTO UserInterests (UserID, InterestsID)
-                    VALUES (@UserID, @InterestID);
-                    ", new { UserID = userId, InterestID = interestId.Value }, transaction);
-                    }
+                        INSERT INTO ProfileInterests (ProfileID, InterestsID)
+                        VALUES (@ProfileID, @InterestID);
+                        ", new { ProfileID = profileId, InterestID = interestId.Value }, transaction);
+                     }
                 }
 
                 transaction.Commit();
@@ -119,6 +112,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 throw;
             }
         }
+
 
         public Task<Profile?> GetOneAsync(int id)
         {
