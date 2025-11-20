@@ -73,7 +73,7 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public async Task<bool> JoinEventAsync(int eventId, int ProfileId)
+        public async Task<bool> JoinEventAsync(int eventId, int profileId)
         {
             var request = new RestRequest($"api/events/{eventId}", Method.Post);
             var response = await _restClient.ExecuteAsync<bool>(request);

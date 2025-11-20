@@ -4,58 +4,57 @@ using RestSharp;
 
 namespace ReelWorld.ApiClient
 {
-    public class UserApiClient : IUserDaoAsync
+    public class ProfileApiClient : IProfileDaoAsync
     {
         #region attributes and constructor
-        //The address of the API server
+        // The address of the API server
         private readonly string _apiUri;
 
-        //the rest client from restsharp to call the server
+        // The RestClient from RestSharp to call the server
         private readonly RestClient _restClient;
 
-        public UserApiClient(string apiUri)
+        public ProfileApiClient(string apiUri)
         {
             _apiUri = apiUri;
             _restClient = new RestClient(apiUri);
         }
         #endregion
 
-        public async Task<int> CreateAsync(User user)
+        public async Task<int> CreateAsync(Profile profile)
         {
-            var request = new RestRequest("api/users", Method.Post);
-            request.AddJsonBody(user);
+            var request = new RestRequest("api/profiles", Method.Post);
+            request.AddJsonBody(profile);
 
             var response = await _restClient.ExecuteAsync<int>(request);
-            if (response == null) throw new Exception("NO response from server");
+            if (response == null) throw new Exception("No response from server");
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return response.Data;
         }
 
-        public async Task<bool> DeleteAsync(int userId)
+        public async Task<bool> DeleteAsync(int profileId)
         {
-            var request = new RestRequest("api/users/{id}", Method.Delete);
+            var request = new RestRequest("api/profiles/{id}", Method.Delete);
             var response = await _restClient.ExecuteAsync(request);
-            if (response == null) throw new Exception("NO response from server");
+            if (response == null) throw new Exception("No response from server");
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return true;
         }
 
-
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<Profile>> GetAllAsync()
         {
-            var request = new RestRequest("api/users", Method.Get);
-            var response = await _restClient.ExecuteAsync<IEnumerable<User>>(request);
-            if (response == null) throw new Exception("NO response from server");
+            var request = new RestRequest("api/profiles", Method.Get);
+            var response = await _restClient.ExecuteAsync<IEnumerable<Profile>>(request);
+            if (response == null) throw new Exception("No response from server");
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return response.Data;
         }
 
-        public Task<User?> GetOneAsync(int userId)
+        public Task<Profile?> GetOneAsync(int profileId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(User user)
+        public Task<bool> UpdateAsync(Profile profile)
         {
             throw new NotImplementedException();
         }

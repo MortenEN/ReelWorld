@@ -29,7 +29,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 var eventQuery = @"
                 INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_Profile_ID, Limit)
                 OUTPUT INSERTED.EventID
-                VALUES (@Title, @Description, @Date, @Location, @Visibility, @UserID, @Limit);
+                VALUES (@Title, @Description, @Date, @Location, @Visibility, @ProfileID, @Limit);
                 ";
 
                 var eventId = await connection.QuerySingleAsync<int>(eventQuery, new

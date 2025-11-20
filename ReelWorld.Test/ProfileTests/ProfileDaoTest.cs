@@ -3,45 +3,81 @@ using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.SqlServer;
 using ReelWorld.DataAccessLibrary.Stub;
 
-namespace ReelWorld.Test.UserTests
+namespace ReelWorld.Test.ProfileTests
 {
-    public class UserDaoTest
+    public class ProfileDaoTest
     {
-        private IUserDaoAsync _dao;
+        private IProfileDaoAsync _dao;
         private const string connectionsString = "Data Source=hildur.ucn.dk;Initial Catalog=DMA-CSD-S241_10632087;Persist Security Info=True;User ID=DMA-CSD-S241_10632087;Password=Password1!;Encrypt=True;Trust Server Certificate=True";
 
         [SetUp]
         public void Setup()
         {
-            _dao = new InMemoryUserDaoStub();
+            _dao = new InMemoryProfileDaoStub();
         }
 
         [Test]
-        public void UserDao_Create_User_With_Stub()
+        public void ProfileDao_Create_Profile_With_Stub()
         {
-            //arrange
-            var user = new User { UserId = 0, Name = "Alice" };
-            //act
-            var createdId = _dao.CreateAsync(user);
+            // Arrange
+            var interests = new List<string> { "Hiking", "Movies" };
+            var profile = new Profile
+            {
+                Name = "Alice Jensen",
+                Email = "alice@test.com",
+                HashPassword = "1234",
+                PhoneNo = "12345678",
+                Age = 25,
+                Relationship = Profile.RelationshipStatus.Single,
+                Description = "Love hiking and movies.",
+                CityName = "Copenhagen",
+                CountryName = "Denmark",
+                StreetName = "Gaden",
+                StreetNumber = "1",
+                ZipCode = "9000",
+                Interests = interests
+            };
+
+            // Act
+            var createdId = _dao.CreateAsync(profile);
             int createdIdInt = createdId.Result;
-            //assert
+
+            // Assert
             Assert.That(createdIdInt, Is.EqualTo(1));
-            Assert.That(user.UserId, Is.EqualTo(1));
+            Assert.That(profile.ProfileId, Is.EqualTo(1));
         }
 
         [Test]
-        public async Task UserDao_Create_User_With_Database()
+        public async Task ProfileDao_Create_Profile_With_Database()
         {
-            //arrange
-            UserDao userDao = new(connectionsString);
-            List<string> interests;
-            interests = new List<string>();
-            interests.Add("paddle");
-            User user = new User("Test_UserDao_Create_User_With_Database", "test@testing.ekwek", "1234", 12345678, "21", 1, interests, "a test", "Aalborg", "Danmark", "Gaden", "12", "9000");
-            //act
-            int newUserId = await userDao.CreateAsync(user);
-            //assert
-            Assert.That(newUserId, Is.GreaterThan(0), "The Create method should return a UserId that is above 0");
+            // Arrange
+            ProfileDao profileDao = new(connectionsString);
+            List<string> interests = new List<string> { "Paddle", "Reading" };
+            Profile profile = new Profile
+            {
+                Name = "Test_ProfileDao_Create_Profile_With_Database",
+                Email = "test@testing.ekwek",
+                HashPassword = "1234",
+                PhoneNo = "87654321",
+                Age = 30,
+                Relationship = Profile.RelationshipStatus.Single,
+                Description = "A test description",
+                CityName = "Aalborg",
+                CountryName = "Denmark",
+                StreetName = "Gaden",
+                StreetNumber = "12",
+                ZipCode = "9000",
+                Interests = interests
+            };
+
+            // Act
+            int newProfileId = await profileDao.CreateAsync(profile);
+
+            // Assert
+            Assert.That(newProfileId, Is.GreaterThan(0), "The Create method should return a ProfileID that is above 0");
+
+            ////Cleanup
+            //bool deleteResult = await profileDao.DeleteAsync(newProfileId);
         }
 
     }

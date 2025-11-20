@@ -20,8 +20,8 @@ namespace ReelWorld.Api
             builder.Services.AddSwaggerGen();
 
             // Dependency Injection for UserDao
-            builder.Services.AddScoped<IUserDaoAsync>(sp =>
-            new UserDao(_connectionString));
+            builder.Services.AddScoped<IProfileDaoAsync>(sp =>
+            new ProfileDao(_connectionString));
             builder.Services.AddScoped<IEventDaoAsync>(sp =>
             new EventDao(_connectionString));
 

@@ -6,43 +6,41 @@ namespace ReelWorld.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class ProfilesController : ControllerBase
     {
-        IUserDaoAsync _userDao;
-        public UsersController(IUserDaoAsync userDao)
+        private readonly IProfileDaoAsync _profileDao;
+
+        public ProfilesController(IProfileDaoAsync profileDao)
         {
-            _userDao = userDao;
+            _profileDao = profileDao;
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create(User user)
+        public async Task<ActionResult<int>> Create(Profile profile)
         {
             try
             {
-                var id = await _userDao.CreateAsync(user);
+                var id = await _profileDao.CreateAsync(profile);
                 return Ok(id);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
-
         }
 
         [HttpDelete("{id}")]
-        public async Task <ActionResult<bool>> Delete(int id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             try
             {
-                var delete = await _userDao.DeleteAsync(id);
+                var delete = await _profileDao.DeleteAsync(id);
                 return Ok(delete);
             }
-
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
-
     }
 }

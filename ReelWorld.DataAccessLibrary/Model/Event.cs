@@ -24,11 +24,11 @@ namespace ReelWorld.DataAccessLibrary.Model
         public int FK_Profile_Id { get; set; }
         [Display(Name = "Max antal deltagere")]
         public int Limit { get; set; }
-        List<User> Attendees { get; set; }    
+        List<Profile> Attendees { get; set; }    
         #endregion
 
         #region Constructor
-        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic, int fk_Profile_Id, int limit,List<User>attendees)
+        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic, int fk_Profile_Id, int limit,List<Profile>attendees)
         {
             EventId = eventId;
             Title = title;

@@ -44,7 +44,7 @@ namespace ReelWorld.DataAccessLibrary.Model
             Optaget,
             Kompliceret
         }
-        public RelationshipStatus Relation { get; set; }
+        public RelationshipStatus Relationship { get; set; }
 
         /// <summary>
         /// Gets or sets a list of interests associated with the Profile.
@@ -82,7 +82,7 @@ namespace ReelWorld.DataAccessLibrary.Model
             this.StreetName = streetName;
             this.StreetNumber = streetNumber;
             this.ZipCode = zipCode;
-            this.Relation = relation;
+            this.Relationship = relation;
         }
 
         /// <summary>

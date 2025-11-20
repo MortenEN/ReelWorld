@@ -72,7 +72,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     Surname = surname,
                     PhoneNo = profile.PhoneNo,
                     Age = profile.Age,
-                    Relationship = profile.Relation.ToString(),
+                    Relationship = profile.Relationship.ToString(),
                     Description = profile.Description,
                     CityID = cityId.Value,
                     StreetName = profile.StreetName,
