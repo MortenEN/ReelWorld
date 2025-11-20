@@ -107,7 +107,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction();
+            using var transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
 
             try
             {
