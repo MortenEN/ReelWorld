@@ -26,6 +26,23 @@ namespace ReelWorld.Api.Controllers
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
+
         }
+
+        [HttpDelete("{id}")]
+        public async Task <ActionResult<bool>> Delete(int id)
+        {
+            try
+            {
+                var delete = await _userDao.DeleteAsync(id);
+                return Ok(delete);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
     }
 }

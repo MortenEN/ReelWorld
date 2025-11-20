@@ -111,7 +111,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
 
             try
             {
-
+                // Check if User already joined
                 var existsQuery = @"
                 SELECT COUNT(*) 
                 FROM EventUser
@@ -126,7 +126,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 if (count > 0)
                 {
                     transaction.Rollback();
-                    return false; // User already joined
+                    return false; 
                 }
 
                 // Insert new attendee
