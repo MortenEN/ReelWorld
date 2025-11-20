@@ -72,5 +72,14 @@ namespace ReelWorld.ApiClient
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return response.Data;
         }
+
+        public async Task<bool> JoinEventAsync(int eventId, int UserId)
+        {
+            var request = new RestRequest($"api/events/{eventId}", Method.Post);
+            var response = await _restClient.ExecuteAsync<bool>(request);
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
+            return response.Data;
+        }
     }
 }

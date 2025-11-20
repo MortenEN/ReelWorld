@@ -68,5 +68,21 @@ namespace ReelWorld.Api.Controllers
                 throw;
             }
         }
+
+        [HttpPost("{eventId}/join/{userId}")]
+        public async Task<bool> JoinEventAsync(int eventId, int UserId)
+        {
+            try
+            {
+                var result = await _eventDao.JoinEventAsync(eventId, UserId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Internal server error: " + ex.Message);
+            }
+
+        }
+
     }
 }
