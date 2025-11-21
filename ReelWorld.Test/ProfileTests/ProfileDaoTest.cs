@@ -44,8 +44,8 @@ namespace ReelWorld.Test.ProfileTests
             int createdIdInt = createdId.Result;
 
             // Assert
-            Assert.That(createdIdInt, Is.EqualTo(1));
-            Assert.That(profile.ProfileId, Is.EqualTo(1));
+            Assert.That(createdIdInt, Is.EqualTo(4));
+            Assert.That(profile.ProfileId, Is.EqualTo(4));
         }
 
         [Test]

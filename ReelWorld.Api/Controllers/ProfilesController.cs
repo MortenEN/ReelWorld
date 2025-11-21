@@ -59,7 +59,6 @@ namespace ReelWorld.Api.Controllers
             }
         }
 
-<<<<<<< Updated upstream
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> Update(Profile profile)
         {
@@ -67,7 +66,13 @@ namespace ReelWorld.Api.Controllers
             {
                 var result = await _profileDao.UpdateAsync(profile);
                 return Ok(profile);
-=======
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Profile>>> GetAll()
         {
@@ -75,7 +80,6 @@ namespace ReelWorld.Api.Controllers
             {
                 var profiles = await _profileDao.GetAllAsync();
                 return Ok(profiles);
->>>>>>> Stashed changes
             }
             catch (Exception ex)
             {
