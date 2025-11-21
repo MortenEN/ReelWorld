@@ -59,6 +59,7 @@ namespace ReelWorld.Api.Controllers
             }
         }
 
+<<<<<<< Updated upstream
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> Update(Profile profile)
         {
@@ -66,6 +67,15 @@ namespace ReelWorld.Api.Controllers
             {
                 var result = await _profileDao.UpdateAsync(profile);
                 return Ok(profile);
+=======
+        [HttpGet]
+        public async Task<ActionResult<List<Profile>>> GetAll()
+        {
+            try
+            {
+                var profiles = await _profileDao.GetAllAsync();
+                return Ok(profiles);
+>>>>>>> Stashed changes
             }
             catch (Exception ex)
             {

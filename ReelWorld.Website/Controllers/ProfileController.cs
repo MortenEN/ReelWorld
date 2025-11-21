@@ -14,12 +14,14 @@ namespace ReelWorld.Website.Controllers
         // GET: ProfileController
         public ActionResult Index()
         {
+
             return View();
         }
 
         // GET: ProfileController/Details/5
         public ActionResult Details(int id)
         {
+
             return View();
         }
 

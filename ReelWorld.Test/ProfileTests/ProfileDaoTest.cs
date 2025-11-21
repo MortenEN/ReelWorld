@@ -2,6 +2,7 @@ using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.SqlServer;
 using ReelWorld.DataAccessLibrary.Stub;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ReelWorld.Test.ProfileTests
 {
@@ -117,5 +118,54 @@ namespace ReelWorld.Test.ProfileTests
 
         }
 
+        [Test]
+        public async Task ProfileDao_GetOne_Profile_With_Database()
+        {
+            // Arrange
+            ProfileDao profileDao = new(connectionsString);
+
+            List<string> interests = new List<string> { "Paddle", "Reading", "Running" };
+
+            var profile = new Profile
+            {
+                Name = "Test_ProfileDao_GetOne_Profile_With_Database",
+                Email = "test_profiledao@example.ke",
+                HashPassword = "12345",
+                PhoneNo = "12345678",
+                Age = 26,
+                Relationship = Profile.RelationshipStatus.Single,
+                Description = "Test test test",
+                CityName = "Aalborg",
+                CountryName = "Denmark",
+                StreetName = "Gaden",
+                StreetNumber = "17",
+                ZipCode = "9000",
+                Interests = interests
+            };
+
+            // Act
+            var id = await profileDao.CreateAsync(profile);
+            var retrievedProfile = await profileDao.GetOneAsync(id);
+
+            // Assert
+            Assert.Greater(id, 0, "CreateAsync should return a valid ID");
+            Assert.IsNotNull(retrievedProfile, "GetOneAsync should return a Profile object");
+
+            // Cleanup
+            var deleteResult = await profileDao.DeleteAsync(id);
+            Assert.IsTrue(deleteResult, "Profile should be deleted in cleanup");
+        }
+
+        [Test]
+        public async Task ProfileDao_GetAll_With_Database()
+        {
+            //arrange
+            ProfileDao profileDao = new(connectionsString);
+            //act
+            var profile = await profileDao.GetAllAsync();
+            //assert
+            Assert.That(profile, Is.Not.Null, "The GetAll method should return a list of events");
+            Assert.That(profile.Count(), Is.GreaterThan(0), "The GetAll method should return at least one event");
+        }
     }
-}
+}      
