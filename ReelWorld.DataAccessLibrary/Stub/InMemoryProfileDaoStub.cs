@@ -95,7 +95,8 @@ namespace ReelWorld.DataAccessLibrary.Stub
 
         public Task<Profile?> GetOneAsync(int profileId)
         {
-            throw new NotImplementedException();
+            var profile = _profiles.FirstOrDefault(p => p.ProfileId == profileId);
+            return Task.FromResult(profile);
         }
 
         public Task<bool> UpdateAsync(Profile profile)

@@ -11,15 +11,15 @@ namespace ReelWorld.WinForm
         IProfileDaoAsync _profileApiClient = new InMemoryProfileDaoStub();
         public DeleteProfile() => InitializeComponent();
 
-        private async void DeleteProfile_Load(object sender, EventArgs e) => LoadProfiles();
+        private async void DeleteProfile_Load(object sender, EventArgs e) => await LoadProfiles();
         private void lstProfiles_SelectedIndexChanged(object sender, EventArgs e) => UpdateUi();
         private void btnDelete_Click(object sender, EventArgs e) => DeleteSelectedProfile();
 
 
-        private void LoadProfiles()
+        private async Task LoadProfiles()
         {
             lstProfiles.Items.Clear();
-            var profiles = _profileApiClient.GetAllAsync().Result;
+            var profiles = await _profileApiClient.GetAllAsync();
             foreach (var profile in profiles)
             {
                 lstProfiles.Items.Add(profile);
@@ -27,11 +27,28 @@ namespace ReelWorld.WinForm
             UpdateUi();
         }
 
+        private void ClearUi()
+        {
+            lblName.Text = "";
+            lblEmail.Text = "";
+            lblPhone.Text = "";
+            lblCity.Text = "";
+            txtBoxDescription.Text = "";
+        }
+
         private void UpdateUi()
         {
             btnDelete.Enabled = lstProfiles.SelectedItem != null;
+            if (lstProfiles.SelectedItem is Profile profile)
+            {
+                lblName.Text = profile.Name;
+                lblEmail.Text = profile.Email;
+                lblPhone.Text = profile.PhoneNo;
+                lblCity.Text = profile.CityName;
+                txtBoxDescription.Text = profile.Description;
+            }
         }
-        private void DeleteSelectedProfile()
+        private async void DeleteSelectedProfile()
         {
             if (lstProfiles.SelectedIndex == -1)
             {
@@ -44,9 +61,15 @@ namespace ReelWorld.WinForm
 
             var selectedIndex = lstProfiles.SelectedIndex;
             var selectedProfile = (Profile)lstProfiles.SelectedItem;
-            _profileApiClient.DeleteAsync(selectedProfile.ProfileId);
+            await _profileApiClient.DeleteAsync(selectedProfile.ProfileId);
 
             lstProfiles.Items.Remove(selectedProfile);
+
+            if (lstProfiles.Items.Count == 0)
+            {
+                ClearUi();
+                return;
+            }
 
             //in case the deleted item was last in the list
             //move selected index up
