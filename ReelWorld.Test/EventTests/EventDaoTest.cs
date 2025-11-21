@@ -35,7 +35,7 @@ public class EventDaoTest
     public async Task EventDao_Create_Event_With_Database()
     {
         //arrange
-        RegistrationDao eventDao = new(connectionsString);
+        EventDao eventDao = new(connectionsString);
         var TestEvent = new Event
         {
             Title = "Test Event",
@@ -57,7 +57,7 @@ public class EventDaoTest
     public async Task EventDao_GetAll_Events_With_Database()
     {
         //arrange
-        RegistrationDao eventDao = new(connectionsString);
+        EventDao eventDao = new(connectionsString);
         //act
         var events = await eventDao.GetAllAsync();
         //assert
