@@ -7,10 +7,10 @@
 
         public Registration() { }
 
-        public Registration(Event @event, Profile profile)
+        public Registration(int eventId, int profileId)
         {
-            EventId = @event.EventId;
-            ProfileId = profile.ProfileId;
+            EventId = eventId;
+            ProfileId = profileId;
         }
     }
 }

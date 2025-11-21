@@ -13,13 +13,14 @@ namespace ReelWorld.Website.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Create(Event @event, Profile profile)
+        public async Task<IActionResult> Create(int eventId)
         {
-            Registration registration = new Registration(@event, profile);
+            int profileId = 0;
+            Registration registration = new Registration(eventId, profileId);
             if (!ModelState.IsValid)
                 return View(registration);
 
-            await _registrationApiClient.JoinEventAsync(@event.EventId, profile.ProfileId);
+            await _registrationApiClient.JoinEventAsync(eventId, eventId);
 
             TempData["SuccessMessage"] = "Eventet blev oprettet!";
             return RedirectToAction("Index", "Home");
