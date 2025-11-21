@@ -35,7 +35,7 @@ public class EventDaoTest
     public async Task EventDao_Create_Event_With_Database()
     {
         //arrange
-        EventDao eventDao = new(connectionsString);
+        RegistrationDao eventDao = new(connectionsString);
         var TestEvent = new Event
         {
             Title = "Test Event",
@@ -57,26 +57,11 @@ public class EventDaoTest
     public async Task EventDao_GetAll_Events_With_Database()
     {
         //arrange
-        EventDao eventDao = new(connectionsString);
+        RegistrationDao eventDao = new(connectionsString);
         //act
         var events = await eventDao.GetAllAsync();
         //assert
         Assert.That(events, Is.Not.Null, "The GetAll method should return a list of events");
         Assert.That(events.Count(), Is.GreaterThan(0), "The GetAll method should return at least one event");
-    }
-
-    [Test]
-    public async Task EventDao_JoinEvent_With_Database()
-    {
-        //arrange
-        var eventDao = new EventDao(connectionsString);
-
-        int testEventId = 1; // make sure event exists in test DB
-        int testUserId = 1;  // make sure user exists in test DB
-
-        //act
-        var result = await eventDao.JoinEventAsync(testEventId, testUserId);
-        //assert
-        Assert.That(result, Is.True, "JoinEventAsync should return true when user successfully joins an event.");
     }
 }

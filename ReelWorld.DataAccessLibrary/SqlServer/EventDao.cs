@@ -10,9 +10,9 @@ using Dapper;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
-    public class EventDao : BaseDao, IEventDaoAsync
+    public class RegistrationDao : BaseDao, IEventDaoAsync
     {
-        public EventDao(string connectionString) : base(connectionString)
+        public RegistrationDao(string connectionString) : base(connectionString)
         {
 
         }
