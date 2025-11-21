@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.Tools;
@@ -114,14 +115,27 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         }
 
 
-        public Task<Profile?> GetOneAsync(int id)
+        public async Task<Profile?> GetOneAsync(int profileId)
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            try
+            {
+                var query = "SELECT * FROM [Profile] WHERE ProfileId = @ProfileId";
+                var result = await connection.QuerySingleOrDefaultAsync<Profile>(query, new { ProfileId = profileId });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Database error in GetOneAsync({profileId})", ex);
+            }
         }
 
-        public Task<IEnumerable<Profile>> GetAllAsync()
+        public async Task<IEnumerable<Profile>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var query = "SELECT * FROM Profile";
+            using var connection = CreateConnection();
+            return await connection.QueryAsync<Profile>(query);
         }
 
         public Task<bool> UpdateAsync(Profile profile)

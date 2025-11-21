@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 
@@ -40,6 +41,21 @@ namespace ReelWorld.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<Profile>>> GetOneAsync(int id)
+        {
+            try
+            {
+                var profile = await _profileDao.GetOneAsync(id);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+                throw;
             }
         }
     }
