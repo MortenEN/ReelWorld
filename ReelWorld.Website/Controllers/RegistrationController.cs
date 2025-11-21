@@ -15,9 +15,8 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(int eventId)
+        public async Task<IActionResult> Create([FromRoute] int eventId, int profileId)
         {
-            int profileId = 0;
             Registration registration = new Registration(eventId, profileId);
             if (!ModelState.IsValid)
                 return View(registration);
@@ -26,6 +25,11 @@ namespace ReelWorld.Website.Controllers
 
             TempData["SuccessMessage"] = "Du er nu tilmeldt eventet";
             return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
         }
     }
 }

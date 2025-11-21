@@ -41,7 +41,7 @@ namespace ReelWorld.ApiClient
         #endregion
         public async Task<bool> JoinEventAsync(int eventId, int profileId)
         {
-            var request = new RestRequest($"api/registrations/{eventId}", Method.Post);
+            var request = new RestRequest($"api/registrations/{eventId}/join/{profileId}", Method.Post);
             var response = await _restClient.ExecuteAsync<bool>(request);
             if (response == null) throw new Exception("NO response from server");
             if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
