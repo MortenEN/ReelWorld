@@ -23,6 +23,8 @@ namespace ReelWorld.Api
             builder.Services.AddScoped<IProfileDaoAsync>(sp =>
             new ProfileDao(_connectionString));
             builder.Services.AddScoped<IEventDaoAsync>(sp =>
+            new EventDao(_connectionString));
+            builder.Services.AddScoped<IRegistrationDaoAsync>(sp =>
             new RegistrationDao(_connectionString));
 
             var app = builder.Build();
