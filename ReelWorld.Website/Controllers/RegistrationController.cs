@@ -13,6 +13,8 @@ namespace ReelWorld.Website.Controllers
         {
             return View();
         }
+
+        [HttpPost]
         public async Task<IActionResult> Create(int eventId)
         {
             int profileId = 0;
@@ -20,9 +22,9 @@ namespace ReelWorld.Website.Controllers
             if (!ModelState.IsValid)
                 return View(registration);
 
-            await _registrationApiClient.JoinEventAsync(eventId, eventId);
+            await _registrationApiClient.JoinEventAsync(eventId, profileId);
 
-            TempData["SuccessMessage"] = "Eventet blev oprettet!";
+            TempData["SuccessMessage"] = "Du er nu tilmeldt eventet";
             return RedirectToAction("Index", "Home");
         }
     }
