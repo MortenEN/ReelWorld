@@ -58,16 +58,15 @@ namespace ReelWorld.Website.Controllers
 
         // POST: ProfileController/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(Profile profile)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!ModelState.IsValid)
+                return View(profile);
+
+            await _userApiClient.UpdateAsync(profile);
+
+            TempData["SuccessMessage"] = "Bruger blev opdateret!";
+            return RedirectToAction("Index", "Profile");
         }
 
         // GET: ProfileController/Delete/5
