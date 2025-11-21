@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
-using ReelWorld.DataAccessLibrary.SqlServer;
 
 namespace ReelWorld.Api.Controllers
 {
@@ -68,21 +67,5 @@ namespace ReelWorld.Api.Controllers
                 throw;
             }
         }
-
-        [HttpPost("{eventId}/join/{ProfileId}")]
-        public async Task<bool> JoinEventAsync(int eventId, int ProfileId)
-        {
-            try
-            {
-                var result = await _eventDao.JoinEventAsync(eventId, ProfileId);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Internal server error: " + ex.Message);
-            }
-
-        }
-
     }
 }

@@ -1,11 +1,6 @@
 ﻿using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReelWorld.ApiClient
 {
@@ -53,7 +48,7 @@ namespace ReelWorld.ApiClient
         public async Task<Event?> GetOneAsync(int eventId)
         {
             var request = new RestRequest($"api/events/{eventId}", Method.Get);
-            var response = await _restClient.ExecuteAsync<Event>(request); 
+            var response = await _restClient.ExecuteAsync<Event>(request);
             if (response == null) throw new Exception("NO response from server");
             if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
             return response.Data;
@@ -70,15 +65,6 @@ namespace ReelWorld.ApiClient
             var response = await _restClient.ExecuteAsync<IEnumerable<Event>>(request);
             if (response == null) throw new Exception("NO response from server");
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
-            return response.Data;
-        }
-
-        public async Task<bool> JoinEventAsync(int eventId, int profileId)
-        {
-            var request = new RestRequest($"api/events/{eventId}", Method.Post);
-            var response = await _restClient.ExecuteAsync<bool>(request);
-            if (response == null) throw new Exception("NO response from server");
-            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
             return response.Data;
         }
     }

@@ -1,9 +1,4 @@
 ﻿using ReelWorld.DataAccessLibrary.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReelWorld.DataAccessLibrary.Interfaces
 {
@@ -15,7 +10,6 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
         Task<int> CreateAsync(Event @event);
         Task<bool> UpdateAsync(Event @event);
         Task<bool> DeleteAsync(int eventId);
-        Task<bool> JoinEventAsync(int eventId,int ProfileId);
-        
+
     }
 }
