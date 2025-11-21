@@ -58,5 +58,19 @@ namespace ReelWorld.Api.Controllers
                 throw;
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<bool>> Update(Profile profile)
+        {
+            try
+            {
+                var result = await _profileDao.UpdateAsync(profile);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
     }
 }

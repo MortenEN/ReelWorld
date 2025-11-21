@@ -138,10 +138,130 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             return await connection.QueryAsync<Profile>(query);
         }
 
-        public Task<bool> UpdateAsync(Profile profile)
+        public async Task<bool> UpdateAsync(Profile profile)
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // 0. Check if profile exists
+                var exists = await connection.QuerySingleAsync<int>(@"
+                SELECT COUNT(*) FROM Profile WHERE ProfileID = @ProfileID;", 
+                new { ProfileID = profile.ProfileId }, transaction);
+
+                if (exists == 0)
+                {
+                    transaction.Rollback();
+                    return false; // Profile does not exist → stop here
+                }
+
+                // 1. Split full name
+                var (firstName, middleName, surname) = SplitFullName(profile.Name);
+
+                // 2. Country lookup/create
+                var countryId = await connection.QuerySingleOrDefaultAsync<int?>(@"
+                SELECT CountryID FROM Country WHERE Country = @CountryName;", 
+                new { CountryName = profile.CountryName }, transaction);
+
+                if (countryId == null)
+                {
+                    countryId = await connection.QuerySingleAsync<int>(@"
+                    INSERT INTO Country (Country) 
+                    OUTPUT INSERTED.CountryID 
+                    VALUES (@CountryName);", 
+                    new { CountryName = profile.CountryName }, transaction);
+                }
+
+                // 3. City lookup/create
+                var cityId = await connection.QuerySingleOrDefaultAsync<int?>(@"
+                SELECT CityID FROM City WHERE City = @CityName AND FK_Country_ID = @CountryID;", 
+                new { CityName = profile.CityName, CountryID = countryId.Value }, transaction);
+
+                if (cityId == null)
+                {
+                    cityId = await connection.QuerySingleAsync<int>(@"
+                    INSERT INTO City (City, FK_Country_ID) 
+                    OUTPUT INSERTED.CityID 
+                    VALUES (@CityName, @CountryID);", 
+                    new { CityName = profile.CityName, CountryID = countryId.Value }, transaction);
+                }
+
+                // 4. Update profile
+                await connection.ExecuteAsync(@"
+                UPDATE Profile SET
+                Email = @Email,
+                FirstName = @FirstName,
+                MiddleName = @MiddleName,
+                Surname = @Surname,
+                PhoneNo = @PhoneNo,
+                Age = @Age,
+                Relationship = @Relationship,
+                Description = @Description,
+                FK_City_ID = @CityID,
+                StreetName = @StreetName,
+                StreetNumber = @StreetNumber,
+                ZipCode = @ZipCode
+                WHERE ProfileID = @ProfileID;",
+
+                new
+                {
+                    Email = profile.Email,
+                    FirstName = firstName,
+                    MiddleName = middleName,
+                    Surname = surname,
+                    PhoneNo = profile.PhoneNo,
+                    Age = profile.Age,
+                    Relationship = profile.Relationship.ToString(),
+                    Description = profile.Description,
+                    CityID = cityId.Value,
+                    StreetName = profile.StreetName,
+                    StreetNumber = profile.StreetNumber,
+                    ZipCode = profile.ZipCode,
+                    ProfileID = profile.ProfileId
+                }, transaction);
+
+                // 5. Replace interests
+                await connection.ExecuteAsync(@"
+                DELETE FROM ProfileInterests WHERE ProfileID = @ProfileID;", 
+                new { ProfileID = profile.ProfileId }, transaction);
+
+                if (profile.Interests != null)
+                {
+                    foreach (var interestName in profile.Interests)
+                    {
+                        var interestId = await connection.QuerySingleOrDefaultAsync<int?>(@"
+                        SELECT InterestsID FROM Interests WHERE InterestName = @Name;", 
+                        new { Name = interestName }, transaction);
+
+                        if (interestId == null)
+                        {
+                            interestId = await connection.QuerySingleAsync<int>(@"
+                            INSERT INTO Interests (InterestName) 
+                            OUTPUT INSERTED.InterestsID 
+                            VALUES (@Name);", 
+                            new { Name = interestName }, transaction);
+                        }
+
+                        await connection.ExecuteAsync(@"
+                        INSERT INTO ProfileInterests (ProfileID, InterestsID)
+                        VALUES (@ProfileID, @InterestID)", 
+                        new { ProfileID = profile.ProfileId, InterestID = interestId.Value }, transaction);
+                    }
+                }
+
+                // SUCCESS
+                transaction.Commit();
+                return true;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
+
 
         public async Task<bool> DeleteAsync(int id)
         {
