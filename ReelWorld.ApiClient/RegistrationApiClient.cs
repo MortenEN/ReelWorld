@@ -1,4 +1,5 @@
 ﻿using ReelWorld.DataAccessLibrary.Interfaces;
+using ReelWorld.DataAccessLibrary.Model;
 using RestSharp;
 
 namespace ReelWorld.ApiClient
@@ -17,6 +18,26 @@ namespace ReelWorld.ApiClient
             _restClient = new RestClient(apiUri);
             _apiUri = apiUri;
         }
+
+        public Task<int> CreateAsync(Registration registration)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Registration>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Registration?> GetOneAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
         public async Task<bool> JoinEventAsync(int eventId, int profileId)
         {
@@ -25,6 +46,11 @@ namespace ReelWorld.ApiClient
             if (response == null) throw new Exception("NO response from server");
             if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
             return response.Data;
+        }
+
+        public Task<bool> UpdateAsync(Registration registration)
+        {
+            throw new NotImplementedException();
         }
     }
 }

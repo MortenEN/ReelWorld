@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
+using ReelWorld.DataAccessLibrary.Model;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
@@ -8,6 +9,16 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
     {
         public RegistrationDao(string connectionString) : base(connectionString)
         {
+        }
+
+        public Task<int> CreateAsync(Registration registration)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> JoinEventAsync(int eventId, int profileId)
@@ -55,6 +66,21 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 transaction.Rollback();
                 throw;
             }
+        }
+
+        public Task<bool> UpdateAsync(Registration registration)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<Registration>> IRegistrationDaoAsync.GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Registration?> IRegistrationDaoAsync.GetOneAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
