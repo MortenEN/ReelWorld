@@ -54,23 +54,37 @@ namespace ReelWorld.Website.Controllers
         }
 
         // GET: EventController/Edit/5
-        public ActionResult Edit(int eventid)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int eventid)
         {
-            return View();
+            var @event = await _eventApiClient.GetOneAsync(eventid);
+
+            if (@event == null)
+                return NotFound();
+
+            ViewBag.EventTypeList = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "true", Text = "Offentlig Event" },
+                new SelectListItem { Value = "false", Text = "Privat Event" }
+            };
+
+            return View(@event);
         }
 
         // POST: EventController/Edit/5
         [HttpPost]
-        public ActionResult Edit(int eventid, IFormCollection collection)
+        public async Task<IActionResult> Edit(int eventid, Event evt)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (eventid != evt.EventId)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return View(evt);
+
+            await _eventApiClient.UpdateAsync(evt);
+
+            TempData["SuccessMessage"] = "Eventet blev opdateret!";
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: EventController/Delete/5

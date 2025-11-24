@@ -55,19 +55,13 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public async Task<bool> UpdateAsync(Event evt)
+        public async Task<bool> UpdateAsync(Event @event)
         {
-            var request = new RestRequest($"api/events/{evt.EventId}", Method.Put);
-            request.AddJsonBody(evt);
-
+            var request = new RestRequest($"api/events/{@event.EventId}", Method.Put);
+            request.AddJsonBody(@event);
             var response = await _restClient.ExecuteAsync(request);
-
-            if (response == null)
-                throw new Exception("NO response from server");
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
-
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return true;
         }
 
