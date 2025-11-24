@@ -21,11 +21,18 @@ namespace ReelWorld.Website.Controllers
             if (!ModelState.IsValid)
                 return View(registration);
 
-            await _registrationApiClient.JoinEventAsync(eventId, profileId);
+            bool joined = await _registrationApiClient.JoinEventAsync(eventId, profileId);
 
-            TempData["SuccessMessage"] = "Du er nu tilmeldt eventet";
+            if (!joined)
+            {
+                TempData["ErrorMessage"] = "Eventet er fuldt eller du er allerede tilmeldt.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            TempData["SuccessMessage"] = "Du er nu tilmeldt eventet.";
             return RedirectToAction("Index", "Home");
         }
+
         [HttpGet]
         public async Task<IActionResult> Create(int id)
         {
