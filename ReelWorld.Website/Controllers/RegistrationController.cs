@@ -15,7 +15,7 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromRoute] int eventId, int profileId)
+        public async Task<IActionResult> Create([FromForm] int eventId, int profileId)
         {
             Registration registration = new Registration(eventId, profileId);
             if (!ModelState.IsValid)
@@ -27,9 +27,10 @@ namespace ReelWorld.Website.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int id)
         {
-            return View();
+            Registration registration = new() { EventId = id };
+            return View(registration);
         }
     }
 }

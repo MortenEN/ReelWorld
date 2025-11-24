@@ -13,7 +13,7 @@ namespace ReelWorld.Api.Controllers
             _registrationDao = registrationDao;
         }
 
-        [HttpPost]
+        [HttpPost("{eventId}/join/{profileId}")]
         public async Task<bool> JoinEventAsync(int eventId, int ProfileId)
         {
             try
