@@ -55,9 +55,9 @@ namespace ReelWorld.Website.Controllers
 
         // GET: EventController/Edit/5
         [HttpGet]
-        public async Task<IActionResult> Edit(int eventid)
+        public async Task<IActionResult> Edit(int id)
         {
-            var @event = await _eventApiClient.GetOneAsync(eventid);
+            var @event = await _eventApiClient.GetOneAsync(id);
 
             if (@event == null)
                 return NotFound();
@@ -73,18 +73,18 @@ namespace ReelWorld.Website.Controllers
 
         // POST: EventController/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(int eventid, Event evt)
+        public async Task<IActionResult> Edit(int id, Event @event)
         {
-            if (eventid != evt.EventId)
+            if (id != @event.EventId)
                 return BadRequest();
 
             if (!ModelState.IsValid)
-                return View(evt);
+                return View(@event);
 
-            await _eventApiClient.UpdateAsync(evt);
+            await _eventApiClient.UpdateAsync(@event);
 
             TempData["SuccessMessage"] = "Eventet blev opdateret!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: EventController/Delete/5
