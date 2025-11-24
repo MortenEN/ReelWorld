@@ -1,6 +1,7 @@
 ﻿using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using RestSharp;
+using System.Net.Http;
 
 namespace ReelWorld.ApiClient
 {
@@ -54,10 +55,23 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public Task<bool> UpdateAsync(Event @event)
+        public async Task<bool> UpdateAsync(Event evt)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest($"api/events/{evt.EventId}", Method.Put);
+            request.AddJsonBody(evt);
+
+            var response = await _restClient.ExecuteAsync(request);
+
+            if (response == null)
+                throw new Exception("NO response from server");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
+
+            return true;
         }
+
+
 
         public async Task<IEnumerable<Event>> Get10LatestAsync()
         {

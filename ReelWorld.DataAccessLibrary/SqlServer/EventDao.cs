@@ -149,9 +149,39 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 throw;
             }
         }
-        public Task<bool> UpdateAsync(Event @event)
+        public async Task<bool> UpdateAsync(Event @event)
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            try
+            {
+                var query = @"
+                UPDATE [Event]
+                SET Title = @Title,
+                    Description = @Description,
+                    Date = @Date,
+                    Location = @Location,
+                    Visibility = @Visibility,
+                    FK_Profile_ID = @ProfileID,
+                    Limit = @Limit
+                WHERE EventID = @EventID;";
+                var rowsAffected = await connection.ExecuteAsync(query, new
+                {
+                    Title = @event.Title,
+                    Description = @event.Description,
+                    Date = @event.Date,
+                    Location = @event.Location,
+                    Visibility = @event.IsPublic,
+                    ProfileID = @event.FK_Profile_Id,
+                    Limit = @event.Limit,
+                    EventID = @event.EventId
+                });
+                return rowsAffected > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

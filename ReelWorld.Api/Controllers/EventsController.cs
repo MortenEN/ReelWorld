@@ -67,5 +67,19 @@ namespace ReelWorld.Api.Controllers
                 throw;
             }
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEvent(int id, Event updatedEvent)
+        {
+            if (id != updatedEvent.EventId)
+                return BadRequest("Event ID mismatch");
+
+            var result = await _eventDao.UpdateAsync(updatedEvent);
+
+            if (!result)
+                return NotFound();
+
+            return Ok();
+        }
+
     }
 }
