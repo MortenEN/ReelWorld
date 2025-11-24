@@ -53,5 +53,17 @@
  *@    @* <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-sm btn-primary" title="Rediger">
                         <i class="bi bi-pencil"></i>
                     </a> *@
-    <a asp-action="Index" asp-controller="Home">Tilbage til forsiden</a>
+</div>
+<div>
+    <form method="get"
+          asp-controller="Registration"
+          asp-action="Create"
+          asp-route-Id="@Model.EventId"
+          style="display:inline;">
+        <button type="submit" class="btn btn-sm btn-info" title="Deltag">
+            <i class="bi bi-check-lg"></i> Deltag
+        </button>
+    </form>
+
+    <a asp-action="Index" asp-controller="Home" class="ms-2">Tilbage til forsiden</a>
 </div>
