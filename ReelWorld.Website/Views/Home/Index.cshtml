@@ -24,9 +24,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Limit)
-            </th>
+            <th>Tilmeldte / Max Deltagere</th>
             <th></th>
         </tr>
     </thead>
@@ -45,9 +43,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Location)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Limit)
-            </td>
+                <td>
+                    @item.AttendeeCount / @item.Limit
+                </td>
             <td>
                     <div class="d-flex gap-2">
                     @* <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">

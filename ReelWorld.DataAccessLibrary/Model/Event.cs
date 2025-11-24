@@ -24,7 +24,8 @@ namespace ReelWorld.DataAccessLibrary.Model
         public int FK_Profile_Id { get; set; }
         [Display(Name = "Max antal deltagere")]
         public int Limit { get; set; }
-        List<Profile> Attendees { get; set; }    
+        List<Profile> Attendees { get; set; }
+        public int AttendeeCount { get; set; }
         #endregion
 
         #region Constructor

@@ -64,7 +64,10 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             await connection.OpenAsync();
             try
             {
-                var query = "SELECT * FROM [Event]";
+                var query = @"
+            SELECT e.EventID, e.Title, e.Description, e.Date, e.Location, e.Visibility, e.FK_Profile_ID,e.Limit,
+            (SELECT COUNT(*) FROM EventProfile ep WHERE ep.EventId = e.EventID) AS AttendeeCount
+            FROM [Event] e;"; 
                 return connection.Query<Event>(query).ToList();
             }
             catch (Exception)
@@ -78,7 +81,11 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             await connection.OpenAsync();
             try
             {
-                var query = "SELECT TOP 10 * FROM [Event] Order by eventId DESC";
+                var query = @" 
+            SELECT TOP 10 e.EventID, e.Title, e.Description, e.Date, e.Location, e.Visibility, e.FK_Profile_ID, e.Limit,
+            (SELECT COUNT(*) FROM EventProfile ep WHERE ep.EventId = e.EventID) AS AttendeeCount
+            FROM [Event] e
+            ORDER BY e.EventID DESC;";
                 return connection.Query<Event>(query).ToList();
             }
             catch (Exception)
@@ -93,7 +100,11 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             await connection.OpenAsync();
             try
             {
-                var query = "SELECT * FROM [Event] WHERE EventId = @EventId";
+                var query = @"
+            SELECT e.EventID, e.Title, e.Description, e.Date, e.Location, e.Visibility, e.FK_Profile_ID, e.Limit,
+            (SELECT COUNT(*) FROM EventProfile ep WHERE ep.EventId = e.EventID) AS AttendeeCount
+            FROM [Event] e
+            WHERE e.EventID = @EventId;";
                 var result = await connection.QuerySingleOrDefaultAsync<Event>(query, new { EventId = eventId });
                 return result;
             }
