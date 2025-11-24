@@ -164,6 +164,9 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         {
             using var connection = (SqlConnection)CreateConnection();
             await connection.OpenAsync();
+
+            using var transaction = await connection.BeginTransactionAsync();
+
             try
             {
                 var query = @"
@@ -176,6 +179,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     FK_Profile_ID = @ProfileID,
                     Limit = @Limit
                 WHERE EventID = @EventID;";
+
                 var rowsAffected = await connection.ExecuteAsync(query, new
                 {
                     Title = @event.Title,
@@ -186,13 +190,19 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     ProfileID = @event.FK_Profile_Id,
                     Limit = @event.Limit,
                     EventID = @event.EventId
-                });
+                }, transaction); // Pass the transaction
+
+                await transaction.CommitAsync(); // Commit if successful
+
                 return rowsAffected > 0;
             }
             catch (Exception)
             {
+                await transaction.RollbackAsync(); // Rollback on error
                 throw;
             }
         }
+
     }
 }
+

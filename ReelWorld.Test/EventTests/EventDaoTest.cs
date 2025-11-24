@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.SqlServer;
 using ReelWorld.DataAccessLibrary.Stub;
+using System.Transactions;
 
 namespace ReelWorld.Test;
 
@@ -63,5 +65,53 @@ public class EventDaoTest
         //assert
         Assert.That(events, Is.Not.Null, "The GetAll method should return a list of events");
         Assert.That(events.Count(), Is.GreaterThan(0), "The GetAll method should return at least one event");
+    }
+
+    [Test]
+    public async Task EventDao_UpdateAsync_Should_Update_Event_And_CleanUp()
+    {
+        // Arrange
+        EventDao eventDao = new EventDao(connectionsString);
+
+        using var connection = new SqlConnection(connectionsString);
+        await connection.OpenAsync();
+        using var transaction = connection.BeginTransaction();
+
+
+        var events = await eventDao.GetAllAsync();
+        Assert.That(events.Count(), Is.GreaterThan(0), "No events available to test Update.");
+
+        var originalEvent = events.First();
+
+        // Clone original values to restore after test
+        var originalTitle = originalEvent.Title;
+        var originalDescription = originalEvent.Description;
+        var originalLocation = originalEvent.Location;
+        var originalDate = originalEvent.Date;
+        var originalLimit = originalEvent.Limit;
+        var originalIsPublic = originalEvent.IsPublic;
+
+        // Modify properties
+        originalEvent.Title += " - Updated";
+        originalEvent.Description += " - Updated";
+        originalEvent.Location += " - Updated";
+        originalEvent.Date = originalEvent.Date.AddDays(1);
+        originalEvent.Limit += 5;
+        originalEvent.IsPublic = !originalEvent.IsPublic;
+
+        try
+        {
+            // Act
+            var result = await eventDao.UpdateAsync(originalEvent);
+
+            // Assert
+            Assert.That(result, Is.True, "UpdateAsync should return true when rows are affected");
+
+            var updatedEvent = await eventDao.GetOneAsync(originalEvent.EventId);
+        }
+        finally
+        {
+            transaction.Rollback();
+        }
     }
 }
