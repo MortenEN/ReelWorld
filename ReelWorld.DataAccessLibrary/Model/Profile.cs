@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets or sets the name of the Profile.
         /// </summary>
+        [Display(Name = "Navn")]
         public string Name { get; set; }
-
         /// <summary>
         /// Gets or sets the Email of the Profile.
         /// </summary>
@@ -28,11 +29,13 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets or sets the phone number of the Profile.
         /// </summary>
+        [Display(Name = "Tlf. Nummer")]
         public string PhoneNo { get; set; }
 
         /// <summary>
         /// Gets or sets the age of the Profile.
         /// </summary>
+        [Display(Name = "Alder")]
         public int Age { get; set; }
 
         /// <summary>
@@ -44,22 +47,30 @@ namespace ReelWorld.DataAccessLibrary.Model
             Optaget,
             Kompliceret
         }
+        [Display(Name = "Forhold")]
         public RelationshipStatus Relationship { get; set; }
 
         /// <summary>
         /// Gets or sets a list of interests associated with the Profile.
         /// </summary>
+        [Display(Name = "Interesser")]
         public List<string> Interests { get; set; }
 
         /// <summary>
         /// Gets or sets a short personal description written by the Profile.
         /// </summary>
+        [Display(Name = "Beskrivelse")]
         public string Description { get; set; }
 
-        public string CityName { get; set; }
-        public string CountryName { get; set; }
+        [Display(Name = "By")]
+        public string City { get; set; }
+        [Display(Name = "Land")]
+        public string Country { get; set; }
+        [Display(Name = "Gade")]
         public string StreetName { get; set; }
+        [Display(Name = "Husnummer")]
         public string StreetNumber { get; set; }
+        [Display(Name = "Postnummer")]
         public string ZipCode { get; set; }
         #endregion
 
@@ -77,8 +88,8 @@ namespace ReelWorld.DataAccessLibrary.Model
             this.Age = age;
             this.Interests = interests;
             this.Description = description;
-            this.CityName = cityName;
-            this.CountryName = countryName;
+            this.City = cityName;
+            this.Country = countryName;
             this.StreetName = streetName;
             this.StreetNumber = streetNumber;
             this.ZipCode = zipCode;
