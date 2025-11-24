@@ -121,7 +121,31 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             await connection.OpenAsync();
             try
             {
-                var query = "SELECT * FROM [Profile] WHERE ProfileId = @ProfileId";
+                var query = @"
+                SELECT 
+                p.ProfileID      AS ProfileId,
+                p.Email,
+                p.HashPassword,
+                p.Salt,
+                p.ProfileType,
+                LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
+                p.PhoneNo,
+                p.Age,
+                p.Relationship,
+                p.Description,
+                p.StreetName,
+                p.StreetNumber,
+                p.ZipCode,
+
+                -- By og land med alias så de matcher modellen:
+                c.City      AS City,
+                co.Country  AS Country
+
+                FROM Profile p
+                LEFT JOIN City c     ON p.FK_City_ID = c.CityID
+                LEFT JOIN Country co ON c.FK_Country_ID = co.CountryID
+                WHERE p.ProfileID = @ProfileId;
+                ";
                 var result = await connection.QuerySingleOrDefaultAsync<Profile>(query, new { ProfileId = profileId });
                 return result;
             }

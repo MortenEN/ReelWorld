@@ -20,9 +20,9 @@ namespace ReelWorld.Website.Controllers
         }
 
         // GET: ProfileController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var profile = _userApiClient.GetOneAsync(id);
+            var profile = await _userApiClient.GetOneAsync(id);
             
             return View(profile);
         }
