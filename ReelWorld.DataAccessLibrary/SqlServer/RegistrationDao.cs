@@ -47,6 +47,24 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     return false;
                 }
 
+                // Check if event capacity is full
+                var capacityQuery = @"
+                SELECT 
+                (SELECT COUNT(*) FROM EventProfile WHERE EventId = @EventId) AS CurrentCount,
+                (SELECT [Limit] FROM Event WHERE EventID = @EventId) AS MaxCount;";
+
+                var result = await connection.QueryFirstAsync<(int CurrentCount, int MaxCount)>(
+                    capacityQuery,
+                    new { EventId = eventId },
+                    transaction
+                );
+
+                if (result.CurrentCount >= result.MaxCount)
+                {
+                    transaction.Rollback();
+                    return false; // Event is full
+                }
+
                 // Insert new attendee
                 var insertQuery = @"
                 INSERT INTO EventProfile (EventId, ProfileId)
