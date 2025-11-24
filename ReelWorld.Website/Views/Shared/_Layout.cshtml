@@ -24,12 +24,20 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Create">Bruger</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Create">Opret Profil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Create">Event</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Create">Opret Event</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Profiles">Profiler</a>
+                        </li>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Details">
+                                    <i class="bi bi-person-circle"></i> Profil
+                                </a>
+                        </ul>
                     </ul>
                 </div>
             </div>

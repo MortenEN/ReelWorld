@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ReelWorld.ApiClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
+using ReelWorld.DataAccessLibrary.SqlServer;
 
 namespace ReelWorld.Website.Controllers
 {
@@ -21,9 +22,27 @@ namespace ReelWorld.Website.Controllers
         // GET: ProfileController/Details/5
         public ActionResult Details(int id)
         {
+            var profile = new Profile
+            {
+                ProfileId = 1,
+                Name = "Emma Søndergaard",
+                Email = "emma.sondergaard@example.com",
+                PhoneNo = "28 47 95 12",
+                Age = 27,
+                Relationship = Profile.RelationshipStatus.Single, // Use enum directly
+                Description = "Jeg elsker at møde nye mennesker, dyrke mine kreative interesser og løbe ture langs havnefronten i Aalborg.",
+                CityName = "Aalborg",
+                CountryName = "Danmark",
+                StreetName = "Havnevej",
+                StreetNumber = "24B",
+                ZipCode = "9000",
+                Interests = new List<string> { "Yoga", "Løb", "Kreative workshops", "Madlavning", "Fotografi" } // Simplified collection initialization
+            };
 
-            return View();
+            // ⭐ VIGTIGT: Vi sender profile med til viewet
+            return View(profile);
         }
+        
 
         // GET: ProfileController/Create
         public ActionResult Create()
@@ -51,6 +70,25 @@ namespace ReelWorld.Website.Controllers
             TempData["SuccessMessage"] = "Bruger blev oprettet!";
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Profiles()
+        {
+            var profiles = await _userApiClient.GetAllAsync();
+            return View(profiles);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> profile([FromRoute] int id)
+        {
+            var profile = await _userApiClient.GetOneAsync(id);
+            if ( profile == null)
+            {
+                return NotFound();
+            }
+            return View(profile);
+        }
+
 
         // GET: ProfileController/Edit/5
         public ActionResult Edit(int id)
