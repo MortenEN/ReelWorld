@@ -1,4 +1,3 @@
-using ReelWorld.ApiClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.Stub;
@@ -44,7 +43,7 @@ namespace ReelWorld.WinForm
                 lblName.Text = profile.Name;
                 lblEmail.Text = profile.Email;
                 lblPhone.Text = profile.PhoneNo;
-                lblCity.Text = profile.CityName;
+                lblCity.Text = profile.City;
                 txtBoxDescription.Text = profile.Description;
             }
         }
