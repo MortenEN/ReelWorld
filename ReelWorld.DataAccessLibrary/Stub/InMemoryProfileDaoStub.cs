@@ -99,6 +99,11 @@ namespace ReelWorld.DataAccessLibrary.Stub
             return Task.FromResult(profile);
         }
 
+        public Task<int> LoginAsync(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> UpdateAsync(Profile profile)
         {
             throw new NotImplementedException();

@@ -339,5 +339,30 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
 
             return (firstName, middleName, surname);
         }
+
+        public async Task<int> LoginAsync(string email, string password)
+        {
+            try
+            {
+                var query = "SELECT Id, PasswordHash FROM Profile WHERE Email=@Email";
+                using var connection = CreateConnection();
+
+                var profileTuple = await connection.QueryFirstOrDefaultAsync<ProfileTuple>(query, new { Email = email });
+                if (profileTuple != null && BCryptTool.ValidatePassword(password, profileTuple.PasswordHash))
+                {
+                    return profileTuple.Id;
+                }
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error logging in for profile with email {email}: '{ex.Message}'.", ex);
+            }
+        }
+        internal class ProfileTuple
+        {
+            public int Id;
+            public string PasswordHash;
+        }
     }
 }

@@ -18,5 +18,6 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
         Task<bool> UpdateAsync(Profile profile);
 
         Task<bool> DeleteAsync(int id);
+        Task<int> LoginAsync(string email, string password);
     }
 }
