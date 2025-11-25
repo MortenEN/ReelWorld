@@ -99,9 +99,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Parameterless constructor for initialization without parameters.
         /// </summary>
-        public Profile()
-        {
-        }
+        public Profile() { }
         #endregion
     }
 }

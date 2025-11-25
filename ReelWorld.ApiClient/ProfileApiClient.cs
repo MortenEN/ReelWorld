@@ -58,9 +58,16 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public Task<int> LoginAsync(string email, string password)
+        public async Task<int> LoginAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest("api/logins", Method.Post);
+            // Add email and password to the request body
+            request.AddJsonBody(new { Email = email, Password = password });
+
+            var response = await _restClient.ExecuteAsync<int>(request);
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
+            return response.Data;
         }
 
         public async Task<bool> UpdateAsync(Profile profile)

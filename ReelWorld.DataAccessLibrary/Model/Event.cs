@@ -41,10 +41,7 @@ namespace ReelWorld.DataAccessLibrary.Model
             Limit = limit;
             Attendees = attendees;
         }
-        public Event()
-        {
-
-        }
+        public Event() { }
         #endregion
     }
 }
