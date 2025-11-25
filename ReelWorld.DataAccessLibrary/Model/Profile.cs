@@ -54,7 +54,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// Gets or sets a list of interests associated with the Profile.
         /// </summary>
         [Display(Name = "Interesser")]
-        public List<string> Interests { get; set; }
+        public string Interests { get; set; }
 
         /// <summary>
         /// Gets or sets a short personal description written by the Profile.
@@ -78,7 +78,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Profile"/> class with full details.
         /// </summary>
-        public Profile(int profileId, string name, string email, string hashPassword, string phoneNo, int age, List<string> interests, string description, string cityName, string countryName, string streetName, string streetNumber, string zipCode, RelationshipStatus relation)
+        public Profile(int profileId, string name, string email, string hashPassword, string phoneNo, int age, string interests, string description, string cityName, string countryName, string streetName, string streetNumber, string zipCode, RelationshipStatus relation)
         {
             this.ProfileId = profileId;
             this.Name = name;

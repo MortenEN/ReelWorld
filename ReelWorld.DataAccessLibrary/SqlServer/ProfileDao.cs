@@ -137,14 +137,37 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 p.StreetNumber,
                 p.ZipCode,
 
-                -- By og land med alias så de matcher modellen:
                 c.City      AS City,
-                co.Country  AS Country
+                co.Country  AS Country,
+
+                -- Hent alle interesser som én kommasepareret streng
+                STRING_AGG(i.InterestName, ', ') AS Interests
 
                 FROM Profile p
-                LEFT JOIN City c     ON p.FK_City_ID = c.CityID
-                LEFT JOIN Country co ON c.FK_Country_ID = co.CountryID
-                WHERE p.ProfileID = @ProfileId;
+                LEFT JOIN City c               ON p.FK_City_ID = c.CityID
+                LEFT JOIN Country co           ON c.FK_Country_ID = co.CountryID
+                LEFT JOIN ProfileInterests pi  ON p.ProfileID = pi.ProfileID
+                LEFT JOIN Interests i          ON pi.InterestsID = i.InterestsID
+
+                WHERE p.ProfileID = @ProfileId
+                GROUP BY 
+                    p.ProfileID,
+                    p.Email,
+                    p.HashPassword,
+                    p.Salt,
+                    p.ProfileType,
+                    p.FirstName,
+                    p.MiddleName,
+                    p.Surname,
+                    p.PhoneNo,
+                    p.Age,
+                    p.Relationship,
+                    p.Description,
+                    p.StreetName,
+                    p.StreetNumber,
+                    p.ZipCode,
+                    c.City,
+                    co.Country;
                 ";
                 var result = await connection.QuerySingleOrDefaultAsync<Profile>(query, new { ProfileId = profileId });
                 return result;
@@ -158,29 +181,52 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         public async Task<IEnumerable<Profile>> GetAllAsync()
         {
             var query = @"
-            SELECT 
-            p.ProfileID      AS ProfileId,
-            p.Email,
-            p.HashPassword,
-            p.Salt,
-            p.ProfileType,
-            LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
-            p.PhoneNo,
-            p.Age,
-            p.Relationship,
-            p.Description,
-            p.StreetName,
-            p.StreetNumber,
-            p.ZipCode,
+                SELECT 
+                p.ProfileID      AS ProfileId,
+                p.Email,
+                p.HashPassword,
+                p.Salt,
+                p.ProfileType,
+                LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
+                p.PhoneNo,
+                p.Age,
+                p.Relationship,
+                p.Description,
+                p.StreetName,
+                p.StreetNumber,
+                p.ZipCode,
 
-            -- ⭐ Hent by og land:
-            c.City,
-            co.Country
+                c.City      AS City,
+                co.Country  AS Country,
 
-            FROM Profile p
-            LEFT JOIN City c ON p.FK_City_ID = c.CityID
-            LEFT JOIN Country co ON c.FK_Country_ID = co.CountryID;
-            ";
+                -- Hent alle interesser som én kommasepareret streng
+                STRING_AGG(i.InterestName, ', ') AS Interests
+
+                FROM Profile p
+                LEFT JOIN City c               ON p.FK_City_ID = c.CityID
+                LEFT JOIN Country co           ON c.FK_Country_ID = co.CountryID
+                LEFT JOIN ProfileInterests pi  ON p.ProfileID = pi.ProfileID
+                LEFT JOIN Interests i          ON pi.InterestsID = i.InterestsID
+
+                GROUP BY 
+                    p.ProfileID,
+                    p.Email,
+                    p.HashPassword,
+                    p.Salt,
+                    p.ProfileType,
+                    p.FirstName,
+                    p.MiddleName,
+                    p.Surname,
+                    p.PhoneNo,
+                    p.Age,
+                    p.Relationship,
+                    p.Description,
+                    p.StreetName,
+                    p.StreetNumber,
+                    p.ZipCode,
+                    c.City,
+                    co.Country;
+                ";
             using var connection = CreateConnection();
             return await connection.QueryAsync<Profile>(query);
         }

@@ -23,10 +23,10 @@ namespace ReelWorld.Website.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var profile = await _userApiClient.GetOneAsync(id);
-            
+
             return View(profile);
         }
-        
+
 
         // GET: ProfileController/Create
         public ActionResult Create()
@@ -66,7 +66,7 @@ namespace ReelWorld.Website.Controllers
         public async Task<ActionResult> profile([FromRoute] int id)
         {
             var profile = await _userApiClient.GetOneAsync(id);
-            if ( profile == null)
+            if (profile == null)
             {
                 return NotFound();
             }
@@ -98,27 +98,21 @@ namespace ReelWorld.Website.Controllers
         // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Profile profile, string Interests)
+        public async Task<IActionResult> Edit(int id, Profile profile)
         {
+            ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
+                                           .Cast<Profile.RelationshipStatus>()
+                                           .Select(r => new SelectListItem
+                                           {
+                                               Value = r.ToString(),
+                                               Text = r.ToString()
+                                           })
+                                           .ToList();
             if (id != profile.ProfileId)
                 return BadRequest();
 
-            // Split interests string til liste
-            profile.Interests = Interests?
-                .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                .Select(i => i.Trim())
-                .ToList() ?? new List<string>();
-
             if (!ModelState.IsValid)
             {
-                ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
-                                               .Cast<Profile.RelationshipStatus>()
-                                               .Select(r => new SelectListItem
-                                               {
-                                                   Value = r.ToString(),
-                                                   Text = r.ToString()
-                                               })
-                                               .ToList();
                 return View(profile);
             }
 

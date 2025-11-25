@@ -20,7 +20,6 @@ namespace ReelWorld.Test.ProfileTests
         public void ProfileDao_Create_Profile_With_Stub()
         {
             // Arrange
-            var interests = new List<string> { "Hiking", "Movies" };
             var profile = new Profile
             {
                 Name = "Alice Jensen",
@@ -35,7 +34,7 @@ namespace ReelWorld.Test.ProfileTests
                 StreetName = "Gaden",
                 StreetNumber = "1",
                 ZipCode = "9000",
-                Interests = interests
+                Interests = "Hiking, Movies"
             };
 
             // Act
@@ -52,7 +51,6 @@ namespace ReelWorld.Test.ProfileTests
         {
             // Arrange
             ProfileDao profileDao = new(connectionsString);
-            List<string> interests = new List<string> { "Paddle", "Reading" };
             Profile profile = new Profile
             {
                 Name = "Test_ProfileDao_Create_Profile_With_Database",
@@ -67,7 +65,7 @@ namespace ReelWorld.Test.ProfileTests
                 StreetName = "Gaden",
                 StreetNumber = "12",
                 ZipCode = "9000",
-                Interests = interests
+                Interests = "Paddle, Reading"
             };
 
             // Act
@@ -88,7 +86,6 @@ namespace ReelWorld.Test.ProfileTests
             // Arrange
             ProfileDao profileDao = new(connectionsString);
 
-            List<string> interests = new List<string> { "Paddle", "Reading" };
 
             Profile profile = new Profile
             {
@@ -104,7 +101,7 @@ namespace ReelWorld.Test.ProfileTests
                 StreetName = "Gaden",
                 StreetNumber = "17",
                 ZipCode = "9000",
-                Interests = interests
+                Interests = "Paddle, Reading"
             };
 
             // Act
@@ -123,8 +120,6 @@ namespace ReelWorld.Test.ProfileTests
             // Arrange
             ProfileDao profileDao = new(connectionsString);
 
-            List<string> interests = new List<string> { "Paddle", "Reading", "Running" };
-
             var profile = new Profile
             {
                 Name = "Test_ProfileDao_GetOne_Profile_With_Database",
@@ -139,7 +134,7 @@ namespace ReelWorld.Test.ProfileTests
                 StreetName = "Gaden",
                 StreetNumber = "17",
                 ZipCode = "9000",
-                Interests = interests
+                Interests = "Paddle, Reading"
             };
 
             // Act

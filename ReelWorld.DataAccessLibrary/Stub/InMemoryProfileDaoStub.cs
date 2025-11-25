@@ -25,7 +25,7 @@ namespace ReelWorld.DataAccessLibrary.Stub
                     StreetName = "Gaden",
                     StreetNumber = "1",
                     ZipCode = "9000",
-                    Interests = new List<string> { "Hiking", "Movies" }
+                    Interests = "Hiking, Movies"
                 });
 
                 _profiles.Add(new Profile
@@ -43,7 +43,7 @@ namespace ReelWorld.DataAccessLibrary.Stub
                     StreetName = "Gaden",
                     StreetNumber = "1",
                     ZipCode = "9000",
-                    Interests = new List<string> { "Gaming", "Reading" }
+                    Interests = "Gaming, Reading"
                 });
 
                 _profiles.Add(new Profile
@@ -61,7 +61,7 @@ namespace ReelWorld.DataAccessLibrary.Stub
                     StreetName = "Gaden",
                     StreetNumber = "1",
                     ZipCode = "9000",
-                    Interests = new List<string> { "Cooking", "Fitness" }
+                    Interests = "Cooking, Fitness"
                 });
             }
         }
