@@ -60,12 +60,18 @@ namespace ReelWorld.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> Update(Profile profile)
+        public async Task<ActionResult> Update(int id, [FromBody] Profile profile)
         {
+            if (id != profile.ProfileId)
+                return BadRequest("Id i URL og profile.Id matcher ikke.");
+
             try
             {
-                var result = await _profileDao.UpdateAsync(profile);
-                return Ok(profile);
+                var success = await _profileDao.UpdateAsync(profile);
+                if (!success)
+                    return NotFound();
+
+                return Ok(profile); // Returner evt. det opdaterede objekt
             }
             catch (Exception ex)
             {

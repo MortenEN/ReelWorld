@@ -74,29 +74,59 @@ namespace ReelWorld.Website.Controllers
         }
 
 
+
         // GET: ProfileController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var profile = await _userApiClient.GetOneAsync(id);
+            if (profile == null) return NotFound();
+
+            // Optional: dropdowns
+            ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
+                                           .Cast<Profile.RelationshipStatus>()
+                                           .Select(r => new SelectListItem
+                                           {
+                                               Value = r.ToString(),
+                                               Text = r.ToString()
+                                           })
+                                           .ToList();
+
+            return View(profile);
         }
 
         // POST: ProfileController/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(Profile profile)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Profile profile, string Interests)
         {
+            if (id != profile.ProfileId)
+                return BadRequest();
+
+            // Split interests string til liste
+            profile.Interests = Interests?
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(i => i.Trim())
+                .ToList() ?? new List<string>();
+
             if (!ModelState.IsValid)
+            {
+                ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
+                                               .Cast<Profile.RelationshipStatus>()
+                                               .Select(r => new SelectListItem
+                                               {
+                                                   Value = r.ToString(),
+                                                   Text = r.ToString()
+                                               })
+                                               .ToList();
                 return View(profile);
+            }
 
-            await _userApiClient.UpdateAsync(profile);
+            var success = await _userApiClient.UpdateAsync(profile);
+            if (!success) return NotFound();
 
-            TempData["SuccessMessage"] = "Bruger blev opdateret!";
-            return RedirectToAction("Index", "Profile");
-        }
-
-        // GET: ProfileController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
+            TempData["SuccessMessage"] = "Din profil blev opdateret!";
+            return RedirectToAction("Details", new { id = profile.ProfileId });
         }
 
         // POST: ProfileController/Delete/5

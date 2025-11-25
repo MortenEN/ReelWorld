@@ -80,4 +80,8 @@
 <div>
 @*     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
  *@    <a asp-action="Index" asp-controller="Home" class="ms-2">Tilbage til forsiden</a>
+         <a asp-action="Edit" asp-route-id="@Model.ProfileId" class="btn btn-primary">
+        Rediger Profil
+    </a>
+
 </div>

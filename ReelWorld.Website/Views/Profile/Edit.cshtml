@@ -1,0 +1,90 @@
+﻿@model ReelWorld.DataAccessLibrary.Model.Profile
+
+@{
+    ViewData["Title"] = "Rediger Profil";
+}
+
+<h1>Rediger Profil</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="ProfileId" />
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Navn</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Age" class="control-label">Alder</label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNo" class="control-label">Telefon</label>
+                <input asp-for="PhoneNo" class="form-control" />
+                <span asp-validation-for="PhoneNo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City" class="control-label">By</label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Country" class="control-label">Land</label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Beskrivelse</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Relationship" class="control-label">Forhold</label>
+                <select asp-for="Relationship" class="form-control"
+                        asp-items="Html.GetEnumSelectList<ReelWorld.DataAccessLibrary.Model.Profile.RelationshipStatus>()">
+                </select>
+                <span asp-validation-for="Relationship" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Interesser (komma-separeret)</label>
+                <input type="text" class="form-control"
+                       name="Interests"
+                       value="@string.Join(", ", Model.Interests ?? new List<string>())" />
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Gem" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-id="@Model.ProfileId">Tilbage til profil</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
