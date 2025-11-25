@@ -58,6 +58,11 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
+        public Task<int> LoginAsync(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> UpdateAsync(Profile profile)
         {
             var request = new RestRequest($"api/profiles/{profile.ProfileId}", Method.Put);
