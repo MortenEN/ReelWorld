@@ -2,7 +2,6 @@ using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.SqlServer;
 using ReelWorld.DataAccessLibrary.Stub;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ReelWorld.Test.ProfileTests
 {
@@ -167,5 +166,72 @@ namespace ReelWorld.Test.ProfileTests
             Assert.That(profile, Is.Not.Null, "The GetAll method should return a list of events");
             Assert.That(profile.Count(), Is.GreaterThan(0), "The GetAll method should return at least one event");
         }
+        //[Test]
+        //public async Task ProfileDao_Update_Profile_With_Database()
+        //{
+        //    // Arrange
+        //    ProfileDao profileDao = new(connectionsString);
+
+        //    List<string> interests = new List<string> { "Paddle", "Reading" };
+
+        //    Profile profile = new Profile
+        //    {
+        //        Name = "Test_ProfileDao_Update_Profile_With_Database",
+        //        Email = "test@testing.testtest",
+        //        HashPassword = "12345",
+        //        PhoneNo = "12345678",
+        //        Age = 26,
+        //        Relationship = Profile.RelationshipStatus.Single,
+        //        Description = "Test test test",
+        //        City = "Aalborg",
+        //        Country = "Denmark",
+        //        StreetName = "Gaden",
+        //        StreetNumber = "17",
+        //        ZipCode = "9000",
+        //        Interests = interests
+        //    };
+
+        //    // Act
+        //    var id = profileDao.CreateAsync(profile);
+        //    profile.Name = "update";
+        //    profile.Email = "update@update.net";
+        //    profile.HashPassword = "update";
+        //    profile.PhoneNo = "87654321";
+        //    profile.Age = 62;
+        //    profile.Relationship = Profile.RelationshipStatus.Kompliceret;
+        //    profile.Description = "update update";
+        //    profile.City = "London";
+        //    profile.Country = "England";
+        //    profile.StreetName = "Lizie line";
+        //    profile.StreetNumber = "1";
+        //    profile.ZipCode = "1234";
+        //    interests.Remove("Paddle");
+        //    interests.Remove("Reading");
+        //    interests.Add("Updating");
+        //    await profileDao.UpdateAsync(profile);
+
+        //    // Assert
+        //    var updated = await profileDao.GetOneAsync(await id);
+
+        //    Assert.That(updated, Is.Not.Null);
+        //    Assert.That(updated.Name, Is.EqualTo("update"));
+        //    Assert.That(updated.Email, Is.EqualTo("update@update.net"));
+        //    Assert.That(updated.HashPassword, Is.EqualTo("update"));
+        //    Assert.That(updated.PhoneNo, Is.EqualTo("87654321"));
+        //    Assert.That(updated.Age, Is.EqualTo(62));
+        //    Assert.That(updated.Relationship, Is.EqualTo(Profile.RelationshipStatus.Kompliceret));
+        //    Assert.That(updated.Description, Is.EqualTo("update update"));
+        //    Assert.That(updated.City, Is.EqualTo("London"));
+        //    Assert.That(updated.Country, Is.EqualTo("England"));
+        //    Assert.That(updated.StreetName, Is.EqualTo("Lizie line"));
+        //    Assert.That(updated.StreetNumber, Is.EqualTo("1"));
+        //    Assert.That(updated.ZipCode, Is.EqualTo("1234"));
+
+        //    // Interests check (order-insensitive)
+        //    CollectionAssert.AreEquivalent(
+        //        new List<string> { "Updating" },
+        //        updated.Interests
+        //    );
+        //}
     }
-}      
+}
