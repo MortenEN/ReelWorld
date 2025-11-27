@@ -34,6 +34,7 @@ namespace ReelWorld.ApiClient
         public async Task<bool> DeleteAsync(int profileId)
         {
             var request = new RestRequest("api/profiles/{id}", Method.Delete);
+            request.AddUrlSegment("id", profileId);
             var response = await _restClient.ExecuteAsync(request);
             if (response == null) throw new Exception("No response from server");
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
