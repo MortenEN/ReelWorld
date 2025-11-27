@@ -32,11 +32,6 @@ namespace ReelWorld.ApiClient
             return response.Data;
         }
 
-        public Task<bool> DeleteAsync(int eventId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<Event>> GetAllAsync()
         {
             var request = new RestRequest("api/events", Method.Get);
@@ -65,8 +60,6 @@ namespace ReelWorld.ApiClient
             return true;
         }
 
-
-
         public async Task<IEnumerable<Event>> Get10LatestAsync()
         {
             var request = new RestRequest("api/events/latest", Method.Get);
@@ -74,6 +67,15 @@ namespace ReelWorld.ApiClient
             if (response == null) throw new Exception("NO response from server");
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return response.Data;
+        }
+
+        public async Task<bool> DeleteAsync(int eventId)
+        {
+            var request = new RestRequest("api/profiles/{id}", Method.Delete);
+            var response = await _restClient.ExecuteAsync(request);
+            if (response == null) throw new Exception("No response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
+            return true;
         }
     }
 }

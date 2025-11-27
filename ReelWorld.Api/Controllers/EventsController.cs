@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
+using ReelWorld.DataAccessLibrary.SqlServer;
 
 namespace ReelWorld.Api.Controllers
 {
@@ -79,6 +80,20 @@ namespace ReelWorld.Api.Controllers
                 return NotFound();
 
             return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            try
+            {
+                var delete = await _eventDao.DeleteAsync(id);
+                return Ok(delete);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
 
     }
