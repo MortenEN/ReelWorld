@@ -59,15 +59,15 @@
             <div class="form-group mt-3">
                 <input type="submit" value="Gem" class="btn btn-primary" />
             </div>
-
-            <form asp-action="DeleteConfirmed" method="post"
-                  onsubmit="return confirm('Er du sikker på, at du vil slette dette event?');">
-                <input type="hidden" name="id" value="@Model.EventId" />
-                <button type="submit" class="btn btn-danger mt-3">Slet Event</button>
-            </form>
-
-
         </form>
+
+        <!-- SLET EVENT FORM -->
+        <form asp-action="DeleteConfirmed" method="post"
+              onsubmit="return confirm('Er du sikker på, at du vil slette dette event?');">
+            <input type="hidden" name="id" value="@Model.EventId" />
+            <button type="submit" class="btn btn-danger mt-3">Slet Event</button>
+        </form>
+
     </div>
 </div>
 

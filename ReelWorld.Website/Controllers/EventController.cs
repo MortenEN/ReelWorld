@@ -53,7 +53,6 @@ namespace ReelWorld.Website.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: EventController/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -71,7 +70,6 @@ namespace ReelWorld.Website.Controllers
             return View(@event);
         }
 
-        // POST: EventController/Edit/5
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Event @event)
         {
@@ -95,10 +93,9 @@ namespace ReelWorld.Website.Controllers
             if (@event == null)
                 return NotFound();
 
-            return View(@event); // Sender eventet til en Delete.cshtml side
+            return View(@event); 
         }
 
-        // POST: EventController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, Event @event)
@@ -111,6 +108,5 @@ namespace ReelWorld.Website.Controllers
             TempData["SuccessMessage"] = "Eventet blev slettet!";
             return RedirectToAction("Index", "Home");
         }
-
     }
 }
