@@ -53,9 +53,20 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-        public Task<bool> DeleteAsync(int eventId)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            try
+            {
+                var query = "DELETE FROM [Event] WHERE EventID = @EventID";
+                var affectedRows = await connection.ExecuteAsync(query, new { EventID = id });
+                return affectedRows > 0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Event>> GetAllAsync()
