@@ -48,15 +48,16 @@
                 </td>
             <td>
                     <div class="d-flex gap-2">
+                        <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success" title="Deltag">
+                            <i class="bi bi-check-lg"></i> Deltag
+                        </a>
                     <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
                         <i class="bi bi-info-circle"></i> Detaljer
                     </a>
                     <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
                         <i class="bi bi-pencil"></i> Rediger
                     </a>
-                    <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Deltag">
-                        <i class="bi bi-check-lg"></i> Deltag
-                    </a>
+                    
                     @* <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-sm btn-danger" title="Slet">
                         <i class="bi bi-trash"></i>
                     </a> *@
