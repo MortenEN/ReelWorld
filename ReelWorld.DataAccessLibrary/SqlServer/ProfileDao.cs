@@ -82,25 +82,41 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 }, transaction);
 
                 // 5. Insert ProfileInterests
-                if (profile.Interests != null)
+                if (!string.IsNullOrWhiteSpace(profile.Interests))
                 {
-                    foreach (var interestName in profile.Interests)
+                    // Del strengen op i enkelte interesser, fx "Paddle, Reading"
+                    var interests = profile.Interests
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Distinct(StringComparer.OrdinalIgnoreCase); // undgå dubletter som "Paddle" og "paddle"
+
+                    foreach (var interestName in interests)
                     {
                         var interestId = await connection.QuerySingleOrDefaultAsync<int?>(@"
-                        SELECT InterestsID FROM Interests WHERE InterestName = @Name;
-                        ", new { Name = interestName }, transaction);
+            SELECT InterestsID 
+            FROM Interests 
+            WHERE InterestName = @Name;
+        ", new { Name = interestName }, transaction);
 
                         if (interestId == null)
                         {
                             interestId = await connection.QuerySingleAsync<int>(@"
-                            INSERT INTO Interests (InterestName) OUTPUT INSERTED.InterestsID VALUES (@Name);
-                            ", new { Name = interestName }, transaction);
+                INSERT INTO Interests (InterestName) 
+                OUTPUT INSERTED.InterestsID 
+                VALUES (@Name);
+            ", new { Name = interestName }, transaction);
                         }
 
+                        // 🔒 Indsæt kun, hvis kombinationen ikke allerede findes
                         await connection.ExecuteAsync(@"
-                        INSERT INTO ProfileInterests (ProfileID, InterestsID)
-                        VALUES (@ProfileID, @InterestID);
-                        ", new { ProfileID = profileId, InterestID = interestId.Value }, transaction);
+            IF NOT EXISTS (
+                SELECT 1 
+                FROM ProfileInterests 
+                WHERE ProfileID = @ProfileID 
+                  AND InterestsID = @InterestID
+            )
+            INSERT INTO ProfileInterests (ProfileID, InterestsID)
+            VALUES (@ProfileID, @InterestID);
+        ", new { ProfileID = profileId, InterestID = interestId.Value }, transaction);
                     }
                 }
 
