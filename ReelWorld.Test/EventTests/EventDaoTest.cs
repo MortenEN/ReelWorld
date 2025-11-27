@@ -5,6 +5,7 @@ using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.SqlServer;
 using ReelWorld.DataAccessLibrary.Stub;
+using System.Threading.Tasks;
 using System.Transactions;
 
 namespace ReelWorld.Test;
@@ -37,9 +38,10 @@ public class EventDaoTest
     [Test]
     public async Task EventDao_Create_Event_With_Database()
     {
-        //arrange
-        EventDao eventDao = new(connectionsString);
-        var TestEvent = new Event
+        // arrange
+        var eventDao = new EventDao(connectionsString);
+
+        var testEvent = new Event
         {
             Title = "Test Event",
             Description = "This is a test event.",
@@ -49,11 +51,31 @@ public class EventDaoTest
             FK_Profile_Id = 1,
             Limit = 100
         };
-        //act
-        var createdId = await eventDao.CreateAsync(TestEvent);
-        //assert
-        Assert.That(createdId, Is.GreaterThan(0), "The Create method should return a EventId that is above 0");
 
+        int createdId = 0;
+
+        try
+        {
+            // act
+            createdId = await eventDao.CreateAsync(testEvent);
+
+            // assert
+            Assert.That(createdId, Is.GreaterThan(0),
+                "CreateAsync should return a valid generated EventId.");
+        }
+        finally
+        {
+            if (createdId > 0)
+            {
+                using var connection = new SqlConnection(connectionsString);
+                await connection.OpenAsync();
+
+                // CLEANUP: remove created event
+                await connection.ExecuteAsync(
+                    "DELETE FROM Event WHERE EventId = @Id",
+                    new { Id = createdId });
+            }
+        }
     }
 
     [Test]
@@ -68,78 +90,56 @@ public class EventDaoTest
         Assert.That(events.Count(), Is.GreaterThan(0), "The GetAll method should return at least one event");
     }
 
-    //[Test]
-    //public async Task EventDao_CreateUpdateDelete_Should_Work_Correctly()
-    //{
-    //    // Arrange
-    //    EventDao eventDao = new EventDao(connectionsString);
+    [Test]
+    public async Task EventDao_CreateUpdateDelete_ShouldWorkCorrectly()
+    {
+        //arrange
+        var eventDao = new EventDao(connectionsString);
 
-    //    // 1. Create a new event
-    //    var newEvent = new Event
-    //    {
-    //        Title = "Test Event",
-    //        Description = "Test Description",
-    //        Date = DateTime.Now.AddDays(1),
-    //        Location = "Test Location",
-    //        IsPublic = true,
-    //        FK_Profile_Id = 1, // Replace with a valid profile ID in your DB
-    //        Limit = 10
-    //    };
+        var newEvent = new Event
+        {
+            Title = "Test Event",
+            Description = "Test Description",
+            Date = DateTime.Now.AddDays(1),
+            Location = "Test Location",
+            IsPublic = true,
+            FK_Profile_Id = 1,
+            Limit = 10
+        };
 
-    //    // Insert the event
-    //    using var connection = new SqlConnection(connectionsString);
-    //    await connection.OpenAsync();
-    //    using var transaction = connection.BeginTransaction();
-    //    try
-    //    {
-    //        var insertQuery = @"
-    //        INSERT INTO [Event] (Title, Description, Date, Location, Visibility, FK_Profile_ID, [Limit])
-    //        VALUES (@Title, @Description, @Date, @Location, @Visibility, @ProfileID, @Limit);
-    //        SELECT CAST(SCOPE_IDENTITY() as int);";
+        using var connection = new SqlConnection(connectionsString);
+        await connection.OpenAsync();
 
-    //        newEvent.EventId = await connection.ExecuteScalarAsync<int>(insertQuery, new
-    //        {
-    //            Title = newEvent.Title,
-    //            Description = newEvent.Description,
-    //            Date = newEvent.Date,
-    //            Location = newEvent.Location,
-    //            Visibility = newEvent.IsPublic,
-    //            ProfileID = newEvent.FK_Profile_Id,
-    //            Limit = newEvent.Limit
-    //        }, transaction);
+        newEvent.EventId = await connection.ExecuteScalarAsync<int>(@"
+        INSERT INTO [Event] (Title, Description, Date, Location, Visibility, fk_profile_id, [Limit])
+        VALUES (@Title, @Description, @Date, @Location, @Visibility, @ProfileId, @Limit);
+        SELECT CAST(SCOPE_IDENTITY() AS INT);",
+            new
+            {
+                Title = newEvent.Title,
+                Description = newEvent.Description,
+                Date = newEvent.Date,
+                Location = newEvent.Location,
+                Visibility = newEvent.IsPublic,
+                ProfileId = newEvent.FK_Profile_Id,
+                Limit = newEvent.Limit
+            });
 
-    //        // 2. Update the event
-    //        newEvent.Title += " - Updated";
-    //        newEvent.Description += " - Updated";
-    //        newEvent.Location += " - Updated";
-    //        newEvent.Date = newEvent.Date.AddDays(1);
-    //        newEvent.Limit += 5;
-    //        newEvent.IsPublic = !newEvent.IsPublic;
+        //act
+        newEvent.Title += " Updated";
+        newEvent.Description += " Updated";
+        newEvent.Location += " Updated";
+        newEvent.IsPublic = !newEvent.IsPublic;
+        newEvent.Limit += 10;
 
-    //        var updateResult = await eventDao.UpdateAsync(newEvent);
-    //        Assert.That(updateResult, Is.True, "UpdateAsync should return true");
+        //assert
+        Assert.That(await eventDao.UpdateAsync(newEvent), Is.True);
 
-    //        // Verify the update
-    //        var updatedEvent = await eventDao.GetOneAsync(newEvent.EventId);
-    //        Assert.That(updatedEvent.Title, Is.EqualTo(newEvent.Title));
-    //        Assert.That(updatedEvent.Description, Is.EqualTo(newEvent.Description));
-    //        Assert.That(updatedEvent.Location, Is.EqualTo(newEvent.Location));
-    //        Assert.That(updatedEvent.Date, Is.EqualTo(newEvent.Date));
-    //        Assert.That(updatedEvent.Limit, Is.EqualTo(newEvent.Limit));
-    //        Assert.That(updatedEvent.IsPublic, Is.EqualTo(newEvent.IsPublic));
+        var updated = await eventDao.GetOneAsync(newEvent.EventId);
 
-    //        // 3. Delete the event to clean up
-    //        var deleteQuery = "DELETE FROM [Event] WHERE EventID = @EventID";
-    //        var rowsDeleted = await connection.ExecuteAsync(deleteQuery, new { EventID = newEvent.EventId }, transaction);
-    //        Assert.That(rowsDeleted, Is.EqualTo(1), "Event should be deleted");
+        Assert.That(updated.Title, Is.EqualTo(newEvent.Title));
 
-    //        // Commit the transaction
-    //        await transaction.CommitAsync();
-    //    }
-    //    catch
-    //    {
-    //        await transaction.RollbackAsync();
-    //        throw;
-    //    }
-    //}
+        await connection.ExecuteAsync("DELETE FROM [Event] WHERE EventId = @Id",
+            new { Id = newEvent.EventId });
+    }
 }
