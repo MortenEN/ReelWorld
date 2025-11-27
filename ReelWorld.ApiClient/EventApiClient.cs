@@ -77,5 +77,22 @@ namespace ReelWorld.ApiClient
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return true;
         }
+
+        public async Task<List<Event>> SearchEventsAsync(string query)
+        {
+            var request = new RestRequest($"api/events/search", Method.Get);
+            request.AddParameter("query", query);
+            var response = await _restClient.ExecuteAsync<List<Event>>(request);
+
+            if (response == null || !response.IsSuccessStatusCode)
+                return new List<Event>();
+
+            return response.Data;
+        }
+
+        public Task<IEnumerable<Event>> SearchAsync(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

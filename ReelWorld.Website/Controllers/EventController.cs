@@ -11,11 +11,13 @@ namespace ReelWorld.Website.Controllers
     {
         IEventDaoAsync _eventApiClient = new EventApiClient("https://LocalHost:7204");
 
-     
-        public ActionResult Index()
+
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var events = await _eventApiClient.GetAllAsync();
+            return View(events);
         }
+
         [HttpGet]
         public async Task<ActionResult> Details([FromRoute]int id)
         {
@@ -108,5 +110,23 @@ namespace ReelWorld.Website.Controllers
             TempData["SuccessMessage"] = "Eventet blev slettet!";
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchAsync(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return RedirectToAction("Index");
+
+            var allEvents = await _eventApiClient.GetAllAsync();
+
+            var filtered = allEvents
+                .Where(e => e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                            (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+
+            return View("Search", filtered);
+        }
+
+
     }
 }

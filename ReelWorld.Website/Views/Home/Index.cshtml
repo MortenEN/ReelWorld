@@ -6,9 +6,12 @@
 
 <h1>De seneste 10 events</h1>
 
-<p>
-    <a asp-action="Create">Opret nyt event</a>
-</p>
+<!-- Søgeformular -->
+<form asp-action="Search" method="get" class="mb-3">
+    <input type="text" name="query" class="form-control" placeholder="Søg events..." />
+</form>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -29,41 +32,38 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
                 <td>
                     @item.AttendeeCount / @item.Limit
                 </td>
-            <td>
+                <td>
                     <div class="d-flex gap-2">
                         <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success" title="Deltag">
                             <i class="bi bi-check-lg"></i> Deltag
                         </a>
-                    <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
-                        <i class="bi bi-info-circle"></i> Detaljer
-                    </a>
-                    <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
-                        <i class="bi bi-pencil"></i> Rediger
-                    </a>
-                    
-                    @* <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-sm btn-danger" title="Slet">
-                        <i class="bi bi-trash"></i>
-                    </a> *@
+                        <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
+                            <i class="bi bi-info-circle"></i> Detaljer
+                        </a>
+                        <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
+                            <i class="bi bi-pencil"></i> Rediger
+                        </a>
                     </div>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

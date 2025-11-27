@@ -54,5 +54,10 @@ namespace ReelWorld.DataAccessLibrary.Stub
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Event>> SearchAsync(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

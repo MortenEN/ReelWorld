@@ -214,6 +214,21 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
+        public async Task<List<Event>> SearchAsync(string query)
+        {
+            using var connection = (SqlConnection)CreateConnection();
+            var sql = @"SELECT * FROM Events
+                WHERE Name LIKE @Query
+                   OR City LIKE @Query
+                   OR Description LIKE @Query";
+
+            return (await connection.QueryAsync<Event>(sql, new { Query = "%" + query + "%" })).ToList();
+        }
+
+        Task<IEnumerable<Event>> IEventDaoAsync.SearchAsync(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

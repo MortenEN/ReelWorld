@@ -96,5 +96,20 @@ namespace ReelWorld.Api.Controllers
             }
         }
 
+        [HttpGet("Search")]
+        public async Task<ActionResult<List<Event>>> Search([FromQuery] string query)
+        {
+            try
+            {
+                var result = await _eventDao.SearchAsync(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+
     }
 }

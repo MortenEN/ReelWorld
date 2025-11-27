@@ -18,5 +18,23 @@ namespace ReelWorld.Website.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return RedirectToAction("Index", "Event");
+
+            var allEvents = await _eventApiClient.GetAllAsync();
+
+            var filtered = allEvents
+                .Where(e => e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                            (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+
+            return View("~/Views/Event/Search.cshtml", filtered);
+        }
+
     }
+
 }

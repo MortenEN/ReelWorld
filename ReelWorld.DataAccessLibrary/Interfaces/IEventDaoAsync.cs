@@ -10,6 +10,7 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
         Task<int> CreateAsync(Event @event);
         Task<bool> UpdateAsync(Event @event);
         Task<bool> DeleteAsync(int eventId);
+        Task<IEnumerable<Event>> SearchAsync(string query);
 
     }
 }
