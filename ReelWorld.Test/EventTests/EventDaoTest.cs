@@ -1,12 +1,9 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
 using ReelWorld.DataAccessLibrary.Interfaces;
-using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.SqlServer;
 using ReelWorld.DataAccessLibrary.Stub;
-using System.Threading.Tasks;
-using System.Transactions;
+using Event = ReelWorld.DataAccessLibrary.Model.Event;
 
 namespace ReelWorld.Test;
 
@@ -141,5 +138,40 @@ public class EventDaoTest
 
         await connection.ExecuteAsync("DELETE FROM [Event] WHERE EventId = @Id",
             new { Id = newEvent.EventId });
+    }
+    [Test]
+    public async Task EventDao_SearchAsync_Events_With_Database()
+    {
+        //arrange
+        int eventId = 0;
+        using var connection = new SqlConnection(connectionsString);
+        EventDao eventDao = new(connectionsString);
+        Event testEvent = new Event
+        {
+            Title = "Test Search Event",
+            Description = "This is a for search event.",
+            Location = ".test",
+            Date = DateTime.Now,
+            IsPublic = true,
+            FK_Profile_Id = 1,
+            Limit = 100
+        };
+        try
+        {
+
+            //act
+            eventId = await eventDao.CreateAsync(testEvent);
+
+            var res = await eventDao.SearchAsync("Test Search Event");
+            //assert
+            Assert.That(res.Count == 1);
+        }
+        finally
+        {
+            // CLEANUP: remove event
+            await connection.ExecuteAsync(
+                "DELETE FROM Event WHERE EventId = @EventId",
+                new { EventId = eventId });
+        }
     }
 }

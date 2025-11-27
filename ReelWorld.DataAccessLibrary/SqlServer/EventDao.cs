@@ -1,12 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
@@ -78,7 +73,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 var query = @"
             SELECT e.EventID, e.Title, e.Description, e.Date, e.Location, e.Visibility, e.FK_Profile_ID,e.Limit,
             (SELECT COUNT(*) FROM EventProfile ep WHERE ep.EventId = e.EventID) AS AttendeeCount
-            FROM [Event] e;"; 
+            FROM [Event] e;";
                 return connection.Query<Event>(query).ToList();
             }
             catch (Exception)
@@ -148,7 +143,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 if (count > 0)
                 {
                     transaction.Rollback();
-                    return false; 
+                    return false;
                 }
 
                 // Insert new attendee
@@ -217,9 +212,8 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
         public async Task<List<Event>> SearchAsync(string query)
         {
             using var connection = (SqlConnection)CreateConnection();
-            var sql = @"SELECT * FROM Events
-                WHERE Name LIKE @Query
-                   OR City LIKE @Query
+            var sql = @"SELECT * FROM Event
+                WHERE Title LIKE @Query
                    OR Description LIKE @Query";
 
             return (await connection.QueryAsync<Event>(sql, new { Query = "%" + query + "%" })).ToList();
