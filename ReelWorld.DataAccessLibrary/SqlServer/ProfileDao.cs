@@ -366,9 +366,9 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 var affectedRows = await connection.ExecuteAsync(query, new { ProfileID = id });
                 return affectedRows > 0;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception($"Database error while deleting profile {id}.", ex);
             }
         }
 

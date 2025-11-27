@@ -1,3 +1,4 @@
+using ReelWorld.ApiClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.DataAccessLibrary.Stub;
@@ -6,8 +7,8 @@ namespace ReelWorld.WinForm
 {
     public partial class DeleteProfile : Form
     {
-        //IProfileDaoAsync _profileApiClient = new ProfileApiClient("https://LocalHost:7204");
-        IProfileDaoAsync _profileApiClient = new InMemoryProfileDaoStub();
+        IProfileDaoAsync _profileApiClient = new ProfileApiClient("https://LocalHost:7204");
+        //IProfileDaoAsync _profileApiClient = new InMemoryProfileDaoStub();
         public DeleteProfile() => InitializeComponent();
 
         private async void DeleteProfile_Load(object sender, EventArgs e) => await LoadProfiles();

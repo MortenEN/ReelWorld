@@ -54,7 +54,7 @@ namespace ReelWorld.Test.ProfileTests
             Profile profile = new Profile
             {
                 Name = "Test_ProfileDao_Create_Profile_With_Database",
-                Email = "test@testing.ekwek",
+                Email = "test@testing.krkr",
                 HashPassword = "1234",
                 PhoneNo = "87654321",
                 Age = 30,
@@ -101,7 +101,7 @@ namespace ReelWorld.Test.ProfileTests
                 StreetName = "Gaden",
                 StreetNumber = "17",
                 ZipCode = "9000",
-                Interests = "Paddle, Reading"
+                Interests = "Paddle, Hiking"
             };
 
             // Act
@@ -134,7 +134,7 @@ namespace ReelWorld.Test.ProfileTests
                 StreetName = "Gaden",
                 StreetNumber = "17",
                 ZipCode = "9000",
-                Interests = "Paddle, Reading"
+                Interests = "Paddle, Football"
             };
 
             // Act
