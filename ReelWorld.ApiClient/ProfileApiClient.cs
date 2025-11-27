@@ -80,5 +80,15 @@ namespace ReelWorld.ApiClient
             if (!response.IsSuccessStatusCode) throw new Exception($"Server reply: Unsuccessful request - {response.StatusCode}");
             return true;
         }
+
+        public async Task<int> LoginAsync(Profile profile)
+        {
+            var response = await _restClient.RequestAsync<int>(Method.Post, $"logins", profile);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Error logging in for author with email={profile.Email}. Message was {response.Content}");
+            }
+            return response.Data;
+        }
     }
 }
