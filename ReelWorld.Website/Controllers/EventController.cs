@@ -87,24 +87,30 @@ namespace ReelWorld.Website.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: EventController/Delete/5
-        public ActionResult Delete(int eventid)
+        [HttpGet]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            return View();
+            var @event = await _eventApiClient.GetOneAsync(id);
+
+            if (@event == null)
+                return NotFound();
+
+            return View(@event); // Sender eventet til en Delete.cshtml side
         }
 
         // POST: EventController/Delete/5
         [HttpPost]
-        public ActionResult Delete(int eventid, IFormCollection collection)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id, Event @event)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var deletedEvent = await _eventApiClient.DeleteAsync(id);
+
+            if (deletedEvent == null)
+                return NotFound();
+
+            TempData["SuccessMessage"] = "Eventet blev slettet!";
+            return RedirectToAction("Index", "Home");
         }
+
     }
 }
