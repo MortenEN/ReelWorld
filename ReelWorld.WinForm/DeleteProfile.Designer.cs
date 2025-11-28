@@ -41,6 +41,7 @@
             lblNameInfo = new Label();
             lblName = new Label();
             btnDelete = new Button();
+            lblLoading = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -59,6 +60,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(lblLoading);
             splitContainer1.Panel2.Controls.Add(txtBoxDescription);
             splitContainer1.Panel2.Controls.Add(lblDescriptionText);
             splitContainer1.Panel2.Controls.Add(lblCity);
@@ -182,6 +184,18 @@
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
             // 
+            // lblLoading
+            // 
+            lblLoading.AutoSize = true;
+            lblLoading.Font = new Font("Segoe UI", 12F);
+            lblLoading.ForeColor = SystemColors.ButtonShadow;
+            lblLoading.Location = new Point(226, 406);
+            lblLoading.Name = "lblLoading";
+            lblLoading.Size = new Size(127, 28);
+            lblLoading.TabIndex = 13;
+            lblLoading.Text = "Henter data...";
+            lblLoading.Visible = false;
+            // 
             // DeleteProfile
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -214,5 +228,6 @@
         private Label lblPhone;
         private Label lblPhoneText;
         private TextBox txtBoxDescription;
+        private Label lblLoading;
     }
 }

@@ -7,25 +7,58 @@ namespace ReelWorld.WinForm
 {
     public partial class DeleteProfile : Form
     {
+        private System.Windows.Forms.Timer _refreshTimer;
+
         IProfileDaoAsync _profileApiClient = new ProfileApiClient("https://LocalHost:7204");
         //IProfileDaoAsync _profileApiClient = new InMemoryProfileDaoStub();
-        public DeleteProfile() => InitializeComponent();
+        public DeleteProfile()
+        {
+            InitializeComponent();
+            SetupRefreshTimer();
+        }
 
         private async void DeleteProfile_Load(object sender, EventArgs e) => await LoadProfiles();
         private void lstProfiles_SelectedIndexChanged(object sender, EventArgs e) => UpdateUi();
         private void btnDelete_Click(object sender, EventArgs e) => DeleteSelectedProfile();
 
+        private void SetupRefreshTimer()
+        {
+            _refreshTimer = new System.Windows.Forms.Timer();
+            _refreshTimer.Interval = 3000; // 3 seconds
+            _refreshTimer.Tick += async (s, e) => await LoadProfiles();
+            _refreshTimer.Start();
+        }
 
         private async Task LoadProfiles()
         {
-            lstProfiles.Items.Clear();
             var profiles = await _profileApiClient.GetAllAsync();
+
+            // Hvis antal og alle profiler matcher => ingen opdatering
+            if (lstProfiles.Items.Count == profiles.Count() &&
+                lstProfiles.Items.Cast<Profile>().Select(p => p.ProfileId)
+                    .SequenceEqual(profiles.Select(p => p.ProfileId)))
+                return;
+
+            // Gem selection
+            var selectedProfile = lstProfiles.SelectedItem as Profile;
+
+            // Opdater liste
+            lstProfiles.Items.Clear();
             foreach (var profile in profiles)
-            {
                 lstProfiles.Items.Add(profile);
+
+            // Genskab selection
+            if (selectedProfile != null)
+            {
+                var itemToSelect = lstProfiles.Items.Cast<Profile>()
+                                    .FirstOrDefault(p => p.ProfileId == selectedProfile.ProfileId);
+                if (itemToSelect != null)
+                    lstProfiles.SelectedItem = itemToSelect;
             }
+
             UpdateUi();
         }
+
 
         private void ClearUi()
         {
