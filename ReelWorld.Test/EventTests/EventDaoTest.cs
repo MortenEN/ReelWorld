@@ -162,7 +162,7 @@ public class EventDaoTest
             //act
             eventId = await eventDao.CreateAsync(testEvent);
 
-            var res = await eventDao.SearchAsync("Test Search Event");
+            List<Event> res = await eventDao.SearchAsync("Test Search Event");
             //assert
             Assert.That(res.Count == 1);
         }
