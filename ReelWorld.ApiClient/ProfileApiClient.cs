@@ -83,7 +83,9 @@ namespace ReelWorld.ApiClient
 
         public async Task<int> LoginAsync(Profile profile)
         {
-            var response = await _restClient.RequestAsync<int>(Method.Post, $"logins", profile);
+            var request = new RestRequest("logins", Method.Post);
+            request.AddJsonBody(profile);
+            var response = await _restClient.ExecuteAsync<int>(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception($"Error logging in for author with email={profile.Email}. Message was {response.Content}");
