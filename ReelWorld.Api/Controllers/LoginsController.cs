@@ -5,17 +5,28 @@ using ReelWorld.DataAccessLibrary.SqlServer;
 
 namespace ReelWorld.Api.Controllers
 {
+    
+        [ApiController]
+        [Route("api/[controller]")]
+        public class LoginsController : ControllerBase
+        {
+            private readonly ILoginDao _loginRepository;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    public class LoginsController : ControllerBase
-    {
-        #region Repositories and Constructors
-        private readonly IProfileDaoAsync _profileRepository;
-        public LoginsController(IProfileDaoAsync repository) => _profileRepository = repository;
-        #endregion
+            public LoginsController(ILoginDao loginRepo)
+            {
+                _loginRepository = loginRepo;
+            }
 
-        [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] Profile loginvalues) => await _profileRepository.LoginAsync(loginvalues.Email, loginvalues.HashPassword);
-    }
+            [HttpPost("login")]
+            public async Task<ActionResult<int>> Login([FromBody] Profile profile)
+            {
+                int userId = await _loginRepository.LoginAsync(profile.Email, profile.HashPassword);
+
+                if (userId <= 0)
+                    return Unauthorized();
+
+                return Ok(userId);
+            }
+        }
 }
+

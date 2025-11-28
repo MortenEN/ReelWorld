@@ -1,4 +1,3 @@
-
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.SqlServer;
 
@@ -18,6 +17,8 @@ namespace ReelWorld.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+
 
             // Dependency Injection for UserDao
             builder.Services.AddScoped<IProfileDaoAsync>(sp =>
@@ -26,6 +27,13 @@ namespace ReelWorld.Api
             new EventDao(_connectionString));
             builder.Services.AddScoped<IRegistrationDaoAsync>(sp =>
             new RegistrationDao(_connectionString));
+            builder.Services.AddScoped<ILoginDao>(sp =>
+            new LoginDao(_connectionString));
+
+
+
+
+
 
             var app = builder.Build();
 

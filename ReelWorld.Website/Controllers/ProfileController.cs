@@ -211,6 +211,14 @@ namespace ReelWorld.Website.Controllers
                 authProperties);
         }
 
+        [HttpGet]
+        public async Task <IActionResult> Login(string? returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+
 
     }
 }
