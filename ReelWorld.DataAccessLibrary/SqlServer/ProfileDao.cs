@@ -336,13 +336,17 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 DELETE FROM ProfileInterests WHERE ProfileID = @ProfileID;",
                 new { ProfileID = profile.ProfileId }, transaction);
 
-                if (profile.Interests != null)
+                if (!string.IsNullOrWhiteSpace(profile.Interests))
                 {
-                    foreach (var interestName in profile.Interests)
+                    var interests = profile.Interests
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Distinct(StringComparer.OrdinalIgnoreCase);
+
+                    foreach (var interestName in interests)
                     {
                         var interestId = await connection.QuerySingleOrDefaultAsync<int?>(@"
                         SELECT InterestsID FROM Interests WHERE InterestName = @Name;",
-                        new { Name = interestName }, transaction);
+                            new { Name = interestName }, transaction);
 
                         if (interestId == null)
                         {
@@ -350,13 +354,13 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                             INSERT INTO Interests (InterestName) 
                             OUTPUT INSERTED.InterestsID 
                             VALUES (@Name);",
-                            new { Name = interestName }, transaction);
+                                new { Name = interestName }, transaction);
                         }
 
                         await connection.ExecuteAsync(@"
                         INSERT INTO ProfileInterests (ProfileID, InterestsID)
                         VALUES (@ProfileID, @InterestID)",
-                        new { ProfileID = profile.ProfileId, InterestID = interestId.Value }, transaction);
+                            new { ProfileID = profile.ProfileId, InterestID = interestId.Value }, transaction);
                     }
                 }
 

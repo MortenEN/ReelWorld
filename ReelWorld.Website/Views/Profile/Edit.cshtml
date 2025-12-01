@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Rediger Profil";
+    // Split Interests-strengen til en liste for pre-fyldning
+    var selectedInterests = (Model.Interests ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
 }
 
 <h1>Rediger Profil</h1>
@@ -15,7 +17,6 @@
 
             <input type="hidden" asp-for="ProfileId" />
             <input type="hidden" asp-for="HashPassword" />
-
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label">Navn</label>
@@ -52,6 +53,7 @@
                 <input asp-for="Country" class="form-control" />
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="StreetName" class="control-label">Gadenavn</label>
                 <input asp-for="StreetName" class="form-control" />
@@ -80,45 +82,42 @@
                 <label asp-for="Relationship" class="control-label">Forhold</label>
                 <select asp-for="Relationship" class="form-control"
                         asp-items="Html.GetEnumSelectList<ReelWorld.DataAccessLibrary.Model.Profile.RelationshipStatus>()">
+                    <option value="">-- Vælg --</option>
                 </select>
                 <span asp-validation-for="Relationship" class="text-danger"></span>
             </div>
+
+            <!-- Interests som checkboxe -->
             <div class="form-group">
                 <label>Interesser</label><br />
-
-                @foreach (var interest in new[] {
-                                "Football", "Cooking", "Reading", "Gaming",
-                                "Hiking", "Movies", "Music", "Travel", "Fitness", "Photography"
-                                })
+                @foreach (var interest in new[] { "Football", "Cooking", "Reading", "Gaming", "Hiking", "Movies", "Music", "Travel", "Fitness", "Photography" })
                 {
                     <label>
                         <input type="checkbox"
                                name="Interests"
                                value="@interest"
-                               @(Model.Interests != null && Model.Interests.Contains(interest) ? "checked" : "") />
+                               @(Model.Interests != null && Model.Interests.Split(',').Select(i => i.Trim()).Contains(interest) ? "checked" : "") />
                         @GetInterestLabel(interest)
                     </label>
                     <br />
                 }
             </div>
+
             @functions {
-                public string GetInterestLabel(string key)
+                public string GetInterestLabel(string key) => key switch
                 {
-                    return key switch
-                    {
-                        "Football" => "Fodbold",
-                        "Cooking" => "Madlavning",
-                        "Reading" => "Læse bøger",
-                        "Gaming" => "Gaming",
-                        "Hiking" => "Hiking",
-                        "Movies" => "Film",
-                        "Music" => "Musik",
-                        "Travel" => "Rejse",
-                        "Fitness" => "Træning",
-                        "Photography" => "Fotografering",
-                        _ => key
-                    };
-                }
+                    "Football" => "Fodbold",
+                    "Cooking" => "Madlavning",
+                    "Reading" => "Læse bøger",
+                    "Gaming" => "Gaming",
+                    "Hiking" => "Hiking",
+                    "Movies" => "Film",
+                    "Music" => "Musik",
+                    "Travel" => "Rejse",
+                    "Fitness" => "Træning",
+                    "Photography" => "Fotografering",
+                    _ => key
+                };
             }
 
             <div class="form-group mt-3">
@@ -128,7 +127,7 @@
     </div>
 </div>
 
-<div>
+<div class="mt-2">
     <a asp-action="Details" asp-route-id="@Model.ProfileId">Tilbage til profil</a>
 </div>
 

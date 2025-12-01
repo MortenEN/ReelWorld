@@ -46,17 +46,15 @@
             </div>
 
             <div class="form-group">
-                <label>Interests</label><br />
-                <input type="checkbox" name="Interests" value="Football" /> Fodbold<br />
-                <input type="checkbox" name="Interests" value="Cooking" /> Madlavning<br />
-                <input type="checkbox" name="Interests" value="Reading" /> Læse bøger<br />
-                <input type="checkbox" name="Interests" value="Gaming" /> Gaming<br />
-                <input type="checkbox" name="Interests" value="Hiking" /> Hiking<br />
-                <input type="checkbox" name="Interests" value="Movies" /> Film<br />
-                <input type="checkbox" name="Interests" value="Music" /> Musik<br />
-                <input type="checkbox" name="Interests" value="Travel" /> Rejse<br />
-                <input type="checkbox" name="Interests" value="Fitness" /> Træning<br />
-                <input type="checkbox" name="Interests" value="Photography" /> Fotografering<br />
+                <label>Interesser</label><br />
+                @foreach (var interest in new[] { "Football", "Cooking", "Reading", "Gaming", "Hiking", "Movies", "Music", "Travel", "Fitness", "Photography" })
+                {
+                    <label>
+                        <input type="checkbox" name="Interests" value="@interest" /> @interest
+                    </label>
+                
+                    <br />
+                }
             </div>
 
             <div class="form-group">

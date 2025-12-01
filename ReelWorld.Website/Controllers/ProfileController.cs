@@ -48,16 +48,19 @@ namespace ReelWorld.Website.Controllers
 
         // POST: ProfileController/Create
         [HttpPost]
-        public async Task<IActionResult> Create(Profile profile)
+        public async Task<IActionResult> Create(Profile profile, string[] Interests)
         {
             if (!ModelState.IsValid)
                 return View(profile);
+
+            profile.Interests = Interests != null ? string.Join(",", Interests) : "";
 
             await _userApiClient.CreateAsync(profile);
 
             TempData["SuccessMessage"] = "Bruger blev oprettet!";
             return RedirectToAction("Index", "Home");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Profiles()
@@ -67,7 +70,7 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> profile([FromRoute] int id)
+        public async Task<ActionResult> Profile([FromRoute] int id)
         {
             var profile = await _userApiClient.GetOneAsync(id);
             if (profile == null)
@@ -102,7 +105,7 @@ namespace ReelWorld.Website.Controllers
         // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Profile profile)
+        public async Task<IActionResult> Edit(int id, Profile profile, string[] Interests)
         {
             ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
                                            .Cast<Profile.RelationshipStatus>()
@@ -119,6 +122,7 @@ namespace ReelWorld.Website.Controllers
             {
                 return View(profile);
             }
+            profile.Interests = Interests != null ? string.Join(", ", Interests) : "";
 
             var success = await _userApiClient.UpdateAsync(profile);
             if (!success) return NotFound();
@@ -140,85 +144,5 @@ namespace ReelWorld.Website.Controllers
                 return View();
             }
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Login(Profile loginInfo, string? returnUrl)
-        //{
-        //    int profileId = await _userApiClient.LoginAsync(loginInfo.Email, loginInfo.HashPassword);
-
-        //    if (profileId > 0)
-        //    {
-        //        var profile = await _userApiClient.GetOneAsync(profileId);
-
-        //        var claims = new List<Claim>
-        //{
-        //    new Claim("profile_id", profile.ProfileId.ToString()),
-        //    new Claim(ClaimTypes.Email, profile.Email),
-        //    new Claim(ClaimTypes.Role, "User")
-        //};
-
-        //        await SignInUsingClaims(claims); // hvis du har samme helper som i BlogSharp
-
-        //        HttpContext.Session.SetInt32("ProfileId", profile.ProfileId);
-
-        //        TempData["Message"] = $"Du er nu logget ind som {profile.Email}";
-
-        //        if (string.IsNullOrEmpty(returnUrl))
-        //            return RedirectToAction("Index", "Home");
-        //        else
-        //            return Redirect(returnUrl);
-        //    }
-
-        //    ViewBag.ErrorMessage = "Forkert email eller bruger findes ikke.";
-        //    return View(loginInfo);
-        //}
-
-        //private async Task SignInUsingClaims(List<Claim> claims)
-        //{
-        //    //create the container for all your claims
-        //    //These are stored in the cookie for easy retrieval on the server
-        //    var claimsIdentity = new ClaimsIdentity(
-        //        claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //    var authProperties = new AuthenticationProperties
-        //    {
-        //        #region often used options - to consider including in cookie
-        //        //AllowRefresh = <bool>,
-        //        // Refreshing the authentication session should be allowed.
-
-        //        //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-        //        // The time at which the authentication ticket expires. A 
-        //        // value set here overrides the ExpireTimeSpan option of 
-        //        // CookieAuthenticationOptions set with AddCookie.
-
-        //        //IsPersistent = true,
-        //        // Whether the authentication session is persisted across 
-        //        // multiple requests. When used with cookies, controls
-        //        // whether the cookie's lifetime is absolute (matching the
-        //        // lifetime of the authentication ticket) or session-based.
-
-        //        //IssuedUtc = <DateTimeOffset>,
-        //        // The time at which the authentication ticket was issued.
-
-        //        //RedirectUri = <string>
-        //        // The full path or absolute URI to be used as an http 
-        //        // redirect response value. 
-        //        #endregion
-        //    };
-
-        //    await HttpContext.SignInAsync(
-        //        CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),
-        //        authProperties);
-        //}
-
-        [HttpGet]
-        public async Task <IActionResult> Login(string? returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-
-
     }
 }
