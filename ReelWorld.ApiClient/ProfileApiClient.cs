@@ -61,13 +61,22 @@ namespace ReelWorld.ApiClient
 
         public async Task<int> LoginAsync(string email, string password)
         {
-            var request = new RestRequest("api/logins", Method.Post);
-            // Add email and password to the request body
-            request.AddJsonBody(new { Email = email, Password = password });
+            var loginDto = new LoginDto
+            {
+                Email = email,
+                Password = password
+            };
+
+            var request = new RestRequest("logins", Method.Post);
+            request.AddJsonBody(loginDto);
 
             var response = await _restClient.ExecuteAsync<int>(request);
-            if (response == null) throw new Exception("NO response from server");
-            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
+
+            if (response == null || !response.IsSuccessful)
+            {
+                throw new Exception($"Error logging in for email={email}. Response: {response?.Content}");
+            }
+
             return response.Data;
         }
 

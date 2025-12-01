@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace ReelWorld.Website
 {
     public class Program
@@ -5,6 +7,8 @@ namespace ReelWorld.Website
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            AddCookieAuthentication(builder.Services);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -26,6 +30,7 @@ namespace ReelWorld.Website
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -33,6 +38,13 @@ namespace ReelWorld.Website
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+            static void AddCookieAuthentication(IServiceCollection services)
+            {
+                //Adds the cookie authentication scheme
+                services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+            }
         }
     }
 }

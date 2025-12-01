@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" style="font-weight: 700" ; asp-area="" asp-controller="Home" asp-action="Index">ReelWorld</a>
+                <a class="navbar-brand" style="font-weight: 700" asp-area="" asp-controller="Home" asp-action="Index">ReelWorld</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +22,6 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Hjem</a>
@@ -36,23 +36,40 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Profiles">Profiler</a>
                         </li>
 
-                        <!-- 🔍 SØGEFELT INDSAT HER -->
+                        <!-- 🔍 Søgefelt -->
                         <form class="d-flex ms-3" asp-controller="Home" asp-action="Search" method="get">
                             <input class="form-control me-2" type="search" name="q" placeholder="Søg..." aria-label="Søg">
                             <button class="btn btn-outline-primary" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
                         </form>
-                        <!-- 🔍 SLUT PÅ TILFØJELSE -->
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Login">
-                                <i class="bi bi-person-circle"></i> Profil
-                            </a>
-
-                        </li>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Profile" asp-action="Details" asp-route-id="@userId">
+                                    <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="post" asp-controller="Login" asp-action="LogOut" class="d-inline">
+                                    <button type="submit" class="btn btn-link nav-link text-dark">
+                                        <i class="bi bi-box-arrow-right"></i> Log ud
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Login" asp-action="Index">
+                                    <i class="bi bi-person-circle"></i> Log ind
+                                </a>
+                            </li>
+                        }
                     </ul>
 
                 </div>

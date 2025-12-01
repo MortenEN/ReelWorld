@@ -1,39 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using ReelWorld.ApiClient;
+using ReelWorld.Website.Models;
+using System.Security.Claims;
 
 namespace ReelWorld.Website.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly LoginApiClient _LoginApiClient;
+        private readonly LoginApiClient _loginApiClient;
 
         public LoginController()
         {
-            _LoginApiClient = new LoginApiClient("https://localhost:7204/");
+            _loginApiClient = new LoginApiClient("https://localhost:7204");
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(new LoginViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string email, string password)
+        public async Task<IActionResult> Index(LoginViewModel model)
         {
-            int userId = await _LoginApiClient.LoginAsync(email, password);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            int userId;
+            try
+            {
+                userId = await _loginApiClient.LoginAsync(model.Email, model.Password);
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Fejl ved login. Tjek dine oplysninger.");
+                return View(model);
+            }
 
             if (userId <= 0)
             {
-                ViewBag.Error = "Forkert email eller adgangskode";
-                return View();
+                ModelState.AddModelError("", "Forkert email eller adgangskode");
+                return View(model);
             }
 
-            // Gem login i session
-            HttpContext.Session.SetInt32("UserId", userId);
-            HttpContext.Session.SetString("UserEmail", email);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Email, model.Email),
+                new Claim(ClaimTypes.Role, "User")
+            };
 
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["Message"] = "You are now logged out.";
             return RedirectToAction("Index", "Home");
         }
     }
 }
-

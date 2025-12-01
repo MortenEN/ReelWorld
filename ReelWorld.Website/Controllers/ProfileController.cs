@@ -141,75 +141,75 @@ namespace ReelWorld.Website.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(Profile loginInfo, string? returnUrl)
-        {
-            int profileId = await _userApiClient.LoginAsync(loginInfo.Email, loginInfo.HashPassword);
+        //[HttpPost]
+        //public async Task<IActionResult> Login(Profile loginInfo, string? returnUrl)
+        //{
+        //    int profileId = await _userApiClient.LoginAsync(loginInfo.Email, loginInfo.HashPassword);
 
-            if (profileId > 0)
-            {
-                var profile = await _userApiClient.GetOneAsync(profileId);
+        //    if (profileId > 0)
+        //    {
+        //        var profile = await _userApiClient.GetOneAsync(profileId);
 
-                var claims = new List<Claim>
-        {
-            new Claim("profile_id", profile.ProfileId.ToString()),
-            new Claim(ClaimTypes.Email, profile.Email),
-            new Claim(ClaimTypes.Role, "User")
-        };
+        //        var claims = new List<Claim>
+        //{
+        //    new Claim("profile_id", profile.ProfileId.ToString()),
+        //    new Claim(ClaimTypes.Email, profile.Email),
+        //    new Claim(ClaimTypes.Role, "User")
+        //};
 
-                await SignInUsingClaims(claims); // hvis du har samme helper som i BlogSharp
+        //        await SignInUsingClaims(claims); // hvis du har samme helper som i BlogSharp
 
-                HttpContext.Session.SetInt32("ProfileId", profile.ProfileId);
+        //        HttpContext.Session.SetInt32("ProfileId", profile.ProfileId);
 
-                TempData["Message"] = $"Du er nu logget ind som {profile.Email}";
+        //        TempData["Message"] = $"Du er nu logget ind som {profile.Email}";
 
-                if (string.IsNullOrEmpty(returnUrl))
-                    return RedirectToAction("Index", "Home");
-                else
-                    return Redirect(returnUrl);
-            }
+        //        if (string.IsNullOrEmpty(returnUrl))
+        //            return RedirectToAction("Index", "Home");
+        //        else
+        //            return Redirect(returnUrl);
+        //    }
 
-            ViewBag.ErrorMessage = "Forkert email eller bruger findes ikke.";
-            return View(loginInfo);
-        }
+        //    ViewBag.ErrorMessage = "Forkert email eller bruger findes ikke.";
+        //    return View(loginInfo);
+        //}
 
-        private async Task SignInUsingClaims(List<Claim> claims)
-        {
-            //create the container for all your claims
-            //These are stored in the cookie for easy retrieval on the server
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //private async Task SignInUsingClaims(List<Claim> claims)
+        //{
+        //    //create the container for all your claims
+        //    //These are stored in the cookie for easy retrieval on the server
+        //    var claimsIdentity = new ClaimsIdentity(
+        //        claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var authProperties = new AuthenticationProperties
-            {
-                #region often used options - to consider including in cookie
-                //AllowRefresh = <bool>,
-                // Refreshing the authentication session should be allowed.
+        //    var authProperties = new AuthenticationProperties
+        //    {
+        //        #region often used options - to consider including in cookie
+        //        //AllowRefresh = <bool>,
+        //        // Refreshing the authentication session should be allowed.
 
-                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                // The time at which the authentication ticket expires. A 
-                // value set here overrides the ExpireTimeSpan option of 
-                // CookieAuthenticationOptions set with AddCookie.
+        //        //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+        //        // The time at which the authentication ticket expires. A 
+        //        // value set here overrides the ExpireTimeSpan option of 
+        //        // CookieAuthenticationOptions set with AddCookie.
 
-                //IsPersistent = true,
-                // Whether the authentication session is persisted across 
-                // multiple requests. When used with cookies, controls
-                // whether the cookie's lifetime is absolute (matching the
-                // lifetime of the authentication ticket) or session-based.
+        //        //IsPersistent = true,
+        //        // Whether the authentication session is persisted across 
+        //        // multiple requests. When used with cookies, controls
+        //        // whether the cookie's lifetime is absolute (matching the
+        //        // lifetime of the authentication ticket) or session-based.
 
-                //IssuedUtc = <DateTimeOffset>,
-                // The time at which the authentication ticket was issued.
+        //        //IssuedUtc = <DateTimeOffset>,
+        //        // The time at which the authentication ticket was issued.
 
-                //RedirectUri = <string>
-                // The full path or absolute URI to be used as an http 
-                // redirect response value. 
-                #endregion
-            };
+        //        //RedirectUri = <string>
+        //        // The full path or absolute URI to be used as an http 
+        //        // redirect response value. 
+        //        #endregion
+        //    };
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-        }
+        //    await HttpContext.SignInAsync(
+        //        CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity),
+        //        authProperties);
+        //}
 
         [HttpGet]
         public async Task <IActionResult> Login(string? returnUrl)

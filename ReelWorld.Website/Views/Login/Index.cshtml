@@ -1,28 +1,29 @@
-﻿@model ReelWorld.DataAccessLibrary.Model.Profile
+﻿@model ReelWorld.Website.Models.LoginViewModel
 
-@{
-    ViewData["Title"] = "Login";
-}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm p-4">
+                <h3 class="text-center mb-3">Log ind</h3>
 
-<h2>Login</h2>
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<form asp-action="Login" method="post">
-    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group mb-3">
-        <label>Email</label>
-        <input asp-for="Email" class="form-control" />
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Log ind</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group mb-3">
-        <label>Password</label>
-        <input asp-for="HashPassword" class="form-control" type="password" />
-    </div>
-
-    <button class="btn btn-primary" type="submit">Log ind</button>
-
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <p class="text-danger mt-2">@ViewBag.ErrorMessage</p>
-    }
-</form>
+</div>

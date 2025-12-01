@@ -1,36 +1,38 @@
 ﻿using ReelWorld.DataAccessLibrary.Model;
+using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ReelWorld.ApiClient
 {
     public class LoginApiClient
     {
-        private readonly HttpClient _http;
+        private readonly RestClient _restClient;
 
         public LoginApiClient(string baseUrl)
         {
-            _http = new HttpClient { BaseAddress = new Uri(baseUrl)};
+            _restClient = new RestClient(baseUrl);
         }
 
         public async Task<int> LoginAsync(string email, string password)
         {
-            var profile = new Profile
+            var loginDto = new LoginDto
             {
                 Email = email,
-                HashPassword = password
+                Password = password
             };
 
-            var response = await _http.PostAsJsonAsync("api/logins/login", profile);
+            var request = new RestRequest("api/logins", Method.Post);
+            request.AddJsonBody(loginDto);
 
-            if (!response.IsSuccessStatusCode)
-                return -1;
+            var response = await _restClient.ExecuteAsync<int>(request);
 
-            return await response.Content.ReadFromJsonAsync<int>();
+            if (response == null || !response.IsSuccessful)
+            {
+                throw new Exception($"Error logging in for email={email}. Response: {response?.Content}");
+            }
+
+            return response.Data;
         }
     }
 }

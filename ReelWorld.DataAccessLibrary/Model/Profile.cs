@@ -24,6 +24,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets or sets the HashPassword of the Profile.
         /// </summary>
+        [Display(Name = "Password")]
         public string HashPassword { get; set; }
 
         /// <summary>

@@ -1,8 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using ReelWorld.DataAccessLibrary.Interfaces;
+using ReelWorld.DataAccessLibrary.Tools;
 using System.Security.Cryptography;
 using System.Text;
-using ReelWorld.DataAccessLibrary.Interfaces;
-using Dapper;
 
 namespace ReelWorld.DataAccessLibrary.SqlServer
 {
@@ -17,39 +18,29 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
 
         public async Task<int> LoginAsync(string email, string password)
         {
-            using var connection = (SqlConnection)CreateConnection();
-            await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction();
+            try
+            {
+                var query = "SELECT ProfileID, HashPassword FROM Profile WHERE Email=@Email";
+                using var connection = (SqlConnection)CreateConnection();
+                await connection.OpenAsync();
 
-            string sql = @"SELECT ProfileId FROM Profiles WHERE Email = @Email AND HashPassword = @HashPassword";
-            using SqlCommand cmd = new(sql, connection);
-            cmd.Parameters.AddWithValue("@Email", email);
-
-            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-            if (!reader.Read())
-                return -1; // email findes ikke
-
-            int profileId = reader.GetInt32(0);
-            string storedHash = reader.GetString(1);
-
-            if (!VerifyPassword(password, storedHash))
-                return -1; // password forkert
-
-            return profileId;
+                var profileTuple = await connection.QueryFirstOrDefaultAsync<ProfileTuple>(query, new { Email = email });
+                if (profileTuple != null && BCryptTool.ValidatePassword(password, profileTuple.HashPassword))
+                {
+                    return profileTuple.ProfileID;
+                }
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error logging in for author with email {email}: '{ex.Message}'.", ex);
+            }
         }
 
-        private bool VerifyPassword(string password, string storedHash)
+        internal class ProfileTuple
         {
-            string hashedInput = HashPassword(password);
-            return hashedInput == storedHash;
-        }
-
-        public static string HashPassword(string password)
-        {
-            using var sha256 = SHA256.Create();
-            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
+            public int ProfileID { get; set; }
+            public string HashPassword { get; set; }
         }
     }
 }
