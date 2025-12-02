@@ -146,8 +146,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     return false;
                 }
 
-                // SIMULATE CONCURRENCY ISSUE HERE
-                await Task.Delay(5000);
+                
 
                 // Insert new attendee
                 var insertQuery = @"

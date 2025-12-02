@@ -16,6 +16,8 @@ namespace ReelWorld.Api.Controllers
         [HttpPost("{eventId}/join/{profileId}")]
         public async Task<bool> JoinEventAsync(int eventId, int ProfileId)
         {
+            // SIMULATE CONCURRENCY ISSUE HERE
+            await Task.Delay(5000);
             try
             {
                 var result = await _registrationDao.JoinEventAsync(eventId, ProfileId);
