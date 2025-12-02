@@ -62,7 +62,7 @@
         </form>
 
         <!-- SLET EVENT FORM -->
-        <form asp-action="DeleteConfirmed" method="post"
+        <form asp-action="Delete" method="post"
               onsubmit="return confirm('Er du sikker på, at du vil slette dette event?');">
             <input type="hidden" name="id" value="@Model.EventId" />
             <button type="submit" class="btn btn-danger mt-3">Slet Event</button>

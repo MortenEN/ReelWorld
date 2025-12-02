@@ -124,6 +124,13 @@
                 <input type="submit" value="Gem" class="btn btn-primary" />
             </div>
         </form>
+
+        <form asp-action="Delete" method="post"
+              onsubmit="return confirm('Er du sikker på, at du vil slette din profil?');">
+            <input type="hidden" name="id" value="@Model.ProfileId" />
+            <button type="submit" class="btn btn-danger mt-3">Slet Profil</button>
+        </form>
+
     </div>
 </div>
 

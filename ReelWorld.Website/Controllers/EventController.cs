@@ -87,20 +87,9 @@ namespace ReelWorld.Website.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var @event = await _eventApiClient.GetOneAsync(id);
-
-            if (@event == null)
-                return NotFound();
-
-            return View(@event); 
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, Event @event)
+        public async Task<IActionResult> Delete(int id)
         {
             var deletedEvent = await _eventApiClient.DeleteAsync(id);
 

@@ -21,8 +21,17 @@
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Log ind</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-2">Log ind</button>
                 </form>
+
+                <hr />
+
+                <div class="text-center">
+                    <p>Har du ikke en profil endnu?</p>
+                    <a asp-controller="Profile" asp-action="Create" class="btn btn-success w-100">
+                        Opret ny profil
+                    </a>
+                </div>
             </div>
         </div>
     </div>

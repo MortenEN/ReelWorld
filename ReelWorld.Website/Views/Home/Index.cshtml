@@ -11,22 +11,13 @@
     <input type="text" name="query" class="form-control" placeholder="Søg events..." />
 </form>
 
-
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+            <th>@Html.DisplayNameFor(model => model.Location)</th>
             <th>Tilmeldte / Max Deltagere</th>
             <th></th>
         </tr>
@@ -35,32 +26,30 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td>
-                    @item.AttendeeCount / @item.Limit
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td>@Html.DisplayFor(modelItem => item.Location)</td>
+                <td>@item.AttendeeCount / @item.Limit</td>
                 <td>
                     <div class="d-flex gap-2">
-                        <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success" title="Deltag">
-                            <i class="bi bi-check-lg"></i> Deltag
-                        </a>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success" title="Deltag">
+                                <i class="bi bi-check-lg"></i> Deltag
+                            </a>
+                        }
+
                         <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
                             <i class="bi bi-info-circle"></i> Detaljer
                         </a>
-                        <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
-                            <i class="bi bi-pencil"></i> Rediger
-                        </a>
+
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
+                                <i class="bi bi-pencil"></i> Rediger
+                            </a>
+                        }
                     </div>
                 </td>
             </tr>

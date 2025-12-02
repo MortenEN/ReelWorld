@@ -133,16 +133,13 @@ namespace ReelWorld.Website.Controllers
 
         // POST: ProfileController/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var success = await _userApiClient.DeleteAsync(id);
+            if (!success)
+                return NotFound();
+            TempData["SuccessMessage"] = "Profilen blev slettet!";
+            return RedirectToAction("Index", "Home");
         }
     }
 }
