@@ -88,6 +88,20 @@ public class EventDaoTest
     }
 
     [Test]
+    public async Task EventDao_Get10Biggest_Events_With_Database()
+    {
+        //arrange
+        EventDao eventDao = new(connectionsString);
+        //act
+        var events = await eventDao.Get10BiggestAsync();
+        //assert
+        Assert.That(events, Is.Not.Null, "The Get10Biggest method should return a list of events");
+        Assert.That(events.Count(), Is.LessThanOrEqualTo(10), "The Get10Biggest method should return at most 10 events");
+        var attendeeCounts = events.Select(e => e.AttendeeCount).ToList();
+        Assert.That(attendeeCounts, Is.Ordered.Descending, "Events should be ordered by AttendeeCount descending (most attendees first).");
+    }
+
+    [Test]
     public async Task EventDao_CreateUpdateDelete_ShouldWorkCorrectly()
     {
         //arrange
