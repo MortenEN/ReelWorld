@@ -100,20 +100,17 @@ namespace ReelWorld.Website.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SearchAsync(string query)
-        {
-            if (string.IsNullOrWhiteSpace(query))
-                return RedirectToAction("Index");
+        [HttpGet] public async Task<IActionResult> SearchAsync(string query) 
 
-            var allEvents = await _eventApiClient.GetAllAsync();
-
-            var filtered = allEvents
-                .Where(e => e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                            (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase)))
-                .ToList();
-
-            return View("Search", filtered);
+        { 
+            if (string.IsNullOrWhiteSpace(query)) return RedirectToAction("Index"); 
+            
+            var allEvents = await _eventApiClient.GetAllAsync(); 
+            var filtered = allEvents.Where(e => e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) 
+            || (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase))).ToList(); 
+            
+            return View("Search", filtered); 
         }
+
     }
 }

@@ -21,20 +21,30 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string query)
+        public async Task<IActionResult> Search(string query, string category)
         {
-            if (string.IsNullOrWhiteSpace(query))
-                return RedirectToAction("Index", "Home");
-
             var allEvents = await _eventApiClient.GetAllAsync();
 
-            var filtered = allEvents
-                .Where(e => e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                            (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase)))
-                .ToList();
+            var filtered = allEvents.AsQueryable();
 
-            return View("~/Views/Event/Search.cshtml", filtered);
+            // Søgning
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                filtered = filtered.Where(e =>
+                    e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                    (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            // Filter på kategori
+            if (!string.IsNullOrWhiteSpace(category) && category != "All")
+            {
+                filtered = filtered.Where(e => e.Category == category);
+            }
+
+            return View("~/Views/Event/Search.cshtml", filtered.ToList());
         }
+
 
     }
 

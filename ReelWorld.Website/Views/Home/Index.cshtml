@@ -10,6 +10,20 @@
 <form asp-action="Search" method="get" class="mb-3">
     <input type="text" name="query" class="form-control" placeholder="Søg events..." />
 </form>
+<form>
+    <select class="form-select me-2" name="category">
+        <option value="">Alle kategorier</option>
+        <option value="Music">Music</option>
+        <option value="Sports">Sports</option>
+        <option value="Theater">Theater</option>
+        <!-- evt. dynamisk kategori-liste -->
+    </select>
+
+    <button class="btn btn-outline-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
+</form>
+
 
 <table class="table table-striped">
     <thead>

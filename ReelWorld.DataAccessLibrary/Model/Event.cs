@@ -26,10 +26,11 @@ namespace ReelWorld.DataAccessLibrary.Model
         public int Limit { get; set; }
         List<Profile> Attendees { get; set; }
         public int AttendeeCount { get; set; }
+        public string Category { get; set; }
         #endregion
 
         #region Constructor
-        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic, int fk_Profile_Id, int limit,List<Profile>attendees)
+        public Event(int eventId, string title, string description, DateTime date, string location, bool isPublic, int fk_Profile_Id, int limit,List<Profile>attendees, string category)
         {
             EventId = eventId;
             Title = title;
@@ -40,6 +41,7 @@ namespace ReelWorld.DataAccessLibrary.Model
             FK_Profile_Id = fk_Profile_Id;
             Limit = limit;
             Attendees = attendees;
+            Category = category;
         }
         public Event() { }
         #endregion
