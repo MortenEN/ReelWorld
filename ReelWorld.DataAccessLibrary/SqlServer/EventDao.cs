@@ -232,7 +232,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-        public async Task<List<Event>> SearchAsync(string query, string category)
+        public async Task<IEnumerable<Event>> SearchAsync(string query, string category)
         {
             using var connection = (SqlConnection)CreateConnection();
             var sql = @"SELECT * FROM Event
@@ -255,11 +255,6 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             var result = await connection.QueryAsync<Event>(sql, parameters);
 
             return result.ToList();
-        }
-
-        Task<IEnumerable<Event>> IEventDaoAsync.SearchAsync(string query, string category)
-        {
-            throw new NotImplementedException();
         }
     }
 }

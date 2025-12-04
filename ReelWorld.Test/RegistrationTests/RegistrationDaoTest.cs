@@ -32,7 +32,7 @@ public class RegistrationDaoTest
             1,
             1,
             attendees,
-            "testing");
+            5,"test");
 
         using var connection = new SqlConnection(connectionsString);
         await connection.OpenAsync();
@@ -76,8 +76,8 @@ public class RegistrationDaoTest
             true,
             1,
             1,
-            attendees,
-            "testing");
+            attendees,5,
+            "test");
 
         using var connection = new SqlConnection(connectionsString);
         await connection.OpenAsync();
