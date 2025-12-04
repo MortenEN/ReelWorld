@@ -47,15 +47,40 @@
 
             <div class="form-group">
                 <label>Interesser</label><br />
-                @foreach (var interest in new[] { "Football", "Cooking", "Reading", "Gaming", "Hiking", "Movies", "Music", "Travel", "Fitness", "Photography" })
+
+                @foreach (var interest in new[]
+                                {
+                                "Football", "Cooking", "Reading", "Gaming", "Hiking",
+                                "Movies", "Music", "Travel", "Fitness", "Photography"
+                                })
                 {
                     <label>
-                        <input type="checkbox" name="Interests" value="@interest" /> @interest
+                        <input type="checkbox"
+                               name="Interests"
+                               value="@interest"/>
+                        @GetInterestLabel(interest)
                     </label>
-                
                     <br />
                 }
             </div>
+
+            @functions {
+                public string GetInterestLabel(string key) => key switch
+                {
+                    "Football" => "Fodbold",
+                    "Cooking" => "Madlavning",
+                    "Reading" => "Læse bøger",
+                    "Gaming" => "Gaming",
+                    "Hiking" => "Vandring",
+                    "Movies" => "Film",
+                    "Music" => "Musik",
+                    "Travel" => "Rejse",
+                    "Fitness" => "Træning",
+                    "Photography" => "Fotografering",
+                    _ => key
+                };
+            }
+
 
             <div class="form-group">
                 <label asp-for="City" class="control-label">By</label>

@@ -24,7 +24,7 @@ namespace ReelWorld.Website.Controllers
         public async Task<IActionResult> Search(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
-                return RedirectToAction("Index", "Event");
+                return RedirectToAction("Index", "Home");
 
             var allEvents = await _eventApiClient.GetAllAsync();
 
