@@ -24,6 +24,9 @@ namespace ReelWorld.DataAccessLibrary.Model
         /// <summary>
         /// Gets or sets the HashPassword of the Profile.
         /// </summary>
+        [Required]
+        [RegularExpression(@"^(?=.*[0-9])(?=.*[!@#$%^&*(),.?\""{}|<>])(?=.*[A-Za-z]).{8,}$",
+        ErrorMessage = "Password skal være mindst 8 tegn og indeholde et tal og et specialtegn.")]
         [Display(Name = "Password")]
         public string HashPassword { get; set; }
 
