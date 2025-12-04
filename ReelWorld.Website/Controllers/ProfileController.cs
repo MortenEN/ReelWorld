@@ -138,6 +138,10 @@ namespace ReelWorld.Website.Controllers
             var success = await _userApiClient.DeleteAsync(id);
             if (!success)
                 return NotFound();
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
             TempData["SuccessMessage"] = "Profilen blev slettet!";
             return RedirectToAction("Index", "Home");
         }
