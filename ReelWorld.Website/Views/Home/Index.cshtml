@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Index";
 }
+@{
+    var sort = ViewData["Sort"] as string ?? "latest";
+}
 
-<h1>De seneste 10 events</h1>
+
 
 <!-- Søgeformular -->
 <form asp-action="Search" method="get" class="mb-3">
@@ -22,6 +25,20 @@
         <i class="bi bi-search"></i>
     </button>
 </form>
+<h1>
+    @if (sort == "biggest")
+    {
+        <text>De 10 mest populære events</text>
+    }
+    else
+    {
+        <text>De seneste 10 events</text> 
+    }
+</h1>
+
+<a asp-action="Index" asp-route-sort="@(sort == "latest" ? "biggest" : "latest")" class="btn btn-outline-secondary mb-3">
+    @(sort == "latest" ? "Vis 10 mest populære" : "Vis 10 seneste")
+</a>
 
 
 <table class="table table-striped">

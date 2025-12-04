@@ -9,9 +9,20 @@ namespace ReelWorld.Website.Controllers
     {
         IEventDaoAsync _eventApiClient = new EventApiClient("https://LocalHost:7204");
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sort = "biggest")
         {
-            var events = await _eventApiClient.Get10LatestAsync();
+            var events = await _eventApiClient.Get10BiggestAsync();
+
+            if (sort == "latest")
+            {
+                events = await _eventApiClient.Get10LatestAsync();
+            }
+            else if (sort == "biggest")
+            {
+                events = events.OrderByDescending(e => e.AttendeeCount).ToList();
+            }
+
+            ViewData["Sort"] = sort;
             return View(events);
         }
 
