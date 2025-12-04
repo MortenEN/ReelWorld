@@ -14,7 +14,7 @@ namespace ReelWorld.Website.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var events = await _eventApiClient.GetAllAsync();
+            var events = await _eventApiClient.Get10BiggestAsync();
             return View(events);
         }
 
@@ -115,7 +115,5 @@ namespace ReelWorld.Website.Controllers
 
             return View("Search", filtered);
         }
-
-
     }
 }

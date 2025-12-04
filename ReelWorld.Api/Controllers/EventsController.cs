@@ -111,5 +111,19 @@ namespace ReelWorld.Api.Controllers
         }
 
 
+        [HttpGet("Biggest")]
+        public async Task<ActionResult<List<Event>>> Get10BiggestAsync()
+        {
+            try
+            {
+                var events = await _eventDao.Get10BiggestAsync();
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
     }
 }
