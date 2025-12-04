@@ -78,19 +78,25 @@ namespace ReelWorld.ApiClient
             return true;
         }
 
-        public async Task<List<Event>> SearchEventsAsync(string query)
+        public async Task<List<Event>> SearchEventsAsync(string query, string category)
         {
             var request = new RestRequest($"api/events/search", Method.Get);
-            request.AddParameter("query", query);
+
+            if(!string.IsNullOrEmpty(query))
+                request.AddParameter("query", query);
+
+            if(!string.IsNullOrWhiteSpace(category))
+                request.AddParameter("category", category);
+                
             var response = await _restClient.ExecuteAsync<List<Event>>(request);
 
             if (response == null || !response.IsSuccessStatusCode)
                 return new List<Event>();
 
-            return response.Data;
+            return response.Data ?? new List<Event>();
         }
 
-        public Task<IEnumerable<Event>> SearchAsync(string query)
+        public Task<IEnumerable<Event>> SearchAsync(string query, string category)
         {
             throw new NotImplementedException();
         }

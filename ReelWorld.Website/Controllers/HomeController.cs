@@ -23,26 +23,12 @@ namespace ReelWorld.Website.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string query, string category)
         {
-            var allEvents = await _eventApiClient.GetAllAsync();
+            var filteredEvents = await _eventApiClient.SearchAsync(query, category);
 
-            var filtered = allEvents.AsQueryable();
+            ViewBag.Categories = (await _eventApiClient.GetAllAsync())
+            .Select(e => e.Category).Distinct().ToList();
 
-            // Søgning
-            if (!string.IsNullOrWhiteSpace(query))
-            {
-                filtered = filtered.Where(e =>
-                    e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                    (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase))
-                );
-            }
-
-            // Filter på kategori
-            if (!string.IsNullOrWhiteSpace(category) && category != "All")
-            {
-                filtered = filtered.Where(e => e.Category == category);
-            }
-
-            return View("~/Views/Event/Search.cshtml", filtered.ToList());
+            return View("~/Views/Event/Search.cshtml", filteredEvents);
         }
 
 

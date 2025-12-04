@@ -232,17 +232,32 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
-        public async Task<List<Event>> SearchAsync(string query)
+        public async Task<List<Event>> SearchAsync(string query, string category)
         {
             using var connection = (SqlConnection)CreateConnection();
             var sql = @"SELECT * FROM Event
-                WHERE Title LIKE @Query
-                   OR Description LIKE @Query";
+                WHERE 1=1";
 
-            return (await connection.QueryAsync<Event>(sql, new { Query = "%" + query + "%" })).ToList();
+            var parameters = new DynamicParameters();
+
+            if(!string.IsNullOrWhiteSpace(query))
+            {
+                sql += " AND (Title LIKE @Query OR Description LIKE @Query OR Location LIKE @Query)";
+                parameters.Add("Query", "%" + query + "%");
+            }
+
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                sql += " AND Category = @Category";
+                parameters.Add("Category", category);
+            }
+
+            var result = await connection.QueryAsync<Event>(sql, parameters);
+
+            return result.ToList();
         }
 
-        Task<IEnumerable<Event>> IEventDaoAsync.SearchAsync(string query)
+        Task<IEnumerable<Event>> IEventDaoAsync.SearchAsync(string query, string category)
         {
             throw new NotImplementedException();
         }

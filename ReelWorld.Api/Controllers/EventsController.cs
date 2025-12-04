@@ -97,11 +97,11 @@ namespace ReelWorld.Api.Controllers
         }
 
         [HttpGet("Search")]
-        public async Task<ActionResult<List<Event>>> Search([FromQuery] string query)
+        public async Task<ActionResult<List<Event>>> Search([FromQuery] string query, [FromQuery] string? category)
         {
             try
             {
-                var result = await _eventDao.SearchAsync(query);
+                var result = await _eventDao.SearchAsync(query, category);
                 return Ok(result);
             }
             catch (Exception ex)
