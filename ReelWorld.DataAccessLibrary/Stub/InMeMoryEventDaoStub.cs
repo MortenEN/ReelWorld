@@ -59,5 +59,10 @@ namespace ReelWorld.DataAccessLibrary.Stub
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Event>> Get10BiggestAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

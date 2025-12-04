@@ -81,6 +81,27 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Event>> Get10BiggestAsync()
+        {
+            using var connection = (SqlConnection)CreateConnection();
+            await connection.OpenAsync();
+            try
+            {
+                var query = @"
+            SELECT TOP 10 e.EventID, e.Title, e.Description,  e.Date, e.Location, e.Visibility, e.FK_Profile_ID, e.Limit,
+            COUNT(ep.EventId) AS AttendeeCount
+            FROM [Event] e 
+            LEFT JOIN EventProfile ep ON ep.EventId = e.EventID
+            GROUP BY e.EventID, e.Title, e.Description, e.Date, e.Location, e.Visibility, e.FK_Profile_ID, e.Limit
+            ORDER BY AttendeeCount DESC;";
+                return connection.Query<Event>(query).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<IEnumerable<Event>> Get10LatestAsync()
         {
             using var connection = (SqlConnection)CreateConnection();
