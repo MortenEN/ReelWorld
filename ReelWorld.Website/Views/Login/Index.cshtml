@@ -6,18 +6,18 @@
             <div class="card shadow-sm p-4">
                 <h3 class="text-center mb-3">Log ind</h3>
 
-                <form asp-action="Index" method="post">
+                <form asp-action="Index" method="post" id="loginForm">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <div class="mb-3">
                         <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control" id="emailField" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" type="password" />
+                        <input asp-for="Password" class="form-control" type="password" id="passwordField" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
@@ -26,13 +26,32 @@
 
                 <hr />
 
-                <div class="text-center">
+                <div class="text-center mb-3">
                     <p>Har du ikke en profil endnu?</p>
                     <a asp-controller="Profile" asp-action="Create" class="btn btn-success w-100">
                         Opret ny profil
                     </a>
                 </div>
+
+                <hr />
+
+                <div class="text-center">
+                    <p>Fyld felter automatisk:</p>
+                    <button type="button" class="btn btn-outline-primary m-1" onclick="fillLogin('anna@test.com','Password1!')">Profil 1 - Anna</button>
+                    <button type="button" class="btn btn-outline-primary m-1" onclick="fillLogin('mikkel@test.com','Password1!')">Profil 2 - Mikkel</button>
+                    <button type="button" class="btn btn-outline-primary m-1" onclick="fillLogin('sara@test.com','Password1!')">Profil 3 - Sara</button>
+                    <button type="button" class="btn btn-outline-primary m-1" onclick="fillLogin('sofie@test.com','Password1!')">Profil 10 - Sofie</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function fillLogin(email, password) {
+            document.getElementById('emailField').value = email;
+            document.getElementById('passwordField').value = password;
+        }
+    </script>
+}
