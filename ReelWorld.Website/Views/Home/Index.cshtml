@@ -18,9 +18,9 @@
 <form>
     <select class="form-select me-2" name="category">
         <option value="">Alle kategorier</option>
-        <option value="Music">Music</option>
-        <option value="Sports">Sports</option>
-        <option value="Theater">Theater</option>
+        <option value="Music">Musik</option>
+        <option value="Sports">Sport</option>
+        <option value="Theater">Teater</option>
     </select>
 
     <button class="btn btn-outline-primary" type="submit">
@@ -76,7 +76,10 @@
                             <i class="bi bi-info-circle"></i> Detaljer
                         </a>
 
-                        @if (User.Identity?.IsAuthenticated ?? false && item.FK_Profile_Id.ToString() == currentProfileId)
+                        @if (
+                                            User.Identity != null &&
+                                            User.Identity.IsAuthenticated &&
+                            item.FK_Profile_Id.ToString() == currentProfileId)
                         {
                             <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
                                 <i class="bi bi-pencil"></i> Rediger

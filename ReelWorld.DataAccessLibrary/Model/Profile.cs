@@ -76,13 +76,15 @@ namespace ReelWorld.DataAccessLibrary.Model
         public string StreetNumber { get; set; }
         [Display(Name = "Postnummer")]
         public string ZipCode { get; set; }
+        public int FK_AccessLevel_Id { get; set; }
+        public AccessLevel AccessLevel { get; set; }
         #endregion
 
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="Profile"/> class with full details.
         /// </summary>
-        public Profile(int profileId, string name, string email, string hashPassword, string phoneNo, int age, string interests, string description, string cityName, string countryName, string streetName, string streetNumber, string zipCode, RelationshipStatus relation)
+        public Profile(int profileId, string name, string email, string hashPassword, string phoneNo, int age, string interests, string description, string cityName, string countryName, string streetName, string streetNumber, string zipCode, RelationshipStatus relation, int fK_AccessLevel_Id, AccessLevel accessLevel)
         {
             this.ProfileId = profileId;
             this.Name = name;
@@ -98,6 +100,8 @@ namespace ReelWorld.DataAccessLibrary.Model
             this.StreetNumber = streetNumber;
             this.ZipCode = zipCode;
             this.Relationship = relation;
+            this.FK_AccessLevel_Id = fK_AccessLevel_Id;
+            this.AccessLevel = accessLevel;
         }
 
         /// <summary>

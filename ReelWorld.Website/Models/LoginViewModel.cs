@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ReelWorld.DataAccessLibrary.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReelWorld.Website.Models
 {
@@ -11,5 +12,6 @@ namespace ReelWorld.Website.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        //public AccessLevel AccessLevel { get; set; }
     }
 }

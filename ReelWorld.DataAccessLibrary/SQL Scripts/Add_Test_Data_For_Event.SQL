@@ -1,5 +1,5 @@
 ﻿INSERT INTO [dbo].[Event] 
-(Title, Description, Date, Location, Visibility, FK_User_ID, Limit)
+(Title, Description, Date, Location, Visibility, FK_Profile_ID, Limit)
 VALUES
 ('Fredagsbar i Aarhus', 'Kom til en hyggelig fredagsbar med live musik og kolde øl.', '2025-12-05 18:00', 'Aarhus C, Studenterhus Aarhus', 1, 1, 50),
 

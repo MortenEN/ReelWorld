@@ -92,31 +92,31 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     foreach (var interestName in interests)
                     {
                         var interestId = await connection.QuerySingleOrDefaultAsync<int?>(@"
-            SELECT InterestsID 
-            FROM Interests 
-            WHERE InterestName = @Name;
-        ", new { Name = interestName }, transaction);
+                        SELECT InterestsID 
+                        FROM Interests 
+                        WHERE InterestName = @Name;
+                        ", new { Name = interestName }, transaction);
 
                         if (interestId == null)
                         {
                             interestId = await connection.QuerySingleAsync<int>(@"
-                INSERT INTO Interests (InterestName) 
-                OUTPUT INSERTED.InterestsID 
-                VALUES (@Name);
-            ", new { Name = interestName }, transaction);
+                            INSERT INTO Interests (InterestName) 
+                            OUTPUT INSERTED.InterestsID 
+                            VALUES (@Name);
+                            ", new { Name = interestName }, transaction);
                         }
 
                         // 🔒 Indsæt kun, hvis kombinationen ikke allerede findes
                         await connection.ExecuteAsync(@"
-            IF NOT EXISTS (
-                SELECT 1 
-                FROM ProfileInterests 
-                WHERE ProfileID = @ProfileID 
-                  AND InterestsID = @InterestID
-            )
-            INSERT INTO ProfileInterests (ProfileID, InterestsID)
-            VALUES (@ProfileID, @InterestID);
-        ", new { ProfileID = profileId, InterestID = interestId.Value }, transaction);
+                        IF NOT EXISTS (
+                            SELECT 1 
+                            FROM ProfileInterests 
+                            WHERE ProfileID = @ProfileID 
+                              AND InterestsID = @InterestID
+                        )
+                        INSERT INTO ProfileInterests (ProfileID, InterestsID)
+                        VALUES (@ProfileID, @InterestID);
+                        ", new { ProfileID = profileId, InterestID = interestId.Value }, transaction);
                     }
                 }
 
@@ -404,31 +404,6 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             string middleName = names.Length > 2 ? string.Join(' ', names[1..^1]) : null;
 
             return (firstName, middleName, surname);
-        }
-
-        public async Task<int> LoginAsync(string email, string password)
-        {
-            try
-            {
-                var query = "SELECT Id, PasswordHash FROM Profile WHERE Email=@Email";
-                using var connection = CreateConnection();
-
-                var profileTuple = await connection.QueryFirstOrDefaultAsync<ProfileTuple>(query, new { Email = email });
-                if (profileTuple != null && BCryptTool.ValidatePassword(password, profileTuple.PasswordHash))
-                {
-                    return profileTuple.Id;
-                }
-                return -1;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error logging in for profile with email {email}: '{ex.Message}'.", ex);
-            }
-        }
-        internal class ProfileTuple
-        {
-            public int Id;
-            public string PasswordHash;
         }
     }
 }

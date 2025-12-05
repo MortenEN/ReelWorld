@@ -13,8 +13,6 @@ namespace ReelWorld.Website.Controllers
 {
     public class ProfileController : Controller
     {
-
-        //TODO: Find den rigtige Uri
         IProfileDaoAsync _userApiClient = new ProfileApiClient("https://LocalHost:7204");
         // GET: ProfileController
         public ActionResult Index()

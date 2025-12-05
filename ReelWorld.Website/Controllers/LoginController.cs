@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using ReelWorld.ApiClient;
+using ReelWorld.DataAccessLibrary.Model;
 using ReelWorld.Website.Models;
 using System.Security.Claims;
 
@@ -48,7 +49,7 @@ namespace ReelWorld.Website.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Email, model.Email),
-                new Claim(ClaimTypes.Role, "User")
+                //new Claim(ClaimTypes.Role, model.AccessLevel.Name)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

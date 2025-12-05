@@ -29,7 +29,7 @@ namespace ReelWorld.Website.Controllers
             return View(@event);
         }
 
-
+        [HttpGet]
         public ActionResult Create()
         {
             ViewBag.EventTypeList = new List<SelectListItem>
@@ -40,14 +40,14 @@ namespace ReelWorld.Website.Controllers
             return View();
         }
 
-
-
         // POST: EventController/Create
         [HttpPost]
         public async Task<IActionResult> Create(Event @event)
         {
             if (!ModelState.IsValid)
+            {
                 return View(@event);
+            }
 
             await _eventApiClient.CreateAsync(@event);
 

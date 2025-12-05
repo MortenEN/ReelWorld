@@ -70,6 +70,7 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 INSERT INTO EventProfile (EventId, ProfileId)
                 VALUES (@EventId, @ProfileId);";
 
+                Thread.Sleep(5000);
                 int rows = await connection.ExecuteAsync(
                     insertQuery,
                     new { EventId = eventId, ProfileId = profileId },
@@ -79,10 +80,11 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                 transaction.Commit();
                 return rows > 0;
             }
-            catch
+            catch (Exception ex)
             {
                 transaction.Rollback();
-                throw;
+                //TODO: Det her med en løkke og sådan noget
+                throw ex;
             }
         }
 

@@ -26,7 +26,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         public int Limit { get; set; }
         List<Profile> Attendees { get; set; }
         public int AttendeeCount { get; set; }
-        public string Category { get; set; }
+        public string? Category { get; set; }
         #endregion
 
         #region Constructor
