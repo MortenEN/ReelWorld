@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<ReelWorld.DataAccessLibrary.Model.Event>
+﻿@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Index";
+    var currentProfileId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
 }
 @{
     var sort = ViewData["Sort"] as string ?? "latest";
@@ -63,7 +65,7 @@
                 <td>@item.AttendeeCount / @item.Limit</td>
                 <td>
                     <div class="d-flex gap-2">
-                        @if (User.Identity?.IsAuthenticated ?? false)
+                        @if (User.Identity?.IsAuthenticated ?? false && currentProfileId != item.FK_Profile_Id.ToString())
                         {
                             <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success" title="Deltag">
                                 <i class="bi bi-check-lg"></i> Deltag
@@ -74,7 +76,7 @@
                             <i class="bi bi-info-circle"></i> Detaljer
                         </a>
 
-                        @if (User.Identity?.IsAuthenticated ?? false)
+                        @if (User.Identity?.IsAuthenticated ?? false && item.FK_Profile_Id.ToString() == currentProfileId)
                         {
                             <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
                                 <i class="bi bi-pencil"></i> Rediger
