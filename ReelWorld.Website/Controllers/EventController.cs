@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ReelWorld.ApiClient;
@@ -31,6 +32,7 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.EventTypeList = new List<SelectListItem>
@@ -43,6 +45,7 @@ namespace ReelWorld.Website.Controllers
 
         // POST: EventController/Create
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Event @event)
         {
             var profileId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -67,9 +70,13 @@ namespace ReelWorld.Website.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var @event = await _eventApiClient.GetOneAsync(id);
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (@event.FK_Profile_Id != loggedInUserId)
+                return Forbid();
 
             if (@event == null)
                 return NotFound();
@@ -84,8 +91,12 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, Event @event)
         {
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (@event.FK_Profile_Id != loggedInUserId)
+                return Forbid();
             if (id != @event.EventId)
                 return BadRequest();
 
@@ -99,9 +110,18 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            var @event = await _eventApiClient.GetOneAsync(id);
+            if (@event == null)
+                return NotFound();
+
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (@event.FK_Profile_Id != loggedInUserId)
+                return Forbid();
+
             var deletedEvent = await _eventApiClient.DeleteAsync(id);
 
             if (deletedEvent == null)

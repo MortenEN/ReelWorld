@@ -76,8 +76,8 @@ namespace ReelWorld.DataAccessLibrary.Model
         public string StreetNumber { get; set; }
         [Display(Name = "Postnummer")]
         public string ZipCode { get; set; }
-        public int FK_AccessLevel_Id { get; set; }
-        public AccessLevel AccessLevel { get; set; }
+        public int? FK_AccessLevel_Id { get; set; }
+        public AccessLevel? AccessLevel { get; set; }
         #endregion
         
         #region Constructor

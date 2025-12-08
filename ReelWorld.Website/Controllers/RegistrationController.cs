@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReelWorld.ApiClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
@@ -16,21 +17,21 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Join([FromForm] int eventId)
         {
-            var profileId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+            var profileId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (profileId == null)
-            {
                 return Unauthorized();
-            }
 
-            Registration registration = new Registration(eventId, int.Parse(profileId));
+            int loggedInUserId = int.Parse(profileId);
+
+            Registration registration = new Registration(eventId, loggedInUserId);
 
             if (!ModelState.IsValid)
                 return View(registration);
 
-            bool joined = await _registrationApiClient.JoinEventAsync(eventId, int.Parse(profileId));
+            bool joined = await _registrationApiClient.JoinEventAsync(eventId, loggedInUserId);
 
             if (!joined)
             {
@@ -43,7 +44,9 @@ namespace ReelWorld.Website.Controllers
         }
 
 
+
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create(int id)
         {
             Registration registration = new() { EventId = id };

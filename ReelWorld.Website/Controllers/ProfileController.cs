@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,8 +23,13 @@ namespace ReelWorld.Website.Controllers
         }
 
         // GET: ProfileController/Details/5
+        [HttpGet]
+        [Authorize]
         public async Task<ActionResult> Details(int id)
         {
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (loggedInUserId != id)
+                return Forbid();
             var profile = await _userApiClient.GetOneAsync(id);
 
             return View(profile);
@@ -31,6 +37,7 @@ namespace ReelWorld.Website.Controllers
 
 
         // GET: ProfileController/Create
+        [HttpGet]
         public ActionResult Create()
         {
             // Generer SelectList fra enum
@@ -82,8 +89,12 @@ namespace ReelWorld.Website.Controllers
 
         // GET: ProfileController/Edit/5
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (loggedInUserId != id)
+                return Forbid();
             var profile = await _userApiClient.GetOneAsync(id);
             if (profile == null) return NotFound();
 
@@ -102,9 +113,13 @@ namespace ReelWorld.Website.Controllers
 
         // POST: ProfileController/Edit/5
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Profile profile, string[] Interests)
         {
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (loggedInUserId != id)
+                return Forbid();
             ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
                                            .Cast<Profile.RelationshipStatus>()
                                            .Select(r => new SelectListItem
@@ -131,8 +146,12 @@ namespace ReelWorld.Website.Controllers
 
         // POST: ProfileController/Delete/5
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
+            var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (loggedInUserId != id)
+                return Forbid();
             var success = await _userApiClient.DeleteAsync(id);
             if (!success)
                 return NotFound();

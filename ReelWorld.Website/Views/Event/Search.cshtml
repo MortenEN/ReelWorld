@@ -38,22 +38,22 @@
                     <td>@Html.DisplayFor(modelItem => item.Location)</td>
                     <td>@item.AttendeeCount / @(item.Limit)</td>
                     <td>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 align-items-stretch">
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
-                            <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success" title="Deltag">
-                                <i class="bi bi-check-lg"></i> Deltag
+                                <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success d-flex align-items-center justify-content-center" title="Deltag">
+                                    <i class="bi bi-check-lg me-1"></i> Deltag
                             </a>
                             }
-                            <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
-                                <i class="bi bi-info-circle"></i> Detaljer
+                            <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info d-flex align-items-center justify-content-center" title="Detaljer">
+                                <i class="bi bi-info-circle me-1"></i> Detaljer
                             </a>
                             @if (User.Identity != null &&
                                                 User.Identity.IsAuthenticated &&
                                                 item.FK_Profile_Id.ToString() == currentProfileId)
                             {
-                            <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
-                                <i class="bi bi-pencil"></i> Rediger
+                                <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary d-flex align-items-center justify-content-center" title="Rediger">
+                                    <i class="bi bi-pencil me-1"></i> Rediger
                             </a>
                             }
 

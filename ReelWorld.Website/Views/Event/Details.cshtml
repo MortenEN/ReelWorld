@@ -1,7 +1,9 @@
-﻿@model ReelWorld.DataAccessLibrary.Model.Event
+﻿@using System.Security.Claims
+@model ReelWorld.DataAccessLibrary.Model.Event
 
 @{
     ViewData["Title"] = "Information om Event";
+    var currentProfileId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
 }
 
 <h1>Detaljer om eventet</h1>
@@ -48,22 +50,22 @@
         </dd>
     </dl>
 </div>
-<div>
-@*     Skal ændres senere i forhold til når man er logget ind, så man kan se edit knappe som den rigtige bruger
- *@    @* <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-sm btn-primary" title="Rediger">
-                        <i class="bi bi-pencil"></i>
-                    </a> *@
-</div>
-<div>
-    <form method="get"
-          asp-controller="Registration"
-          asp-action="Create"
-          asp-route-Id="@Model.EventId"
-          style="display:inline;">
-        <button type="submit" class="btn btn-sm btn-success" title="Deltag">
-            <i class="bi bi-check-lg"></i> Deltag
-        </button>
-    </form>
+<div class="mt-3 d-flex gap-2 align-items-stretch">
+    @if (
+        User.Identity != null &&
+        User.Identity.IsAuthenticated &&
+        Model.FK_Profile_Id.ToString() == currentProfileId)
+    {
+        <a asp-action="Edit" asp-controller="Event" asp-route-id="@Model.EventId" class="btn btn-sm btn-primary d-flex align-items-center justify-content-center" title="Rediger">
+            <i class="bi bi-pencil me-1"></i> Rediger
+        </a>
+    }
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a asp-action="Create" asp-controller="Registration" asp-route-id="@Model.EventId" class="btn btn-sm btn-success d-flex align-items-center justify-content-center" title="Deltag">
+            <i class="bi bi-check-lg me-1"></i> Deltag
+        </a>
+    }
 
     <a asp-action="Index" asp-controller="Home" class="ms-2">Tilbage til forsiden</a>
 </div>
