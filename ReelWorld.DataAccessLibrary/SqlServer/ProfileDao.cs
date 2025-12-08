@@ -138,55 +138,56 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             try
             {
                 var query = @"
-                SELECT 
-                p.ProfileID      AS ProfileId,
-                p.Email,
-                p.HashPassword,
-                p.Salt,
-                p.ProfileType,
-                LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
-                p.PhoneNo,
-                p.Age,
-                p.Relationship,
-                p.Description,
-                p.StreetName,
-                p.StreetNumber,
-                p.ZipCode,
-
-                c.City      AS City,
-                co.Country  AS Country,
-
-                -- Hent alle interesser som én kommasepareret streng
-                STRING_AGG(i.InterestName, ', ') AS Interests
-
-                FROM Profile p
-                LEFT JOIN City c               ON p.FK_City_ID = c.CityID
-                LEFT JOIN Country co           ON c.FK_Country_ID = co.CountryID
-                LEFT JOIN ProfileInterests pi  ON p.ProfileID = pi.ProfileID
-                LEFT JOIN Interests i          ON pi.InterestsID = i.InterestsID
-
-                WHERE p.ProfileID = @ProfileId
-                GROUP BY 
-                    p.ProfileID,
-                    p.Email,
-                    p.HashPassword,
-                    p.Salt,
-                    p.ProfileType,
-                    p.FirstName,
-                    p.MiddleName,
-                    p.Surname,
-                    p.PhoneNo,
-                    p.Age,
-                    p.Relationship,
-                    p.Description,
-                    p.StreetName,
-                    p.StreetNumber,
-                    p.ZipCode,
-                    c.City,
-                    co.Country;
+                            SELECT 
+                        p.ProfileID AS ProfileId,
+                        p.Email,
+                        p.HashPassword,
+                        p.Salt,
+                        p.ProfileType,
+                        LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
+                        p.PhoneNo,
+                        p.Age,
+                        p.Relationship,
+                        p.Description,
+                        p.StreetName,
+                        p.StreetNumber,
+                        p.ZipCode,
+                        p.FK_AccessLevel_Id,
+                
+                        c.City AS City,
+                        co.Country AS Country,
+                
+                        al.AccessLevelId,
+                        al.Name AS AccessLevelName,
+                        al.Description AS AccessLevelDescription,
+                
+                        STRING_AGG(i.InterestName, ', ') AS Interests
+                    FROM Profile p
+                    LEFT JOIN City c ON p.FK_City_ID = c.CityID
+                    LEFT JOIN Country co ON c.FK_Country_ID = co.CountryID
+                    LEFT JOIN AccessLevel al ON p.FK_AccessLevel_Id = al.AccessLevelId
+                    LEFT JOIN ProfileInterests pi ON p.ProfileID = pi.ProfileID
+                    LEFT JOIN Interests i ON pi.InterestsID = i.InterestsID
+                    WHERE p.ProfileID = @ProfileId
+                    GROUP BY 
+                        p.ProfileID, p.Email, p.HashPassword, p.Salt, p.ProfileType,
+                        p.FirstName, p.MiddleName, p.Surname, p.PhoneNo, p.Age,
+                        p.Relationship, p.Description, p.StreetName, p.StreetNumber, p.ZipCode,
+                        p.FK_AccessLevel_Id, c.City, co.Country, al.AccessLevelId, al.Name, al.Description;
                 ";
-                var result = await connection.QuerySingleOrDefaultAsync<Profile>(query, new { ProfileId = profileId });
-                return result;
+
+                var result = await connection.QueryAsync<Profile, AccessLevel, Profile>(
+                    query,
+                    (profile, accessLevel) =>
+                    {
+                        profile.AccessLevel = accessLevel;
+                        return profile;
+                    },
+                    new { ProfileId = profileId },
+                    splitOn: "AccessLevelId"
+                );
+
+                return result.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -194,45 +195,18 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
             }
         }
 
+
         public async Task<IEnumerable<Profile>> GetAllAsync()
         {
+            using var connection = (SqlConnection)CreateConnection();
             var query = @"
-                SELECT 
-                p.ProfileID      AS ProfileId,
-                p.Email,
-                p.HashPassword,
-                p.Salt,
-                p.ProfileType,
-                LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
-                p.PhoneNo,
-                p.Age,
-                p.Relationship,
-                p.Description,
-                p.StreetName,
-                p.StreetNumber,
-                p.ZipCode,
-
-                c.City      AS City,
-                co.Country  AS Country,
-
-                -- Hent alle interesser som én kommasepareret streng
-                STRING_AGG(i.InterestName, ', ') AS Interests
-
-                FROM Profile p
-                LEFT JOIN City c               ON p.FK_City_ID = c.CityID
-                LEFT JOIN Country co           ON c.FK_Country_ID = co.CountryID
-                LEFT JOIN ProfileInterests pi  ON p.ProfileID = pi.ProfileID
-                LEFT JOIN Interests i          ON pi.InterestsID = i.InterestsID
-
-                GROUP BY 
-                    p.ProfileID,
+                        SELECT 
+                    p.ProfileID AS ProfileId,
                     p.Email,
                     p.HashPassword,
                     p.Salt,
                     p.ProfileType,
-                    p.FirstName,
-                    p.MiddleName,
-                    p.Surname,
+                    LTRIM(RTRIM(CONCAT(p.FirstName, ' ', ISNULL(p.MiddleName + ' ', ''), p.Surname))) AS Name,
                     p.PhoneNo,
                     p.Age,
                     p.Relationship,
@@ -240,12 +214,41 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     p.StreetName,
                     p.StreetNumber,
                     p.ZipCode,
-                    c.City,
-                    co.Country;
-                ";
-            using var connection = CreateConnection();
-            return await connection.QueryAsync<Profile>(query);
+                    p.FK_AccessLevel_Id,
+            
+                    c.City AS City,
+                    co.Country AS Country,
+            
+                    al.AccessLevelId,
+                    al.Name AS AccessLevelName,
+                    al.Description AS AccessLevelDescription,
+
+                    STRING_AGG(i.InterestName, ', ') AS Interests
+                FROM Profile p
+                LEFT JOIN City c ON p.FK_City_ID = c.CityID
+                LEFT JOIN Country co ON c.FK_Country_ID = co.CountryID
+                LEFT JOIN AccessLevel al ON p.FK_AccessLevel_Id = al.AccessLevelId
+                LEFT JOIN ProfileInterests pi ON p.ProfileID = pi.ProfileID
+                LEFT JOIN Interests i ON pi.InterestsID = i.InterestsID
+                GROUP BY 
+                    p.ProfileID, p.Email, p.HashPassword, p.Salt, p.ProfileType,
+                    p.FirstName, p.MiddleName, p.Surname, p.PhoneNo, p.Age,
+                    p.Relationship, p.Description, p.StreetName, p.StreetNumber, p.ZipCode,
+                    p.FK_AccessLevel_Id, c.City, co.Country, al.AccessLevelId, al.Name, al.Description;
+            ";
+
+            var results = await connection.QueryAsync<Profile, AccessLevel, Profile>(
+                query,
+                (profile, accessLevel) =>
+                {
+                    profile.AccessLevel = accessLevel;
+                    return profile;
+                },
+                splitOn: "AccessLevelId"
+            );
+            return results;
         }
+
 
         public async Task<bool> UpdateAsync(Profile profile)
         {

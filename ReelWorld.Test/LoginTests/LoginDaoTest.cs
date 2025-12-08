@@ -19,7 +19,7 @@ namespace ReelWorld.Test.LoginTests
             var profile = new Profile
             {
                 Name = "Test_ProfileDao_GetOne_Profile_With_Database",
-                Email = "test_profiledao@example.ke",
+                Email = "test_profiledao@example.mt",
                 HashPassword = "12345",
                 PhoneNo = "12345678",
                 Age = 26,
@@ -35,7 +35,7 @@ namespace ReelWorld.Test.LoginTests
 
             // Act
             int profileId = await profileDao.CreateAsync(profile);
-            int loginId = await loginDao.LoginAsync("test_profiledao@example.ke", "12345");
+            int loginId = await loginDao.LoginAsync("test_profiledao@example.mt", "12345");
             // Assert
             Assert.That(loginId > 0, "If the check passes, the profile is successfully logged in.");
 

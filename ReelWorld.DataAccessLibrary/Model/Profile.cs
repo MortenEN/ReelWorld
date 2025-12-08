@@ -79,7 +79,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         public int FK_AccessLevel_Id { get; set; }
         public AccessLevel AccessLevel { get; set; }
         #endregion
-
+        
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="Profile"/> class with full details.
