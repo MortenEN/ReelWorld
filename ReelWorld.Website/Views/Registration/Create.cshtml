@@ -1,40 +1,33 @@
 ﻿@model ReelWorld.DataAccessLibrary.Model.Registration
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Bekræft tilmelding";
 }
 
-<h1>Tilmeld dig eventet</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 text-center">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                @*<label asp-for="EventId" class="control-label"></label>*@
-                <input asp-for="EventId" class="form-control" type="hidden" />
-                <span asp-validation-for="EventId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfileId" class="control-label"></label>
-                <input asp-for="ProfileId" class="form-control" />
-                <span asp-validation-for="ProfileId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-success">
-                    <i class="bi bi-check-lg me-2"></i> Deltag
-                </button>
-            </div>
+                <h3 class="mb-3">Bekræft tilmelding</h3>
+                <p class="mb-4">
+                    Er du sikker på, at du vil tilmelde dig dette event?
+                </p>
 
-        </form>
+                <form asp-action="Join" method="post">
+                    <!-- Hidden EVENT ID -->
+                    <input type="hidden" name="eventId" value="@Model.EventId" />
+
+                    <button type="submit" class="btn btn-success w-100 mb-2">
+                        Ja, tilmeld mig
+                    </button>
+
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary w-100">
+                        Nej, gå tilbage
+                    </a>
+                </form>
+
+            </div>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index" asp-controller="Home" class="ms-2">Tilbage til forsiden</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -2,6 +2,7 @@
 using ReelWorld.ApiClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
+using System.Security.Claims;
 
 namespace ReelWorld.Website.Controllers
 {
@@ -15,13 +16,21 @@ namespace ReelWorld.Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] int eventId, int profileId)
+        public async Task<IActionResult> Join([FromForm] int eventId)
         {
-            Registration registration = new Registration(eventId, profileId);
+            var profileId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (profileId == null)
+            {
+                return Unauthorized();
+            }
+
+            Registration registration = new Registration(eventId, int.Parse(profileId));
+
             if (!ModelState.IsValid)
                 return View(registration);
 
-            bool joined = await _registrationApiClient.JoinEventAsync(eventId, profileId);
+            bool joined = await _registrationApiClient.JoinEventAsync(eventId, int.Parse(profileId));
 
             if (!joined)
             {
@@ -32,6 +41,7 @@ namespace ReelWorld.Website.Controllers
             TempData["SuccessMessage"] = "Du er nu tilmeldt eventet.";
             return RedirectToAction("Index", "Home");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Create(int id)

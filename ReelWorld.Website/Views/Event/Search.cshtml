@@ -1,7 +1,9 @@
-﻿@model IEnumerable<ReelWorld.DataAccessLibrary.Model.Event>
+﻿@using System.Security.Claims
+@model IEnumerable<ReelWorld.DataAccessLibrary.Model.Event>
 @{
     ViewData["Title"] = "Events";
     var queryValue = Context.Request.Query["query"];
+    var currentProfileId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
 }
 <h1>Events</h1>
 
@@ -46,7 +48,9 @@
                             <a asp-action="Details" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-info" title="Detaljer">
                                 <i class="bi bi-info-circle"></i> Detaljer
                             </a>
-                            @if (User.Identity?.IsAuthenticated ?? false)
+                            @if (User.Identity != null &&
+                                                User.Identity.IsAuthenticated &&
+                                                item.FK_Profile_Id.ToString() == currentProfileId)
                             {
                             <a asp-action="Edit" asp-controller="Event" asp-route-id="@item.EventId" class="btn btn-sm btn-primary" title="Rediger">
                                 <i class="bi bi-pencil"></i> Rediger

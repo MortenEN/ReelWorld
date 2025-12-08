@@ -42,9 +42,10 @@
                         @if (User.Identity?.IsAuthenticated ?? false)
                         {
                             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                            var userEmail = User.FindFirstValue(ClaimTypes.Email);
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Profile" asp-action="Details" asp-route-id="@userId">
-                                    <i class="bi bi-person-circle"></i> @User.Identity.Name
+                                    <i class="bi bi-person-circle"></i> @userEmail
                                 </a>
                             </li>
                             <li class="nav-item">

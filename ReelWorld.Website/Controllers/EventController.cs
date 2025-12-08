@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ReelWorld.ApiClient;
 using ReelWorld.DataAccessLibrary.Interfaces;
 using ReelWorld.DataAccessLibrary.Model;
+using System.Security.Claims;
 
 namespace ReelWorld.Website.Controllers
 {
@@ -44,6 +45,15 @@ namespace ReelWorld.Website.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Event @event)
         {
+            var profileId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (profileId == null)
+            {
+                return Unauthorized();
+            }
+
+            @event.FK_Profile_Id = int.Parse(profileId);
+
             if (!ModelState.IsValid)
             {
                 return View(@event);
@@ -54,6 +64,7 @@ namespace ReelWorld.Website.Controllers
             TempData["SuccessMessage"] = "Eventet blev oprettet!";
             return RedirectToAction("Index", "Home");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
