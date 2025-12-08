@@ -23,70 +23,92 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
 
         public async Task<bool> JoinEventAsync(int eventId, int profileId)
         {
-            using var connection = (SqlConnection)CreateConnection();
-            await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
+            const int maxRetries = 3;
+            const int delayMs = 100;
 
-            try
+            int attempt = 0;
+            bool joined = false;
+
+            do
             {
-                // Check if User already joined
-                var existsQuery = @"
-                SELECT COUNT(*) 
-                FROM EventProfile
-                WHERE EventId = @EventId AND ProfileId = @ProfileId;";
+                attempt++;
 
-                int count = await connection.ExecuteScalarAsync<int>(
-                    existsQuery,
-                    new { EventId = eventId, ProfileId = profileId },
-                    transaction
-                );
+                using var connection = (SqlConnection)CreateConnection();
+                await connection.OpenAsync();
+                using var transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
 
-                if (count > 0)
+                try
+                {
+                    // Check if user already joined
+                    var existsQuery = @"
+                        SELECT COUNT(*) 
+                        FROM EventProfile
+                        WHERE EventId = @EventId AND ProfileId = @ProfileId;";
+
+                    int count = await connection.ExecuteScalarAsync<int>(
+                        existsQuery,
+                        new { EventId = eventId, ProfileId = profileId },
+                        transaction
+                    );
+
+                    if (count > 0)
+                    {
+                        transaction.Rollback();
+                        return false; // Already joined
+                    }
+
+                    // Check if event capacity is full
+                    var capacityQuery = @"
+                        SELECT 
+                        (SELECT COUNT(*) FROM EventProfile WHERE EventId = @EventId) AS CurrentCount,
+                        (SELECT [Limit] FROM Event WHERE EventID = @EventId) AS MaxCount;";
+
+                    var result = await connection.QueryFirstAsync<(int CurrentCount, int MaxCount)>(
+                        capacityQuery,
+                        new { EventId = eventId },
+                        transaction
+                    );
+
+                    if (result.CurrentCount >= result.MaxCount)
+                    {
+                        transaction.Rollback();
+                        return false; // Event is full
+                    }
+
+                    // Insert new attendee
+                    var insertQuery = @"
+                        INSERT INTO EventProfile (EventId, ProfileId)
+                        VALUES (@EventId, @ProfileId);";
+
+                    Thread.Sleep(5000); // Beholder den lange ventetid
+                    int rows = await connection.ExecuteAsync(
+                        insertQuery,
+                        new { EventId = eventId, ProfileId = profileId },
+                        transaction
+                    );
+
+                    transaction.Commit();
+                    joined = rows > 0;
+                    break; // Exit loop hvis succes
+                }
+                catch (SqlException ex) when (ex.Number == 1205) // Deadlock
                 {
                     transaction.Rollback();
-                    return false;
+                    if (attempt < maxRetries)
+                        await Task.Delay(delayMs); // Kort vent før retry
                 }
-
-                // Check if event capacity is full
-                var capacityQuery = @"
-                SELECT 
-                (SELECT COUNT(*) FROM EventProfile WHERE EventId = @EventId) AS CurrentCount,
-                (SELECT [Limit] FROM Event WHERE EventID = @EventId) AS MaxCount;";
-
-                var result = await connection.QueryFirstAsync<(int CurrentCount, int MaxCount)>(
-                    capacityQuery,
-                    new { EventId = eventId },
-                    transaction
-                );
-
-                if (result.CurrentCount >= result.MaxCount)
+                catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return false; // Event is full
+                    throw ex; // Andre exceptions kastes
                 }
 
-                // Insert new attendee
-                var insertQuery = @"
-                INSERT INTO EventProfile (EventId, ProfileId)
-                VALUES (@EventId, @ProfileId);";
+            } while (attempt < maxRetries);
 
-                Thread.Sleep(5000);
-                int rows = await connection.ExecuteAsync(
-                    insertQuery,
-                    new { EventId = eventId, ProfileId = profileId },
-                    transaction
-                );
-
-                transaction.Commit();
-                return rows > 0;
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                //TODO: Det her med en løkke og sådan noget
-                throw ex;
-            }
+            return joined;
         }
+
+
 
         public Task<bool> UpdateAsync(Registration registration)
         {
