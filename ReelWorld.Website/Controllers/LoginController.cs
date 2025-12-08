@@ -44,12 +44,12 @@ namespace ReelWorld.Website.Controllers
                 ModelState.AddModelError("", "Forkert email eller adgangskode");
                 return View(model);
             }
-
+            var profile = await _loginApiClient.GetOneAsync(userId);
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Email, model.Email),
-                //new Claim(ClaimTypes.Role, model.AccessLevel.Name)
+                new Claim(ClaimTypes.Role, profile.AccessLevel.Name)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

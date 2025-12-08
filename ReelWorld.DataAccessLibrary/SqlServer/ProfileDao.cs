@@ -158,8 +158,8 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                         co.Country AS Country,
                 
                         al.AccessLevelId,
-                        al.Name AS AccessLevelName,
-                        al.Description AS AccessLevelDescription,
+                        al.Name,
+                        al.Description,
                 
                         STRING_AGG(i.InterestName, ', ') AS Interests
                     FROM Profile p
@@ -220,8 +220,8 @@ namespace ReelWorld.DataAccessLibrary.SqlServer
                     co.Country AS Country,
             
                     al.AccessLevelId,
-                    al.Name AS AccessLevelName,
-                    al.Description AS AccessLevelDescription,
+                    al.Name,
+                    al.Description,
 
                     STRING_AGG(i.InterestName, ', ') AS Interests
                 FROM Profile p

@@ -34,5 +34,13 @@ namespace ReelWorld.ApiClient
 
             return response.Data;
         }
+        public async Task<Profile?> GetOneAsync(int profileId)
+        {
+            var request = new RestRequest($"api/profiles/{profileId}", Method.Get);
+            var response = await _restClient.ExecuteAsync<Profile>(request);
+            if (response == null) throw new Exception("NO response from server");
+            if (!response.IsSuccessStatusCode) throw new Exception("Server reply: Unsuccessful request - " + response.StatusCode);
+            return response.Data;
+        }
     }
 }

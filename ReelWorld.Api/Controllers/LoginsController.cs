@@ -29,6 +29,20 @@ namespace ReelWorld.Api.Controllers
 
             return Ok(userId);
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<Profile>>> GetOneAsync(int id)
+        {
+            try
+            {
+                var profile = await _loginRepository.GetOneAsync(id);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+                throw;
+            }
+        }
     }
 }
 

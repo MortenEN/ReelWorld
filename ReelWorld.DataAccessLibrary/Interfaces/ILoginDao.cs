@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReelWorld.DataAccessLibrary.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace ReelWorld.DataAccessLibrary.Interfaces
     public interface ILoginDao
     {
         Task<int> LoginAsync(string email, string password);
+        Task<Profile?> GetOneAsync(int id);
     }
 }
