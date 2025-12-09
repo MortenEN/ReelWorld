@@ -35,7 +35,6 @@ namespace ReelWorld.Website.Controllers
             return View(profile);
         }
 
-
         // GET: ProfileController/Create
         [HttpGet]
         public ActionResult Create()
