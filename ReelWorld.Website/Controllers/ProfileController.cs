@@ -28,7 +28,9 @@ namespace ReelWorld.Website.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (loggedInUserId != id)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (loggedInUserId != id && !isAdmin)
                 return Forbid();
             var profile = await _userApiClient.GetOneAsync(id);
 
@@ -92,7 +94,9 @@ namespace ReelWorld.Website.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (loggedInUserId != id)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (loggedInUserId != id && !isAdmin)
                 return Forbid();
             var profile = await _userApiClient.GetOneAsync(id);
             if (profile == null) return NotFound();
@@ -117,7 +121,9 @@ namespace ReelWorld.Website.Controllers
         public async Task<IActionResult> Edit(int id, Profile profile, string[] Interests)
         {
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (loggedInUserId != id)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (loggedInUserId != id && !isAdmin)
                 return Forbid();
             ViewBag.RelationshipList = Enum.GetValues(typeof(Profile.RelationshipStatus))
                                            .Cast<Profile.RelationshipStatus>()
@@ -149,7 +155,9 @@ namespace ReelWorld.Website.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (loggedInUserId != id)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (loggedInUserId != id && !isAdmin)
                 return Forbid();
             var success = await _userApiClient.DeleteAsync(id);
             if (!success)
