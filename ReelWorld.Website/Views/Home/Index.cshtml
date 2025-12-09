@@ -14,8 +14,11 @@
 <!-- Søgeformular -->
 <form asp-action="Search" method="get" class="mb-3">
     <input type="text" name="query" class="form-control" placeholder="Søg events..." />
+    <button class="btn btn-outline-primary" type="submit">
+        <i class="bi bi-search"></i>
+    </button>
 </form>
-<form>
+@*<form>
     <select class="form-select me-2" name="category">
         <option value="">Alle kategorier</option>
         <option value="Music">Musik</option>
@@ -26,7 +29,7 @@
     <button class="btn btn-outline-primary" type="submit">
         <i class="bi bi-search"></i>
     </button>
-</form>
+</form>*@
 <h1>
     @if (sort == "biggest")
     {

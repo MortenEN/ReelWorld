@@ -27,7 +27,8 @@
 
             <div class="form-group">
                 <label asp-for="Date" class="control-label">Dato</label>
-                <input asp-for="Date" class="form-control" type="datetime-local" />
+                <input asp-for="Date" class="form-control" type="datetime-local"
+                       min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
 

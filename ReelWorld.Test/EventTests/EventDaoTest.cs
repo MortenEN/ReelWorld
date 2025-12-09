@@ -122,8 +122,8 @@ public class EventDaoTest
         await connection.OpenAsync();
 
         newEvent.EventId = await connection.ExecuteScalarAsync<int>(@"
-        INSERT INTO [Event] (Title, Description, Date, Location, Visibility, fk_profile_id, [Limit])
-        VALUES (@Title, @Description, @Date, @Location, @Visibility, @ProfileId, @Limit);
+        INSERT INTO [Event] (Title, Description, Date, Location, IsPublic, fk_profile_id, [Limit])
+        VALUES (@Title, @Description, @Date, @Location, @IsPublic, @ProfileId, @Limit);
         SELECT CAST(SCOPE_IDENTITY() AS INT);",
             new
             {
@@ -131,7 +131,7 @@ public class EventDaoTest
                 Description = newEvent.Description,
                 Date = newEvent.Date,
                 Location = newEvent.Location,
-                Visibility = newEvent.IsPublic,
+                IsPublic = newEvent.IsPublic,
                 ProfileId = newEvent.FK_Profile_Id,
                 Limit = newEvent.Limit
             });
@@ -176,7 +176,7 @@ public class EventDaoTest
             //act
             eventId = await eventDao.CreateAsync(testEvent);
 
-            IEnumerable<Event> res = await eventDao.SearchAsync("Test Search Event","");
+            IEnumerable<Event> res = await eventDao.SearchAsync("Test Search Event");
             //assert
             Assert.That(res.Count(), Is.EqualTo(1));
         }

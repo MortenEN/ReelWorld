@@ -78,9 +78,9 @@ namespace ReelWorld.ApiClient
             return true;
         }
 
-        public async Task<List<Event>> SearchEventsAsync(string query, string category)
+        public async Task<IEnumerable<Event>> SearchWithCategoryAsync(string query, string category)
         {
-            var request = new RestRequest($"api/events/search", Method.Get);
+            var request = new RestRequest($"api/events/searchCategory", Method.Get);
 
             if(!string.IsNullOrEmpty(query))
                 request.AddParameter("query", query);
@@ -96,9 +96,19 @@ namespace ReelWorld.ApiClient
             return response.Data ?? new List<Event>();
         }
 
-        public Task<IEnumerable<Event>> SearchAsync(string query, string category)
+        public async Task<IEnumerable<Event>> SearchAsync(string query)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest($"api/events/search", Method.Get);
+
+            if (!string.IsNullOrEmpty(query))
+                request.AddParameter("query", query);
+
+            var response = await _restClient.ExecuteAsync<List<Event>>(request);
+
+            if (response == null || !response.IsSuccessStatusCode)
+                return new List<Event>();
+
+            return response.Data ?? new List<Event>();
         }
 
         public async Task<IEnumerable<Event>> Get10BiggestAsync()
