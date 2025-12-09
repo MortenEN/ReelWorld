@@ -140,6 +140,11 @@ namespace ReelWorld.Website.Controllers
             var filtered = allEvents.Where(e => e.Title.Contains(query, StringComparison.OrdinalIgnoreCase) 
             || (e.Description != null && e.Description.Contains(query, StringComparison.OrdinalIgnoreCase))).ToList(); 
             
+            if(filtered.Count == 0) 
+            { 
+                TempData["InfoMessage"] = "Ingen events fundet der matcher din søgning.";
+            }
+
             return View("Search", filtered); 
         }
 

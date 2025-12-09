@@ -140,7 +140,7 @@ namespace ReelWorld.Website.Controllers
             var success = await _userApiClient.UpdateAsync(profile);
             if (!success) return NotFound();
 
-            TempData["SuccessMessage"] = "Din profil blev opdateret!";
+            TempData["SuccessMessage"] = "Din profil blev opdateret korrekt!";
             return RedirectToAction("Details", new { id = profile.ProfileId });
         }
 

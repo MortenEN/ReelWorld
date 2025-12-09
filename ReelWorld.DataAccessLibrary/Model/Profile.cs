@@ -78,8 +78,11 @@ namespace ReelWorld.DataAccessLibrary.Model
         public string ZipCode { get; set; }
         public int? FK_AccessLevel_Id { get; set; }
         public AccessLevel? AccessLevel { get; set; }
+        public string AccessLevelName { get; set; }
+        public string AccessLevelDescription { get; set; }
+
         #endregion
-        
+
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="Profile"/> class with full details.

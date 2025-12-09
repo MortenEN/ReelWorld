@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Rediger Profil";
     // Split Interests-strengen til en liste for pre-fyldning
-    var selectedInterests = (Model.Interests ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
+    var selectedInterests = (Model.Interests ?? "")
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(i => i.Trim())
+            .ToList();
 }
 
 <h1>Rediger Profil</h1>
@@ -96,7 +99,7 @@
                         <input type="checkbox"
                                name="Interests"
                                value="@interest"
-                               @(Model.Interests != null && Model.Interests.Split(',').Select(i => i.Trim()).Contains(interest) ? "checked" : "") />
+                               @(selectedInterests.Any(i => string.Equals(i, interest, StringComparison.OrdinalIgnoreCase)) ? "checked" : "") />
                         @GetInterestLabel(interest)
                     </label>
                     <br />
