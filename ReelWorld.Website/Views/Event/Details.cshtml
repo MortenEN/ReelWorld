@@ -48,6 +48,18 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Limit)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AttendeeCount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttendeeCount)
+        </dd>
+        <dt class = "col-sm-2">
+            Pladser tilbage
+        </dt>
+        <dd class = "col-sm-10">
+            @(Model.Limit - Model.AttendeeCount)
+        </dd>
     </dl>
 </div>
 <div class="mt-3 d-flex gap-2 align-items-stretch">

@@ -12,7 +12,7 @@
 }
 
 
-
+<div class="mb-5">
 <!-- Søgeformular -->
 <form asp-action="Search" method="get" class="mb-3">
     <input type="text" name="query" class="form-control" placeholder="Søg events..." />
@@ -39,12 +39,12 @@
     }
     else
     {
-        <text>De seneste 10 events</text> 
+        <text>De 10 kommende events</text> 
     }
 </h1>
 
 <a asp-action="Index" asp-route-sort="@(sort == "latest" ? "biggest" : "latest")" class="btn btn-outline-secondary mb-3">
-    @(sort == "latest" ? "Vis 10 mest populære" : "Vis 10 seneste")
+    @(sort == "latest" ? "Vis 10 mest populære" : "Vis de 10 kommende")
 </a>
 
 
@@ -70,7 +70,7 @@
                 <td>@item.AttendeeCount / @item.Limit</td>
                 <td>
                     <div class="d-flex gap-2 align-items-stretch">
-                        @if (User.Identity?.IsAuthenticated ?? false && currentProfileId != item.FK_Profile_Id.ToString())
+                        @if (User.Identity?.IsAuthenticated == true && item.AttendeeCount != item.Limit)
                         {
                             <a asp-action="Create" asp-controller="Registration" asp-route-id="@item.EventId" class="btn btn-sm btn-success d-flex align-items-center justify-content-center" title="Deltag">
                                 <i class="bi bi-check-lg me-1"></i> Deltag
@@ -93,3 +93,4 @@
         }
     </tbody>
 </table>
+</div>

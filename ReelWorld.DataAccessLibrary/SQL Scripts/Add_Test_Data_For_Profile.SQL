@@ -68,7 +68,7 @@ VALUES
     ('victor@test.com', '$2a$12$hnHQvmtP8VTSx/QKsnbzjOZq8mE3kW5C3L7XT61H3nSasgnpnftuS', '$2a$12$hnHQvmtP8VTSx/QKsnbzjO', 'User', 'Victor', 'A.', 'Kristensen', '77889900', 33, 'Single', 'Photography hobbyist.', 7, 'Gaden', '1', '9000', 2),
     ('ida@test.com', '$2a$12$hnHQvmtP8VTSx/QKsnbzjOZq8mE3kW5C3L7XT61H3nSasgnpnftuS', '$2a$12$hnHQvmtP8VTSx/QKsnbzjO', 'User', 'Ida', NULL, 'Andersen', '88990011', 27, 'Single', 'Football fan.', 8, 'Gaden', '1', '9000', 2),
     ('marcus@test.com', '$2a$12$hnHQvmtP8VTSx/QKsnbzjOZq8mE3kW5C3L7XT61H3nSasgnpnftuS', '$2a$12$hnHQvmtP8VTSx/QKsnbzjO', 'User', 'Marcus', NULL, 'Petersen', '99001122', 24, 'Single', 'Loves reading.', 9, 'Gaden', '1', '9000', 2),
-    ('sofie@test.com', '$2a$12$hnHQvmtP8VTSx/QKsnbzjOZq8mE3kW5C3L7XT61H3nSasgnpnftuS', '$2a$12$hnHQvmtP8VTSx/QKsnbzjO', 'User', 'Sofie', 'M.', 'Holm', '10011002', 30, 'Taken', 'Cooking and movies.', 10, 'Gaden', '1', '9000', 2);
+    ('sofie@testadmin.com', '$2a$12$hnHQvmtP8VTSx/QKsnbzjOZq8mE3kW5C3L7XT61H3nSasgnpnftuS', '$2a$12$hnHQvmtP8VTSx/QKsnbzjO', 'User', 'Sofie', 'M.', 'Holm', '10011002', 30, 'Taken', 'Cooking and movies.', 10, 'Gaden', '1', '9000', 1);
 GO
 
 -------------------------

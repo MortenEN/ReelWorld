@@ -75,7 +75,9 @@ namespace ReelWorld.Website.Controllers
         {
             var @event = await _eventApiClient.GetOneAsync(id);
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (@event.FK_Profile_Id != loggedInUserId)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (@event.FK_Profile_Id != loggedInUserId && !isAdmin)
                 return Forbid();
 
             if (@event == null)
@@ -95,7 +97,9 @@ namespace ReelWorld.Website.Controllers
         public async Task<IActionResult> Edit(int id, Event @event)
         {
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (@event.FK_Profile_Id != loggedInUserId)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (@event.FK_Profile_Id != loggedInUserId && !isAdmin)
                 return Forbid();
             if (id != @event.EventId)
                 return BadRequest();
@@ -119,7 +123,9 @@ namespace ReelWorld.Website.Controllers
                 return NotFound();
 
             var loggedInUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (@event.FK_Profile_Id != loggedInUserId)
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            bool isAdmin = userRole == "Admin";
+            if (@event.FK_Profile_Id != loggedInUserId && !isAdmin)
                 return Forbid();
 
             var deletedEvent = await _eventApiClient.DeleteAsync(id);

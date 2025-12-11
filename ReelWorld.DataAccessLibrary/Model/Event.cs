@@ -25,6 +25,7 @@ namespace ReelWorld.DataAccessLibrary.Model
         [Display(Name = "Max antal deltagere")]
         public int Limit { get; set; }
         List<Profile> Attendees { get; set; }
+        [Display(Name = "Antal tilmeldte")]
         public int AttendeeCount { get; set; }
         public string? Category { get; set; }
         #endregion
